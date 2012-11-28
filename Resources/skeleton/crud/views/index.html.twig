@@ -1,0 +1,69 @@
+{{ '{% extends "' ~ layout ~ '" %}' }}
+
+{{ '{% block title %}' ~ entity ~ ' list{% endblock %}' }}
+
+{{ '{% block ' ~ bodyBlock ~ ' %}' }}
+    <h1>{{ entity }} list</h1>
+
+    <table class="table table-striped table-hover table-bordered records_list">
+        <thead>
+            <tr>
+            {%- for field, metadata in fields %}
+
+                <th scope="col">{{ field|capitalize }}</th>
+
+            {%- endfor %}
+
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{ '{% for entity in ' ~ (usePaginator ? 'paginator' : 'entities') ~ ' %}' }}
+            <tr>
+
+        {%- for field, metadata in fields %}
+            {%- if loop.first and ('show' in actions) %}
+
+                <td><a href="{{ "{{ path('"~ route_name_prefix ~"_show', { 'id': entity.id }) }}" }}">{{ '{{ entity.'~ field|replace({'_': ''}) ~' }}' }}</a></td>
+
+            {%- elseif metadata.type in ['date', 'datetime'] %}
+
+                <td>{{ '{% if entity.'~ field|replace({'_': ''}) ~' %}{{ entity.'~ field|replace({'_': ''}) ~'|date(\'Y-m-d H:i:s\') }}{% endif %}' }}</td>
+
+            {%- else %}
+
+                <td>{{ '{{ entity.'~ field|replace({'_': ''}) ~' }}' }}</td>
+
+            {%- endif %}
+
+            {%- if loop.last %}
+
+                <td class="btn-group">
+                    {%- include "views/others/actions.html.twig" %}
+                </td>
+
+            {%- endif %}
+        {%- endfor %}
+
+            </tr>
+        {{ '{% endfor %}' }}
+        </tbody>
+    </table>
+
+    {% if usePaginator %}
+
+    {{ '{{ paginator.render()|raw }}' }}
+    {% endif %}
+
+    {% if 'new' in actions %}
+
+    <ul class="new_entry">
+        <li>
+            <a class="btn btn-info" href="{{ "{{ path('"~ route_name_prefix ~"_new') }}" }}">
+                <i class="icon-plus"></i> Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endif %}
+
+{{ '{% endblock %}' }}

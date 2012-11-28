@@ -1,0 +1,35 @@
+{{ '{% extends "' ~ layout ~ '" %}' }}
+
+{{ '{% block title %}' ~ entity ~ '{% endblock %}' }}
+
+{{ '{% block ' ~ bodyBlock ~ ' %}' }}
+    <h1>{{ entity }}</h1>
+
+    <table class="table table-hover record_properties">
+        <tbody>
+        {%- for field, metadata in fields %}
+
+            <tr>
+                <th scope="row">{{ field|capitalize }}</th>
+
+            {%- if metadata.type in ['date', 'datetime'] %}
+
+                <td>{{ '{{ entity.'~ field|replace({'_': ''}) ~'|date(\'Y-m-d H:i:s\') }}' }}</td>
+
+            {%- else %}
+
+                <td>{{ '{{ entity.'~ field|replace({'_': ''}) ~' }}' }}</td>
+
+            {%- endif %}
+
+            </tr>
+
+        {%- endfor %}
+
+        </tbody>
+    </table>
+
+    {% set hide_edit, hide_delete = false, false %}
+    {% include 'views/others/record_actions.html.twig' %}
+
+{{ '{% endblock %}' }}

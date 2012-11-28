@@ -1,0 +1,25 @@
+{
+    "name": "pugx/generator-bundle",
+    "type": "symfony-bundle",
+    "description": "Extension of SensioGeneratorBundle",
+    "keywords": ["symfony2 form field"],
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name":"Massimiliano Arione",
+            "email":"garakkio@gmail.com"
+        },
+        {
+            "name": "Leonardo Proietti",
+            "email": "leonardo.proietti@gmail.com"
+        }    
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "sensio/generator-bundle": "*"
+    },
+    "autoload": {
+        "psr-0": { "PUGX\\GeneratorBundle": "" }
+    },
+    "target-dir": "PUGX/GeneratorBundle"
+}
