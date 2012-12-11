@@ -3,7 +3,7 @@
 namespace PUGX\GeneratorBundle\Generator;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Sensio\Bundle\GeneratorBundle\Generator;
+use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
@@ -17,15 +17,17 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
  */
 class DoctrineFormGenerator extends Generator
 {
+    protected $baseSkeletonDir;
     private $filesystem;
     private $skeletonDir;
     private $className;
     private $classPath;
 
-    public function __construct(Filesystem $filesystem, $skeletonDir)
+    public function __construct(Filesystem $filesystem, $skeletonDir, $baseSkeletonDir)
     {
         $this->filesystem = $filesystem;
         $this->skeletonDir = $skeletonDir;
+        $this->baseSkeletonDir = $baseSkeletonDir;
     }
 
     public function getClassName()
@@ -74,6 +76,19 @@ class DoctrineFormGenerator extends Generator
             'form_class'       => $this->className,
             'form_type_name'   => strtolower(str_replace('\\', '_', $bundle->getNamespace()).($parts ? '_' : '').implode('_', $parts).'_'.$this->className),
         ));
+    }
+
+    /**
+     * @inherit
+     */
+    protected function renderFile($skeletonDir, $template, $target, $parameters)
+    {
+        $extendedFile = $skeletonDir . "/" . $template;
+        if (!file_exists($extendedFile)) {
+            $skeletonDir = $this->baseSkeletonDir;
+        }
+
+        return parent::renderFile($skeletonDir, $template, $target, $parameters);
     }
 
     /**

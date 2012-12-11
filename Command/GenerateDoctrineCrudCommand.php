@@ -3,6 +3,7 @@
 namespace PUGX\GeneratorBundle\Command;
 
 use PUGX\GeneratorBundle\Generator\DoctrineCrudGenerator;
+use PUGX\GeneratorBundle\Generator\DoctrineFormGenerator;
 use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCrudCommand as BaseCommand;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,7 +20,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 class GenerateDoctrineCrudCommand extends BaseCommand
 {
     private $generator;
-
+    private $formGenerator;
+    
     /**
      * ctodo: change third param
      * @return type
@@ -28,7 +30,7 @@ class GenerateDoctrineCrudCommand extends BaseCommand
     {
         if (null === $this->generator) {
             // TODO vendor url
-            $this->generator = new DoctrineCrudGenerator($this->getContainer()->get('filesystem'), __DIR__.'/../Resources/skeleton/crud' ,__DIR__.'/../../../../../sensio/generator-bundle/Sensio/Bundle/GeneratorBundle/Resources/skeleton/crud');
+            $this->generator = new DoctrineCrudGenerator($this->getContainer()->get('filesystem'), __DIR__.'/../Resources/skeleton/crud', __DIR__.'/../../../../../sensio/generator-bundle/Sensio/Bundle/GeneratorBundle/Resources/skeleton/crud');
         }
 
         return $this->generator;
@@ -115,6 +117,15 @@ EOT
         }
 
         $dialog->writeGeneratorSummary($output, $errors);
+    }
+
+    protected function getFormGenerator()
+    {
+        if (null === $this->formGenerator) {
+            $this->formGenerator = new DoctrineFormGenerator($this->getContainer()->get('filesystem'), __DIR__.'/../Resources/skeleton/form', __DIR__.'/../../../../../sensio/generator-bundle/Sensio/Bundle/GeneratorBundle/Resources/skeleton/form');
+        }
+
+        return $this->formGenerator;
     }
 
     /**
