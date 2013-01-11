@@ -20,7 +20,7 @@
     },
     "suggest": {
         "knplabs/knp-paginator-bundle": "Needed for optional pagination"
-    }
+    },
     "autoload": {
         "psr-0": { "PUGX\\GeneratorBundle": "" }
     },
