@@ -8,7 +8,7 @@ It adds many functionality on top of it, and corrects some minor issues.
 Documentation
 -------------
 
-[Read the documentation](https://github.com/PUGX/PUGXAutoCompleterBundle/blob/master/Resources/doc/index.md)
+[Read the documentation](https://github.com/PUGX/PUGXGeneratorBundle/blob/master/Resources/doc/index.md)
 
 License
 -------
