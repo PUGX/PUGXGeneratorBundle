@@ -10,7 +10,7 @@
             <tr>
             {%- for field, metadata in fields %}
 
-                <th scope="col">{{ field|capitalize }}</th>
+                <th scope="col">{{ field|replace({'_': ' '})|capitalize }}</th>
 
             {%- endfor %}
 
