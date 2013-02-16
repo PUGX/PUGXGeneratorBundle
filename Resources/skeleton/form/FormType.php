@@ -29,6 +29,6 @@ class {{ form_class }} extends AbstractType
 
     public function getName()
     {
-        return '{{ form_type_name }}';
+        return '{{ entity_class|lower }}';
     }
 }

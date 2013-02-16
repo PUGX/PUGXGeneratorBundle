@@ -1,5 +1,5 @@
 {% if ('delete' in actions) and (not hide_delete) %}
-<form id="delete" action="{{ "{{ path('"~ route_name_prefix ~"_delete', { 'id': entity.id }) }}" }}" method="post">
+<form id="delete" action="{{ "{{ path('"~ route_name_prefix ~"_delete', {id: "~ entity|lower ~".id}) }}" }}" method="post">
     {{ '{{ form_widget(delete_form) }}' }}
 {% endif %}
 
@@ -10,7 +10,7 @@
         </a>
 
 {% if ('edit' in actions) and (not hide_edit) %}
-        <a class="btn btn-primary" href="{{ "{{ path('"~ route_name_prefix ~"_edit', { 'id': entity.id }) }}" }}">
+        <a class="btn btn-primary" href="{{ "{{ path('"~ route_name_prefix ~"_edit', {id: "~ entity|lower ~".id}) }}" }}">
             <i class="icon-edit"></i> Edit
         </a>
 {% endif %}

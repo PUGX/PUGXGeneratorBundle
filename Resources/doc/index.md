@@ -5,10 +5,11 @@ This version of the bundle requires Symfony 2.1 or higher.
 
 ## Installation
 
-1. Download PUGXGeneratorBundle
-2. Enable the Bundle
-3. Usage
-4. Additional stuff
+1. [Download PUGXGeneratorBundle](#1-download-pugxgeneratorbundle)
+2. [Enable the Bundle](#2-enable-the-bundle)
+3. [Usage](#3-usage)
+4. [Layout](#4-layout)
+5. [Pagination](#5-pagination)
 
 ### 1. Download PUGXGeneratorBundle
 
@@ -41,10 +42,11 @@ Enable the bundle in the kernel:
 
 public function registerBundles()
 {
-    $bundles = array(
+    // ...
+    if (in_array($this->getEnvironment(), array('dev', 'test'))) {
         // ...
-        new PUGX\GeneratorBundle\PUGXGeneratorBundle(),
-    );
+        $bundles[] = new PUGX\GeneratorBundle\PUGXGeneratorBundle();
+    }
 }
 ```
 
@@ -57,12 +59,12 @@ You can get help, like any other Symfony command, just typing
 $ php app/console pugx:generate:crud --help
 ```
 
-### 4. Additional stuff
+### 4. Layout
 
 This bundle is ready to be used with [Bootstrap](http://twitter.github.com/bootstrap/) and with [Font Awesome](http://fortawesome.github.com/Font-Awesome/)
 
 So, you can download Bootstrap (and, optionally, Font Awesome) and put it in your bundle.
-Then, you can use a simple layout, like this:
+Then, you can use a simple layout, like this one:
 
 ``` html+php
 <!DOCTYPE html>
@@ -90,12 +92,81 @@ Then, you can use a simple layout, like this:
             {% block body %}
             {% endblock %}
         </div>
+        <script src="http://code.jquery.com/jquery.min.js"></script>
         {% javascripts
             '@AcmeDemoBundle/Resources/public/js/jquery-1.8.3.min.js'
             '@AcmeDemoBundle/Resources/public/js/bootstrap.js'
+            '@AcmeDemoBundle/Resources/public/js/acme.js'
         %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
     </body>
 </html>
 ```
+
+If you want the confirm delete functionality, you can add the following Javascript code
+in one of you files (e.g. ``acme.js`` in layout above):
+
+``` js+php
+$().ready(function() {
+    /* delete confirm */
+    $('form#delete').submit(function(e) {
+        var $form = $(this);
+        var $hidden = $form.find('input[name="modal"]');
+        if ($hidden.val() != 1) {
+            e.preventDefault();
+            $('#delete_confirm').modal('show');
+            $('#delete_confirm').find('button.btn-danger').click(function() {
+                $('#delete_confirm').modal('hide');
+                $form.find('input[name="modal"]').val(1);
+                $form.submit();
+            });
+        }
+    });
+});
+```
+
+If you want more consistent boostrap forms, you can use a theme like this one:
+
+```jinja
+{% block form_row %}
+{% spaceless %}
+    <div class="control-group{% if errors|length > 0 %} error{% endif %}{% if form.get('type') == 'time' %} input-append bootstrap-timepicker-componen{% endif %}">
+        {{ form_label(form) }}
+        {{ form_widget(form, {'attr': {'class': form.get('type') == 'time' ? 'timepicker-default input-small' : ''}}) }}
+        {{ form_errors(form) }}
+        {% if form.get('type') == 'time' %}
+            <span class="add-on"><i class="icon-time"></i></span>
+        {% endif %}
+    </div>
+{% endspaceless %}
+{% endblock form_row %}
+
+{% block form_errors %}
+{% spaceless %}
+    {% if errors|length > 0 %}
+        {% for error in errors %}
+            <span class="help-inline">{{
+                error.messagePluralization is null
+                    ? error.messageTemplate|trans(error.messageParameters, 'validators')
+                    : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
+            }}</span>
+        {% endfor %}
+    {% endif %}
+{% endspaceless %}
+{% endblock form_errors %}
+```
+
+If you put such theme file in ``src/Acme/DemoBundle/Resources/views/Form/form_errors.html.twig``,
+you can use the ``--theme`` option of ``pugx:generate:crud`` command, like in this example:
+
+``` bash
+$ php app/console pugx:generate:crud --entity=AcmeDemoBundle:Entity --with-write --layout=AcmeDemoBundle::layout.html.twig --theme=AcmeDemoBundle:Form:form_errors.html.twig
+```
+
+
+### 5. Pagination
+
+You likely want to use pagination in your modules.
+If so, add [KnpPaginatorBundle](https://github.com/KnpLabs/KnpPaginatorBundle)
+to your bundles and use ``--use-pagination`` flag in ``pugx:generate:crud`` command.

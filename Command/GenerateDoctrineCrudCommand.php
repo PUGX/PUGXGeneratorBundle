@@ -21,7 +21,7 @@ class GenerateDoctrineCrudCommand extends BaseCommand
 {
     private $generator;
     private $formGenerator;
-    
+
     /**
      * ctodo: change third param
      * @return type
@@ -47,6 +47,7 @@ class GenerateDoctrineCrudCommand extends BaseCommand
                 new InputOption('with-write', '', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
                 new InputOption('format', '', InputOption::VALUE_REQUIRED, 'Use the format for configuration files (php, xml, yml, or annotation)', 'annotation'),
                 new InputOption('use-paginator', '', InputOption::VALUE_NONE,'Whether or not to use paginator'),
+                new InputOption('theme', '', InputOption::VALUE_OPTIONAL, 'A possible theme to use in forms'),
             ))
             ->setDescription('Generates a CRUD based on a Doctrine entity')
             ->setHelp(<<<EOT
@@ -90,6 +91,7 @@ EOT
         $layout = $input->getOption('layout');  // TODO validate
         $bodyBlock = $input->getOption('body-block');  // TODO validate
         $usePaginator = $input->getOption('use-paginator');
+        $theme = $input->getOption('theme');  // TODO validate
 
         $dialog->writeSection($output, 'CRUD generation');  // TODO overwrite interaction
 
@@ -98,7 +100,7 @@ EOT
         $bundle      = $this->getContainer()->get('kernel')->getBundle($bundle);
 
         $generator = $this->getGenerator();
-        $generator->generate($bundle, $entity, $metadata[0], $format, $prefix, $withWrite, $layout, $bodyBlock, $usePaginator);
+        $generator->generate($bundle, $entity, $metadata[0], $format, $prefix, $withWrite, $layout, $bodyBlock, $usePaginator, $theme);
 
         $output->writeln('Generating the CRUD code: <info>OK</info>');
 

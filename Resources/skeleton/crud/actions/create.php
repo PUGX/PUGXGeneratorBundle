@@ -10,17 +10,16 @@
      */
     public function createAction(Request $request)
     {
-        $entity  = new {{ entity_class }}();
-        $form = $this->createForm(new {{ entity_class }}Type(), $entity);
-        $form->bind($request);
+        ${{ entity|lower }} = new {{ entity_class }}();
+        $form = $this->createForm(new {{ entity_class }}Type(), ${{ entity|lower }});
 
-        if ($form->isValid()) {
+        if ($form->bind($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
+            $em->persist(${{ entity|lower }});
             $em->flush();
 
             {% if 'show' in actions -%}
-                return $this->redirect($this->generateUrl('{{ route_name_prefix }}_show', array('id' => $entity->getId())));
+                return $this->redirect($this->generateUrl('{{ route_name_prefix }}_show', array('id' => ${{ entity|lower }}->getId())));
             {%- else -%}
                 return $this->redirect($this->generateUrl('{{ route_name_prefix }}'));
             {%- endif %}
@@ -29,12 +28,12 @@
 
 {% if 'annotation' == format %}
         return array(
-            'entity' => $entity,
+            '{{ entity|lower }}' => ${{ entity|lower }},
             'form'   => $form->createView(),
         );
 {% else %}
         return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:new.html.twig', array(
-            'entity' => $entity,
+            '{{ entity|lower }}' => ${{ entity|lower }},
             'form'   => $form->createView(),
         ));
 {% endif %}

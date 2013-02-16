@@ -29,6 +29,7 @@ class DoctrineCrudGenerator extends Generator
     protected $layout;
     protected $bodyBlock;
     protected $usePaginator;
+    protected $theme;
 
     /**
      * Constructor.
@@ -68,10 +69,11 @@ class DoctrineCrudGenerator extends Generator
      * @param string            $layout           The layout (default: "TwigBundle::layout.html.twig")
      * @param string            $bodyBlock        The name of body block in layout (default: "body")
      * @param boolean           $usePaginator     Wether or not to use paginator
+     * @param string            $theme            Possible theme for forms
      *
      * @throws \RuntimeException
      */
-    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $format, $routePrefix, $needWriteActions, $layout, $bodyBlock, $usePaginator = false)
+    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $format, $routePrefix, $needWriteActions, $layout, $bodyBlock, $usePaginator = false, $theme = null)
     {
         $this->routePrefix = $routePrefix;
         $this->routeNamePrefix = str_replace('/', '_', $routePrefix);
@@ -91,6 +93,7 @@ class DoctrineCrudGenerator extends Generator
         $this->bodyBlock    = $bodyBlock;
         $this->metadata     = $metadata;
         $this->usePaginator = $usePaginator;
+        $this->theme        = $theme;
         $this->setFormat($format);
 
         $this->generateControllerClass();
@@ -224,7 +227,7 @@ class DoctrineCrudGenerator extends Generator
             'namespace'         => $this->bundle->getNamespace(),
             'entity_namespace'  => $entityNamespace,
             'actions'           => $this->actions,
-            'form_type_name'    => strtolower(str_replace('\\', '_', $this->bundle->getNamespace()).($parts ? '_' : '').implode('_', $parts).'_'.$entityClass.'Type'),
+            'form_type_name'    => strtolower($entityClass),
             'dir'               => $this->skeletonDir,
             // TODO 'usePaginator'      => $this->usePaginator,
         ));
@@ -285,6 +288,7 @@ class DoctrineCrudGenerator extends Generator
             'actions'           => $this->actions,
             'layout'            => $this->layout,
             'bodyBlock'         => $this->bodyBlock,
+            'theme'             => $this->theme,
         ));
     }
 
@@ -303,6 +307,7 @@ class DoctrineCrudGenerator extends Generator
             'actions'           => $this->actions,
             'layout'            => $this->layout,
             'bodyBlock'         => $this->bodyBlock,
+            'theme'             => $this->theme,
         ));
     }
 

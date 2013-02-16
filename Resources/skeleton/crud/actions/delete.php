@@ -14,13 +14,13 @@
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('{{ bundle }}:{{ entity }}')->find($id);
+            ${{ entity|lower }} = $em->getRepository('{{ bundle }}:{{ entity }}')->find($id);
 
-            if (!$entity) {
+            if (!${{ entity|lower }}) {
                 throw $this->createNotFoundException('Unable to find {{ entity }} entity.');
             }
 
-            $em->remove($entity);
+            $em->remove(${{ entity|lower }});
             $em->flush();
         }
 

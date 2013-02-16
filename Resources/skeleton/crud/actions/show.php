@@ -7,30 +7,22 @@
      * @Template()
 {% endif %}
      */
-    public function showAction($id)
+    public function showAction({{ entity }} ${{ entity|lower }})
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('{{ bundle }}:{{ entity }}')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find {{ entity }} entity.');
-        }
 {% if 'delete' in actions %}
-
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm(${{ entity|lower }}->getId());
 {% endif %}
 
 {% if 'annotation' == format %}
         return array(
-            'entity'      => $entity,
+            '{{ entity|lower }}' => ${{ entity|lower }},
 {% if 'delete' in actions %}
             'delete_form' => $deleteForm->createView(),
 {% endif %}
         );
 {% else %}
         return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:show.html.twig', array(
-            'entity'      => $entity,
+            '{{ entity|lower }}' => ${{ entity|lower }},
 {% if 'delete' in actions %}
             'delete_form' => $deleteForm->createView(),
 {%- endif %}

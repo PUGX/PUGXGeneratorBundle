@@ -1,4 +1,8 @@
 {{ '{% extends "' ~ layout ~ '" %}' }}
+{% if theme %}
+
+{{ "{% form_theme form '"~ theme ~"' %}" }}
+{% endif %}
 
 {{ '{% block title %}' ~ entity ~ ' creation{% endblock %}' }}
 
