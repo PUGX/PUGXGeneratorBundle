@@ -26,7 +26,11 @@
 
                 <td><a href="{{ "{{ path('"~ route_name_prefix ~"_show', {id: "~ entity|lower ~".id}) }}" }}">{{ '{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' }}' }}</a></td>
 
-            {%- elseif metadata.type in ['date', 'datetime'] %}
+            {%- elseif metadata.type == 'date' %}
+
+                <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|date(\'Y-m-d\') }}{% endif %}' }}</td>
+
+            {%- elseif metadata.type == 'datetime' %}
 
                 <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|date(\'Y-m-d H:i:s\') }}{% endif %}' }}</td>
 
@@ -38,8 +42,9 @@
 
             {%- if loop.last %}
 
-                <td class="btn-group">
+                <td>
                     {%- include "views/others/actions.html.twig" %}
+
                 </td>
 
             {%- endif %}
