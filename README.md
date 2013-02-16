@@ -18,7 +18,7 @@ This bundle is released under the LGPL license. See the [complete license text](
 About
 -----
 
-PUGXGeneratorBundle is a [PUGX]/PUGX) initiative.
+PUGXGeneratorBundle is a [PUGX](/PUGX) initiative.
 
 
 Reporting an issue or a feature request
