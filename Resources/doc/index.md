@@ -94,7 +94,6 @@ Then, you can use a simple layout, like this one:
         </div>
         <script src="http://code.jquery.com/jquery.min.js"></script>
         {% javascripts
-            '@AcmeDemoBundle/Resources/public/js/jquery-1.8.3.min.js'
             '@AcmeDemoBundle/Resources/public/js/bootstrap.js'
             '@AcmeDemoBundle/Resources/public/js/acme.js'
         %}
