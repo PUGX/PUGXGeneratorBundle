@@ -243,7 +243,7 @@ class DoctrineCrudGenerator extends Generator
         $this->renderFile($this->skeletonDir, 'views/index.html.twig', $dir.'/index.html.twig', array(
             'dir'               => $this->skeletonDir,
             'entity'            => $this->entity,
-            'fields'            => $this->metadata->fieldMappings,
+            'fields'            => $this->getFieldsFromMetadata($this->metadata),
             'actions'           => $this->actions,
             'record_actions'    => $this->getRecordActions(),
             'route_prefix'      => $this->routePrefix,
@@ -264,7 +264,7 @@ class DoctrineCrudGenerator extends Generator
         $this->renderFile($this->skeletonDir, 'views/show.html.twig', $dir.'/show.html.twig', array(
             'dir'               => $this->skeletonDir,
             'entity'            => $this->entity,
-            'fields'            => $this->metadata->fieldMappings,
+            'fields'            => $this->getFieldsFromMetadata($this->metadata),
             'actions'           => $this->actions,
             'route_prefix'      => $this->routePrefix,
             'route_name_prefix' => $this->routeNamePrefix,
@@ -321,5 +321,25 @@ class DoctrineCrudGenerator extends Generator
         return array_filter($this->actions, function($item) {
             return in_array($item, array('show', 'edit'));
         });
+    }
+
+    /**
+     * Returns an array of fields. Fields can be both column fields and
+     * association fields.
+     *
+     * @param ClassMetadataInfo $metadata
+     * @return array $fields
+     */
+    private function getFieldsFromMetadata(ClassMetadataInfo $metadata)
+    {
+        $fields = (array) $metadata->fieldMappings;
+
+        foreach ($metadata->associationMappings as $fieldName => $relation) {
+            if ($relation['type'] !== ClassMetadataInfo::ONE_TO_MANY) {
+                $fields[$fieldName] = array('type' => 'relation');
+            }
+        }
+
+        return $fields;
     }
 }
