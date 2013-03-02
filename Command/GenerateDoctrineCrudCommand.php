@@ -133,7 +133,7 @@ EOT
     /**
      * Tries to generate forms if they don't exist yet and if we need write operations on entities.
      */
-    private function generateForm($bundle, $entity, $metadata)
+    protected function generateForm($bundle, $entity, $metadata)
     {
         try {
             $this->getFormGenerator()->generate($bundle, $entity, $metadata[0]);
