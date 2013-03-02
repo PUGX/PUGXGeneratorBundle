@@ -34,6 +34,10 @@
 
                 <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|date(\'Y-m-d H:i:s\') }}{% endif %}' }}</td>
 
+            {%- elseif metadata.type == 'relation_many' %}
+
+                <td>{{ '{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|join(\', \') }}' }}</td>
+
             {%- else %}
 
                 <td>{{ '{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' }}' }}</td>

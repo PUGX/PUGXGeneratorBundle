@@ -336,7 +336,11 @@ class DoctrineCrudGenerator extends Generator
 
         foreach ($metadata->associationMappings as $fieldName => $relation) {
             if ($relation['type'] !== ClassMetadataInfo::ONE_TO_MANY) {
-                $fields[$fieldName] = array('type' => 'relation');
+                if ($relation['type'] === ClassMetadataInfo::MANY_TO_MANY) {
+                    $fields[$fieldName] = array('type' => 'relation_many');
+                } else {
+                    $fields[$fieldName] = array('type' => 'relation');
+                }
             }
         }
 
