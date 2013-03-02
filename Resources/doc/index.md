@@ -10,6 +10,7 @@ This version of the bundle requires Symfony 2.1 or higher.
 3. [Usage](#3-usage)
 4. [Layout](#4-layout)
 5. [Pagination](#5-pagination)
+6. [I18n](#5-i18n)
 
 ### 1. Download PUGXGeneratorBundle
 
@@ -163,9 +164,45 @@ you can use the ``--theme`` option of ``pugx:generate:crud`` command, like in th
 $ php app/console pugx:generate:crud --entity=AcmeDemoBundle:Entity --with-write --layout=AcmeDemoBundle::layout.html.twig --theme=AcmeDemoBundle:Form:form_errors.html.twig
 ```
 
-
 ### 5. Pagination
 
 You likely want to use pagination in your modules.
 If so, add [KnpPaginatorBundle](https://github.com/KnpLabs/KnpPaginatorBundle)
 to your bundles and use ``--use-pagination`` flag in ``pugx:generate:crud`` command.
+
+### 6. I18n
+
+
+Generated templates support I18n. If you want to translate texts, you should enable
+translation in your configuration:
+
+```yaml
+# app/config.yml
+framework:
+    # ...
+    translator:      { fallback: "%locale%" }
+```
+
+Then you should create a translation file, in your preferred format.
+Messages catalogue is named "admin". Here is an example of a working translation file
+in YAML format, for Italian language:
+
+```yaml
+# src/Acme/DemoBundle/Resources/translations/admin.it.yml
+"%entity% creation":             "Creazione %entity%"
+"%entity% edit":                 "Modifica %entity%"
+"%entity% list":                 "Elenco %entity%"
+Back to the list:                Torna alla lista
+Confirm delete:                  Conferma eliminazione
+Create:                          Crea
+Create a new entry:              Crea nuovo
+Delete:                          Elimina
+"Do you want to proceed?":       "Procedere?"
+Edit:                            Modifica
+edit:                            modifica
+No:                              No
+show:                            vedi
+this procedure is irreversible:  questa procedura è irreversibile
+Yes:                             Sì
+You are about to delete an item: Si sta per eliminare un elemento
+```

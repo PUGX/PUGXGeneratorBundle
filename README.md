@@ -11,6 +11,7 @@ It adds many functionality on top of it, and corrects some minor issues:
 * include relation fields in show and index templates
 * shorter form names
 * real entity names instead of "$entity" in actions and templates
+* translated texts
 * support for form themes (customizable)
 * default templates suitable with Boostrap and Font Awesome
 

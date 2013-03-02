@@ -4,15 +4,15 @@
 {{ "{% form_theme edit_form '"~ theme ~"' %}" }}
 {% endif %}
 
-{{ '{% block title %}' ~ entity ~ ' edit{% endblock %}' }}
+{{ '{% block title %}' ~ "{{ '%entity% edit'|trans({'%entity%': '"~ entity ~"'}, 'admin') }}" ~ '{% endblock %}' }}
 
 {{ '{% block ' ~ bodyBlock ~ ' %}' }}
-    <h1>{{ entity }} edit</h1>
+    <h1>{{ "{{ '%entity% edit'|trans({'%entity%': '"~ entity ~"'}, 'admin') }}" }}</h1>
 
     <form action="{{ "{{ path('"~ route_name_prefix ~"_update', {id: "~ entity|lower ~".id}) }}" }}" method="post" {{ "{{ form_enctype(edit_form) }}" }}>
         {{ "{{ form_widget(edit_form) }}" }}
         <p>
-            <button class="btn btn-primary" type="submit"><i class="icon-edit"></i> Edit</button>
+            <button class="btn btn-primary" type="submit"><i class="icon-edit"></i> {{ "{{ 'Edit'|trans({}, 'admin') }}" }}</button>
         </p>
     </form>
 

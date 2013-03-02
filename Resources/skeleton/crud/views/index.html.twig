@@ -1,9 +1,9 @@
 {{ '{% extends "' ~ layout ~ '" %}' }}
 
-{{ '{% block title %}' ~ entity ~ ' list{% endblock %}' }}
+{{ '{% block title %}' ~ "{{ '%entity% list'|trans({'%entity%': '"~ entity ~"'}, 'admin') }}" ~ '{% endblock %}' }}
 
 {{ '{% block ' ~ bodyBlock ~ ' %}' }}
-    <h1>{{ entity }} list</h1>
+    <h1>{{ "{{ '%entity% list'|trans({'%entity%': '"~ entity ~"'}, 'admin') }}" }}</h1>
 
     <table class="table table-striped table-hover table-bordered records_list">
         <thead>
@@ -14,7 +14,7 @@
 
             {%- endfor %}
 
-                <th scope="col">Actions</th>
+                <th scope="col">{{ "{{ 'Actions'|trans({}, 'admin') }}" }}</th>
             </tr>
         </thead>
         <tbody>
@@ -69,7 +69,7 @@
     <ul class="new_entry">
         <li>
             <a class="btn btn-info" href="{{ "{{ path('"~ route_name_prefix ~"_new') }}" }}">
-                <i class="icon-plus"></i> Create a new entry
+                <i class="icon-plus"></i> {{ "{{ 'Create a new entry'|trans({}, 'admin') }}" }}
             </a>
         </li>
     </ul>

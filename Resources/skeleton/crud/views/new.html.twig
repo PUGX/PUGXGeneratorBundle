@@ -4,15 +4,15 @@
 {{ "{% form_theme form '"~ theme ~"' %}" }}
 {% endif %}
 
-{{ '{% block title %}' ~ entity ~ ' creation{% endblock %}' }}
+{{ '{% block title %}' ~ "{{ '%entity% creation'|trans({'%entity%': '"~ entity ~"'}, 'admin') }}" ~ '{% endblock %}' }}
 
 {{ '{% block ' ~ bodyBlock ~ ' %}' }}
-    <h1>{{ entity }} creation</h1>
+    <h1>{{ "{{ '%entity% creation'|trans({'%entity%': '"~ entity ~"'}, 'admin') }}" }}</h1>
 
     <form action="{{ "{{ path('"~ route_name_prefix ~"_create') }}" }}" method="post" {{ "{{ form_enctype(form) }}" }}>
         {{ "{{ form_widget(form) }}" }}
         <p>
-            <button class="btn btn-primary" type="submit">Create</button>
+            <button class="btn btn-primary" type="submit">{{ "{{ 'Create'|trans({}, 'admin') }}" }}</button>
         </p>
     </form>
 
