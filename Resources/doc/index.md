@@ -10,7 +10,7 @@ This version of the bundle requires Symfony 2.1 or higher.
 3. [Usage](#3-usage)
 4. [Layout](#4-layout)
 5. [Pagination](#5-pagination)
-6. [I18n](#5-i18n)
+6. [I18n](#6-i18n)
 
 ### 1. Download PUGXGeneratorBundle
 
