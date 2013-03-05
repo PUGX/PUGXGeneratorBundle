@@ -192,6 +192,7 @@ in YAML format, for Italian language:
 "%entity% creation":             "Creazione %entity%"
 "%entity% edit":                 "Modifica %entity%"
 "%entity% list":                 "Elenco %entity%"
+Actions:                         Azioni
 Back to the list:                Torna alla lista
 Confirm delete:                  Conferma eliminazione
 Create:                          Crea
