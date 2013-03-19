@@ -104,8 +104,8 @@ Then, you can use a simple layout, like this one:
 </html>
 ```
 
-If you want the confirm delete functionality, you can add the following Javascript code
-in one of you files (e.g. ``acme.js`` in layout above):
+If you want the confirm delete functionality, you can add the following Javascript code,
+based on jQuery, in one of you files (e.g. ``acme.js`` in layout above):
 
 ``` js+php
 $().ready(function() {
@@ -168,7 +168,7 @@ $ php app/console pugx:generate:crud --entity=AcmeDemoBundle:Entity --with-write
 
 You likely want to use pagination in your modules.
 If so, add [KnpPaginatorBundle](https://github.com/KnpLabs/KnpPaginatorBundle)
-to your bundles and use ``--use-pagination`` flag in ``pugx:generate:crud`` command.
+to your bundles and use ``--use-paginator`` flag in ``pugx:generate:crud`` command.
 
 ### 6. I18n
 

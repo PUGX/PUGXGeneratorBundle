@@ -27,6 +27,12 @@
         return $this->redirect($this->generateUrl('{{ route_name_prefix }}'));
     }
 
+    /**
+     * Create Delete form
+     *
+     * @param integer $id
+     * @return FormBuilder
+     */
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder(array('id' => $id))
