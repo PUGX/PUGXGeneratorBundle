@@ -118,7 +118,7 @@ $().ready(function() {
             $('#delete_confirm').modal('show');
             $('#delete_confirm').find('button.btn-danger').click(function() {
                 $('#delete_confirm').modal('hide');
-                $form.find('input[name="modal"]').val(1);
+                $hidden.val(1);
                 $form.submit();
             });
         }
