@@ -24,6 +24,10 @@
 
                 <td>{{ '{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|join(\', \') }}' }}</td>
 
+            {%- elseif metadata.type == 'boolean' %}
+
+                <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}<i class="icon-ok"></i>{% endif %}' }}</td>
+
             {%- else %}
 
                 <td>{{ '{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' }}' }}</td>
