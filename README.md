@@ -14,6 +14,7 @@ It adds many functionality on top of it, and corrects some minor issues:
 * translated texts
 * support for form themes (customizable)
 * default templates suitable with Boostrap and Font Awesome
+* nice "check" icons for boolean fields (when using Font Awesome)
 
 Documentation
 -------------
