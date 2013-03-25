@@ -17,6 +17,11 @@ use {{ namespace }}\Entity\{{ entity }};
 {% if 'new' in actions or 'edit' in actions %}
 use {{ namespace }}\Form\Type\{{ entity }}Type;
 {% endif %}
+{% if 'filter' in actions %}
+use {{ namespace }}\Form\Type\{{ entity }}FilterType;
+use Symfony\Component\Form\FormInterface;
+use Doctrine\ORM\QueryBuilder;
+{% endif %}
 
 /**
  * {{ entity }} controller.
@@ -45,6 +50,11 @@ class {{ entity_class }}Controller extends Controller
         {%- include 'actions/edit.php' %}
         {%- include 'actions/update.php' %}
     {%- endif %}
+
+    {%- if 'filter' in actions %}
+        {%- include 'actions/filter.php' %}
+    {%- endif %}
+
 
     {%- if 'delete' in actions %}
         {%- include 'actions/delete.php' %}

@@ -15,6 +15,8 @@ It adds many functionality on top of it, and corrects some minor issues:
 * support for form themes (customizable)
 * default templates suitable with Boostrap and Font Awesome
 * nice "check" icons for boolean fields (when using Font Awesome)
+* support for pagination (requires [KnpPaginatorBundle](https://github.com/KnpLabs/KnpPaginatorBundle))
+* (still experimental) support for filters (requires [LexikFormFilterBundle](https://github.com/lexik/LexikFormFilterBundle))
 
 Documentation
 -------------

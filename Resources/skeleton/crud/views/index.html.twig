@@ -5,6 +5,10 @@
 {{ '{% block ' ~ bodyBlock ~ ' %}' }}
     <h1>{{ "{{ '%entity% list'|trans({'%entity%': '"~ entity ~"'}, 'admin') }}" }}</h1>
 
+    {% if withFilter %}
+    {{ "{% include '"~ bundle ~":"~ entity ~":filter.html.twig' with {form: form} %}" }}
+    {% endif %}
+
     <table class="table table-striped table-hover table-bordered records_list">
         <thead>
             <tr>

@@ -11,15 +11,30 @@
     {
         $em = $this->getDoctrine()->getManager();
 
+{% if withFilter %}
+        $form = $this->createForm(new {{ entity_class }}FilterType());
+        if (!is_null($response = $this->saveFilter($form, '{{ entity|lower }}'))) {
+            return $response;
+        }
+{% endif %}
 {% if usePaginator %}
+        {% if withFilter %}
+        $qb = $em->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('{{ entity|lower|slice(0, 1) }}');
+        $paginator = $this->filter($form, $qb, '{{ entity|lower }}');
+        {% else %}
         $q = $em->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('{{ entity|lower|slice(0, 1) }}')->getQuery();
         $paginator = $this->get('knp_paginator')->paginate($q, $request->query->get('page', 1), 20);
+        {% endif %}
+
 {% else %}
         $entities = $em->getRepository('{{ bundle }}:{{ entity }}')->findAll();
 {% endif %}
 
 {% if 'annotation' == format %}
         return array(
+{% if withFilter %}
+            'form' => $form->createView(),
+{% endif %}
 {% if usePaginator %}
             'paginator' => $paginator,
 {% else %}

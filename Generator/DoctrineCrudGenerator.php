@@ -30,6 +30,7 @@ class DoctrineCrudGenerator extends Generator
     protected $bodyBlock;
     protected $usePaginator;
     protected $theme;
+    protected $filterTemplate;
 
     /**
      * Constructor.
@@ -70,14 +71,19 @@ class DoctrineCrudGenerator extends Generator
      * @param string            $bodyBlock        The name of body block in layout (default: "body")
      * @param boolean           $usePaginator     Wether or not to use paginator
      * @param string            $theme            Possible theme for forms
+     * @param booelan           $withFilter
      *
      * @throws \RuntimeException
      */
-    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $format, $routePrefix, $needWriteActions, $layout, $bodyBlock, $usePaginator = false, $theme = null)
+    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $format, $routePrefix, $needWriteActions, $layout, $bodyBlock, $usePaginator = false, $theme = null, $withFilter = false)
     {
         $this->routePrefix = $routePrefix;
         $this->routeNamePrefix = str_replace('/', '_', $routePrefix);
         $this->actions = $needWriteActions ? array('index', 'show', 'new', 'edit', 'delete') : array('index', 'show');
+        if ($withFilter) {
+            $this->actions[] = 'filter';
+            $this->filterTemplate = '';
+        }
 
         if (count($metadata->identifier) > 1) {
             throw new \RuntimeException('The CRUD generator does not support entity classes with multiple primary keys.');
@@ -93,6 +99,7 @@ class DoctrineCrudGenerator extends Generator
         $this->bodyBlock    = $bodyBlock;
         $this->metadata     = $metadata;
         $this->usePaginator = $usePaginator;
+        $this->withFilter   = $withFilter;
         $this->theme        = $theme;
         $this->setFormat($format);
 
@@ -116,6 +123,10 @@ class DoctrineCrudGenerator extends Generator
 
         if (in_array('edit', $this->actions)) {
             $this->generateEditView($dir);
+        }
+
+        if (in_array('filter', $this->actions)) {
+            $this->generateFilterView($dir);
         }
 
         $this->generateTestClass();
@@ -203,6 +214,7 @@ class DoctrineCrudGenerator extends Generator
             'entity_namespace'  => $entityNamespace,
             'format'            => $this->format,
             'usePaginator'      => $this->usePaginator,
+            'withFilter'        => $this->withFilter,
         ));
     }
 
@@ -251,6 +263,8 @@ class DoctrineCrudGenerator extends Generator
             'layout'            => $this->layout,
             'bodyBlock'         => $this->bodyBlock,
             'usePaginator'      => $this->usePaginator,
+            'withFilter'        => $this->withFilter,
+            'bundle'            => $this->bundle->getName(),
         ));
     }
 
@@ -300,6 +314,25 @@ class DoctrineCrudGenerator extends Generator
     private function generateEditView($dir)
     {
         $this->renderFile($this->skeletonDir, 'views/edit.html.twig', $dir.'/edit.html.twig', array(
+            'dir'               => $this->skeletonDir,
+            'route_prefix'      => $this->routePrefix,
+            'route_name_prefix' => $this->routeNamePrefix,
+            'entity'            => $this->entity,
+            'actions'           => $this->actions,
+            'layout'            => $this->layout,
+            'bodyBlock'         => $this->bodyBlock,
+            'theme'             => $this->theme,
+        ));
+    }
+
+    /**
+     * Generates the filter.html.twig template in the final bundle.
+     *
+     * @param string $dir The path to the folder that hosts templates in the bundle
+     */
+    private function generateFilterView($dir)
+    {
+        $this->renderFile($this->skeletonDir, 'views/filter.html.twig', $dir.'/filter.html.twig', array(
             'dir'               => $this->skeletonDir,
             'route_prefix'      => $this->routePrefix,
             'route_name_prefix' => $this->routeNamePrefix,

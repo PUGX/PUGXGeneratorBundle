@@ -11,6 +11,7 @@ This version of the bundle requires Symfony 2.1 or higher.
 4. [Layout](#4-layout)
 5. [Pagination](#5-pagination)
 6. [I18n](#6-i18n)
+7. [Filters](#7-filters)
 
 ### 1. Download PUGXGeneratorBundle
 
@@ -207,3 +208,16 @@ this procedure is irreversible:  questa procedura è irreversibile
 Yes:                             Sì
 You are about to delete an item: Si sta per eliminare un elemento
 ```
+
+### 7. Filters
+
+If you want to use filters (like the ones in the old symfony 1 admin generator), add 
+[LexikFormFilterBundle](https://github.com/lexik/LexikFormFilterBundle) to your bundles.
+Then, use the ``with-filter`` flag in ``pugx:generate:crud`` command.
+
+Since filters require some additional methods in generated controllers, moving them to
+a generic ``Controller`` class (and extending it instead of Symfony default one)
+could be a good idea.
+Please notice that, for now, support for filters is experimental.
+There is a known limitation for generation of relations in filter form class, so you
+need to adapt field configuration by hand.

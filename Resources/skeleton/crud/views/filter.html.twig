@@ -1,0 +1,10 @@
+<button type="button" class="btn filter" data-toggle="collapse" data-target="#filter">{{ "{{ 'Show/hide filters'|trans({}, 'admin') }}" }} <i class="icon-angle-right"></i></button>
+<div id="filter" class="collapse in">
+    <form method="get" action="">
+        {{ "{{ form_widget(form) }}" }}
+        <p>
+            <button class="btn" type="submit" name="submit-filter"><i class="icon-filter"></i> {{ "{{ 'Filter'|trans({}, 'admin') }}" }}</button>
+            <a class="btn" href="?reset-filter"><i class="icon-remove"></i> {{ "{{ 'Reset filters'|trans({}, 'admin') }}" }}</a>
+        </p>
+    </form>
+</div>

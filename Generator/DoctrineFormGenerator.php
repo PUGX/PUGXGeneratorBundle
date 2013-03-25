@@ -79,6 +79,44 @@ class DoctrineFormGenerator extends Generator
     }
 
     /**
+     * Generates the entity form class if it does not exist.
+     *
+     * @param BundleInterface   $bundle   The bundle in which to create the class
+     * @param string            $entity   The entity relative class name
+     * @param ClassMetadataInfo $metadata The entity metadata class
+     */
+    public function generateFilter(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata)
+    {
+        $parts       = explode('\\', $entity);
+        $entityClass = array_pop($parts);
+
+        $this->className = $entityClass.'FilterType';
+        $dirPath         = $bundle->getPath().'/Form/Type';
+        $this->classPath = $dirPath.'/'.str_replace('\\', '/', $entity).'FilterType.php';
+
+        if (file_exists($this->classPath)) {
+            throw new \RuntimeException(sprintf('Unable to generate the %s filter form class as it already exists under the %s file', $this->className, $this->classPath));
+        }
+
+        if (count($metadata->identifier) > 1) {
+            throw new \RuntimeException('The form generator does not support entity classes with multiple primary keys.');
+        }
+
+        $parts = explode('\\', $entity);
+        array_pop($parts);
+
+        $this->renderFile($this->skeletonDir, 'FormFilterType.php', $this->classPath, array(
+            'dir'              => $this->skeletonDir,
+            'fields'           => $this->getFieldsFromMetadata($metadata),
+            'namespace'        => $bundle->getNamespace(),
+            'entity_namespace' => implode('\\', $parts),
+            'entity_class'     => $entityClass,
+            'form_class'       => $this->className,
+            'form_type_name'   => strtolower(str_replace('\\', '_', $bundle->getNamespace()).($parts ? '_' : '').implode('_', $parts).'_'.$this->className),
+        ));
+    }
+
+    /**
      * @inherit
      */
     protected function renderFile($skeletonDir, $template, $target, $parameters)
@@ -100,16 +138,15 @@ class DoctrineFormGenerator extends Generator
      */
     private function getFieldsFromMetadata(ClassMetadataInfo $metadata)
     {
-        $fields = (array) $metadata->fieldNames;
-
-        // Remove the primary key field if it's not managed manually
-        if (!$metadata->isIdentifierNatural()) {
-            $fields = array_diff($fields, $metadata->identifier);
-        }
+        $fields = (array) $metadata->fieldMappings;
 
         foreach ($metadata->associationMappings as $fieldName => $relation) {
             if ($relation['type'] !== ClassMetadataInfo::ONE_TO_MANY) {
-                $fields[] = $fieldName;
+                if ($relation['type'] === ClassMetadataInfo::MANY_TO_MANY) {
+                    $fields[$fieldName] = array('type' => 'relation_many');
+                } else {
+                    $fields[$fieldName] = array('type' => 'relation');
+                }
             }
         }
 

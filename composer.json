@@ -19,7 +19,8 @@
         "sensio/generator-bundle": "*"
     },
     "suggest": {
-        "knplabs/knp-paginator-bundle": "Needed for optional pagination"
+        "knplabs/knp-paginator-bundle": "Needed for optional pagination",
+        "lexik/form-filter-bundle": "Needed for optional filters"
     },
     "autoload": {
         "psr-0": { "PUGX\\GeneratorBundle": "" }

@@ -21,6 +21,7 @@ class GenerateDoctrineCrudCommand extends BaseCommand
 {
     private $generator;
     private $formGenerator;
+    private $filterGenerator;
 
     /**
      * ctodo: change third param
@@ -48,6 +49,7 @@ class GenerateDoctrineCrudCommand extends BaseCommand
                 new InputOption('format', '', InputOption::VALUE_REQUIRED, 'Use the format for configuration files (php, xml, yml, or annotation)', 'annotation'),
                 new InputOption('use-paginator', '', InputOption::VALUE_NONE,'Whether or not to use paginator'),
                 new InputOption('theme', '', InputOption::VALUE_OPTIONAL, 'A possible theme to use in forms'),
+                new InputOption('with-filter', '', InputOption::VALUE_NONE, 'Whether or not to add filter'),
             ))
             ->setDescription('Generates a CRUD based on a Doctrine entity')
             ->setHelp(<<<EOT
@@ -92,6 +94,11 @@ EOT
         $bodyBlock = $input->getOption('body-block');  // TODO validate
         $usePaginator = $input->getOption('use-paginator');
         $theme = $input->getOption('theme');  // TODO validate
+        $withFilter = $input->getOption('with-filter');  // TODO validate
+
+        if ($withFilter && !$usePaginator) {
+            throw new \RuntimeException(sprintf('Cannot use filter without paginator.'));
+        }
 
         $dialog->writeSection($output, 'CRUD generation');  // TODO overwrite interaction
 
@@ -100,7 +107,7 @@ EOT
         $bundle      = $this->getContainer()->get('kernel')->getBundle($bundle);
 
         $generator = $this->getGenerator();
-        $generator->generate($bundle, $entity, $metadata[0], $format, $prefix, $withWrite, $layout, $bodyBlock, $usePaginator, $theme);
+        $generator->generate($bundle, $entity, $metadata[0], $format, $prefix, $withWrite, $layout, $bodyBlock, $usePaginator, $theme, $withFilter);
 
         $output->writeln('Generating the CRUD code: <info>OK</info>');
 
@@ -111,6 +118,12 @@ EOT
         if ($withWrite) {
             $this->generateForm($bundle, $entity, $metadata);
             $output->writeln('Generating the Form code: <info>OK</info>');
+        }
+
+        // filter form
+        if ($withFilter) {
+            $this->generateFilter($bundle, $entity, $metadata);
+            $output->writeln('Generating the Filter code: <info>OK</info>');
         }
 
         // routing
@@ -130,6 +143,15 @@ EOT
         return $this->formGenerator;
     }
 
+    protected function getFilterGenerator()
+    {
+        if (null === $this->filterGenerator) {
+            $this->filterGenerator = new DoctrineFormGenerator($this->getContainer()->get('filesystem'), __DIR__.'/../Resources/skeleton/filter', null);
+        }
+
+        return $this->filterGenerator;
+    }
+
     /**
      * Tries to generate forms if they don't exist yet and if we need write operations on entities.
      */
@@ -137,6 +159,18 @@ EOT
     {
         try {
             $this->getFormGenerator()->generate($bundle, $entity, $metadata[0]);
+        } catch (\RuntimeException $e) {
+            // form already exists
+        }
+    }
+
+    /**
+     * Tries to generate filter forms if they don't exist yet
+     */
+    protected function generateFilter($bundle, $entity, $metadata)
+    {
+        try {
+            $this->getFilterGenerator()->generateFilter($bundle, $entity, $metadata[0]);
         } catch (\RuntimeException $e ) {
             // form already exists
         }
