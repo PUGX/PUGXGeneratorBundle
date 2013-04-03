@@ -58,7 +58,7 @@
             if (is_null($value) || ($value instanceof ArrayCollection && count($value) == 0)) {
                 continue;
             }
-            if (is_object($value) && is_callable($value, 'getId'))
+            if (is_object($value) && is_callable(array($value, 'getId')))
             {
                 $value = $value->getId();
             }
@@ -102,8 +102,8 @@
         if (is_object($value) && get_class($value) == 'Doctrine\Common\Collections\ArrayCollection') {
             return $value->toArray();
         }
-        if (is_object($value) && is_callable($value, 'getId')) {
-            return $value->toArray();
+        if (is_object($value) && is_callable(array($value, 'getId'))) {
+            return $value->getId();
         }
 
         return $value;
