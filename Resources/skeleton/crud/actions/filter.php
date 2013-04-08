@@ -13,7 +13,7 @@
         $request = $this->getRequest();
         $url = is_null($route) ? $this->generateUrl($name) : $this->generateUrl($route, $params);
         if ($request->query->has('submit-filter') && $form->bind($request)->isValid()) {
-            $request->getSession()->set('filter.' . $name, $request->get($form->getName()));
+            $request->getSession()->set('filter.' . $name, $request->query->get($form->getName()));
 
             return $this->redirect($url);
         } elseif ($request->query->has('reset-filter')) {
