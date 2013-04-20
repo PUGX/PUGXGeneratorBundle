@@ -7,19 +7,11 @@
      * @Method("POST")
 {% endif %}
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction({{ entity }} ${{ entity|lower }})
     {
-        $form = $this->createDeleteForm($id);
-        $form->bind($request);
-
-        if ($form->isValid()) {
+        $form = $this->createDeleteForm(${{ entity|lower }}->getId());
+        if ($form->bind($this->getRequest())->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            ${{ entity|lower }} = $em->getRepository('{{ bundle }}:{{ entity }}')->find($id);
-
-            if (!${{ entity|lower }}) {
-                throw $this->createNotFoundException('Unable to find {{ entity }} entity.');
-            }
-
             $em->remove(${{ entity|lower }});
             $em->flush();
         }

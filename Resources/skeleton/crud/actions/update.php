@@ -8,23 +8,15 @@
      * @Template("{{ bundle }}:{{ entity }}:edit.html.twig")
 {% endif %}
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction({{ entity }} ${{ entity|lower }})
     {
         $em = $this->getDoctrine()->getManager();
-
-        ${{ entity|lower }} = $em->getRepository('{{ bundle }}:{{ entity }}')->find($id);
-
-        if (!${{ entity|lower }}) {
-            throw $this->createNotFoundException('Unable to find {{ entity }} entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm(${{ entity|lower }}->getId());
         $editForm = $this->createForm(new {{ entity_class }}Type(), ${{ entity|lower }});
-
-        if ($editForm->bind($request)->isValid()) {
+        if ($editForm->bind($this->getRequest())->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('{{ route_name_prefix }}_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('{{ route_name_prefix }}_edit', array('id' => ${{ entity|lower }}->getId())));
         }
 
 {% if 'annotation' == format %}
