@@ -158,11 +158,11 @@ If you want more consistent boostrap forms, you can use a theme like this one:
 {% endblock form_errors %}
 ```
 
-If you put such theme file in ``src/Acme/DemoBundle/Resources/views/Form/form_errors.html.twig``,
+If you put such theme file in ``src/Acme/DemoBundle/Resources/views/Form/theme.html.twig``,
 you can use the ``--theme`` option of ``pugx:generate:crud`` command, like in this example:
 
 ``` bash
-$ php app/console pugx:generate:crud --entity=AcmeDemoBundle:Entity --with-write --layout=AcmeDemoBundle::layout.html.twig --theme=AcmeDemoBundle:Form:form_errors.html.twig
+$ php app/console pugx:generate:crud --entity=AcmeDemoBundle:Entity --with-write --layout=AcmeDemoBundle::layout.html.twig --theme=AcmeDemoBundle:Form:theme.html.twig
 ```
 
 ### 5. Pagination
