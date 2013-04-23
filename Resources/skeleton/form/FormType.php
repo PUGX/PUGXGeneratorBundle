@@ -16,7 +16,7 @@ class {{ form_class }} extends AbstractType
         $builder
         {%- for field,info in fields %}
 
-            {%- if field != id %]
+            {%- if field != 'id' %}
             ->add('{{ field }}')
             {%- endif %}
 
