@@ -21,14 +21,17 @@ Add the following lines in your composer.json:
 
 ```
 {
-    "require": {
+    "require-dev": {
         "pugx/generator-bundle": "dev-master"
     }
 }
 
 ```
+Of course, if you already have other dependencies in your "require-dev", adapt lines.
+If your "require" section contains "sensio/generator-bundle", you can delete it (since
+it is required by "pugx/generator-bundle".
 
-Now, run the composer to download the bundle:
+Now, run composer to download the bundle:
 
 ``` bash
 $ php composer.phar update pugx/generator-bundle
@@ -63,7 +66,8 @@ $ php app/console pugx:generate:crud --help
 
 ### 4. Layout
 
-This bundle is ready to be used with [Bootstrap](http://twitter.github.com/bootstrap/) and with [Font Awesome](http://fortawesome.github.com/Font-Awesome/)
+This bundle is ready to be used with [Bootstrap](http://twitter.github.com/bootstrap/) and
+with [Font Awesome](http://fortawesome.github.com/Font-Awesome/)
 
 So, you can download Bootstrap (and, optionally, Font Awesome) and put it in your bundle.
 Then, you can use a simple layout, like this one:
@@ -146,13 +150,25 @@ If you want more consistent boostrap forms, you can use a theme like this one:
 {% block form_errors %}
 {% spaceless %}
     {% if errors|length > 0 %}
-        {% for error in errors %}
-            <span class="help-inline">{{
-                error.messagePluralization is null
-                    ? error.messageTemplate|trans(error.messageParameters, 'validators')
-                    : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
-            }}</span>
-        {% endfor %}
+        {% if compound %}
+            <div class="alert alert-error">
+                {% for error in errors %}
+                    <div>{{
+                        error.messagePluralization is null
+                            ? error.messageTemplate|trans(error.messageParameters, 'validators')
+                            : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
+                    }}</div>
+                {% endfor %}
+            </div>
+        {% else %}
+            {% for error in errors %}
+                <span class="help-inline">{{
+                    error.messagePluralization is null
+                        ? error.messageTemplate|trans(error.messageParameters, 'validators')
+                        : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
+                }}</span>
+            {% endfor %}
+        {% endif %}
     {% endif %}
 {% endspaceless %}
 {% endblock form_errors %}
@@ -172,7 +188,6 @@ If so, add [KnpPaginatorBundle](https://github.com/KnpLabs/KnpPaginatorBundle)
 to your bundles and use ``--use-paginator`` flag in ``pugx:generate:crud`` command.
 
 ### 6. I18n
-
 
 Generated templates support I18n. If you want to translate texts, you should enable
 translation in your configuration:
