@@ -50,10 +50,11 @@ class GenerateDoctrineCrudCommand extends BaseCommand
                 new InputOption('use-paginator', '', InputOption::VALUE_NONE,'Whether or not to use paginator'),
                 new InputOption('theme', '', InputOption::VALUE_OPTIONAL, 'A possible theme to use in forms'),
                 new InputOption('with-filter', '', InputOption::VALUE_NONE, 'Whether or not to add filter'),
+                new InputOption('with-sort', '', InputOption::VALUE_NONE, 'Whether or not to add sorting'),
             ))
             ->setDescription('Generates a CRUD based on a Doctrine entity')
             ->setHelp(<<<EOT
-The <info>doctrine:generate:crud</info> command generates a CRUD based on a Doctrine entity.
+The <info>pugx:generate:crud</info> command generates a CRUD based on a Doctrine entity.
 
 The default command only generates the list and show actions.
 
@@ -62,6 +63,12 @@ The default command only generates the list and show actions.
 Using the --with-write option allows to generate the new, edit and delete actions.
 
 <info>php app/console pugx:generate:crud --entity=AcmeBlogBundle:Post --route-prefix=post_admin --with-write</info>
+
+Using the --use-paginator option allows to generate list action with paginator.
+
+Using the --with-filter option allows to generate list action with filter.
+
+Using the --with-sort option allows to generate list action with sorting.
 EOT
             )
             ->setName('pugx:generate:crud')
@@ -95,6 +102,7 @@ EOT
         $usePaginator = $input->getOption('use-paginator');
         $theme = $input->getOption('theme');  // TODO validate
         $withFilter = $input->getOption('with-filter');  // TODO validate
+        $withSort = $input->getOption('with-sort');  // TODO validate
 
         if ($withFilter && !$usePaginator) {
             throw new \RuntimeException(sprintf('Cannot use filter without paginator.'));
@@ -107,7 +115,7 @@ EOT
         $bundle      = $this->getContainer()->get('kernel')->getBundle($bundle);
 
         $generator = $this->getGenerator();
-        $generator->generate($bundle, $entity, $metadata[0], $format, $prefix, $withWrite, $layout, $bodyBlock, $usePaginator, $theme, $withFilter);
+        $generator->generate($bundle, $entity, $metadata[0], $format, $prefix, $withWrite, $layout, $bodyBlock, $usePaginator, $theme, $withFilter, $withSort);
 
         $output->writeln('Generating the CRUD code: <info>OK</info>');
 

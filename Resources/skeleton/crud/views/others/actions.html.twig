@@ -4,6 +4,6 @@
                         <a class="btn btn-small" href="{{ "{{ path('"~ route_name_prefix ~"_"~ action ~"', {'id': "~ entity|lower ~".id}) }}" }}">
                             <i class="icon-{{ action == 'show' ? 'file' : action }}"></i> {{ "{{ '"~ action ~"'|trans({}, 'admin') }}" }}
                         </a>
-
                     {%- endfor %}
+
                 </div>

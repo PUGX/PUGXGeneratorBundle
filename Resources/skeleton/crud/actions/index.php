@@ -13,12 +13,13 @@
 
 {% if withFilter %}
         $form = $this->createForm(new {{ entity_class }}FilterType());
-        if (!is_null($response = $this->saveFilter($form, '{{ entity|lower }}'))) {
+        if (!is_null($response = $this->saveFilter($form, '{{ entity|lower }}', '{{ route_name_prefix }}'))) {
             return $response;
         }
 {% endif %}
 {% if usePaginator %}
-        {% if withFilter %}
+
+        {% if withFilter -%}
         $qb = $em->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('{{ entity|lower|slice(0, 1) }}');
         $paginator = $this->filter($form, $qb, '{{ entity|lower }}');
         {% else %}

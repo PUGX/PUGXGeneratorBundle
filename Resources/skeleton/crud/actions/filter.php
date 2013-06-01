@@ -11,7 +11,7 @@
     protected function saveFilter(FormInterface $form, $name, $route = null, array $params = null)
     {
         $request = $this->getRequest();
-        $url = is_null($route) ? $this->generateUrl($name) : $this->generateUrl($route, $params);
+        $url = is_null($route) ? $this->generateUrl($name) : $this->generateUrl($route, is_null($params) ? array() : $params);
         if ($request->query->has('submit-filter') && $form->bind($request)->isValid()) {
             $request->getSession()->set('filter.' . $name, $request->query->get($form->getName()));
 
@@ -37,6 +37,11 @@
                 $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($form, $qb);
             }
         }
+
+        {% if withSort -%}
+        // possible sorting
+        $this->addQueryBuilderSort($qb, $name);
+        {%- endif %}
 
         return $this->get('knp_paginator')->paginate($qb->getQuery(), $this->getRequest()->query->get('page', 1), 20);
     }

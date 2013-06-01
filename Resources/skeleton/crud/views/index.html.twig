@@ -2,10 +2,31 @@
 
 {{ '{% block title %}' ~ "{{ '%entity% list'|trans({'%entity%': '"~ entity ~"'}, 'admin') }}" ~ '{% endblock %}' }}
 
+{%- if withSort %}
+
+{{ "{% macro thead(name, field, label) %}
+    {% spaceless %}
+        {% set sort = app.session.get('sort.' ~ name) %}
+        {% if sort and sort.field == field %}
+            {% if sort.type == 'DESC' %}
+                <a href=\"{{ path('"~ route_name_prefix ~"_sort', {field: field, type: 'ASC'}) }}\">{{ label }} <i class=\"icon-sort-down\"></i></a>
+            {% elseif sort.type == 'ASC' %}
+                <a href=\"{{ path('"~ route_name_prefix ~"_sort', {field: field, type: 'DESC'}) }}\">{{ label }} <i class=\"icon-sort-up\"></i></a>
+            {% endif %}
+        {% else %}
+            <a href=\"{{ path('"~ route_name_prefix ~"_sort', {field: field, type: 'ASC'}) }}\">{{ label }} <i class=\"icon-sort\"></i></a>
+        {% endif %}
+    {% endspaceless %}
+{% endmacro %}" }}
+
+{{ "{% from _self import thead %}" }}
+
+{% endif -%}
+
 {{ '{% block ' ~ bodyBlock ~ ' %}' }}
     <h1>{{ "{{ '%entity% list'|trans({'%entity%': '"~ entity ~"'}, 'admin') }}" }}</h1>
 
-    {% if withFilter %}
+    {% if withFilter -%}
     {{ "{% include '"~ bundle ~":"~ entity ~":filter.html.twig' with {form: form} %}" }}
     {% endif %}
 
@@ -14,7 +35,13 @@
             <tr>
             {%- for field, metadata in fields %}
 
-                <th scope="col">{{ field|replace({'_': ' '})|capitalize }}</th>
+                <th scope="col">
+                {%- if withSort -%}
+                {{ "{{ thead('" ~ entity|lower ~"', '"~ field ~"', '"~ field|replace({'_': ' '})|capitalize ~"') }}" }}
+                {%- else -%}
+                {{ field|replace({'_': ' '})|capitalize }}
+                {%- endif -%}
+                </th>
 
             {%- endfor %}
 
@@ -55,8 +82,7 @@
             {%- if loop.last %}
 
                 <td>
-                    {%- include "views/others/actions.html.twig" %}
-
+                    {% include "views/others/actions.html.twig" %}
                 </td>
 
             {%- endif %}
@@ -67,10 +93,9 @@
         </tbody>
     </table>
 
-    {% if usePaginator %}
-
+    {% if usePaginator -%}
     {{ '{{ knp_pagination_render(paginator) }}' }}
-    {% endif %}
+    {%- endif %}
 
     {% if 'new' in actions %}
 

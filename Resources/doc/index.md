@@ -12,6 +12,7 @@ This version of the bundle requires Symfony 2.1 or higher.
 5. [Pagination](#5-pagination)
 6. [I18n](#6-i18n)
 7. [Filters](#7-filters)
+8. [Sorting](#8-sorting)
 
 ### 1. Download PUGXGeneratorBundle
 
@@ -236,3 +237,9 @@ could be a good idea.
 Please notice that, for now, support for filters is experimental.
 There is a known limitation for generation of relations in filter form class, so you
 need to adapt field configuration by hand.
+
+### 8. Sorting
+
+You can add sorting in columns, by using ``with-sort`` flag in ``pugx:generate:crud`` command.
+If you do so, instead of simple labels, table headers will contain links to toggle sorting
+ascending and descending.

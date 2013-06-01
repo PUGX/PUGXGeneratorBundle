@@ -17,6 +17,7 @@ It adds many functionality on top of it, and corrects some minor issues:
 * nice "check" icons for boolean fields (when using Font Awesome)
 * support for pagination (requires [KnpPaginatorBundle](https://github.com/KnpLabs/KnpPaginatorBundle))
 * (still experimental) support for filters (requires [LexikFormFilterBundle](https://github.com/lexik/LexikFormFilterBundle))
+* (still experimental) support for sorting
 
 Documentation
 -------------

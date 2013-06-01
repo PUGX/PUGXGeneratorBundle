@@ -143,9 +143,9 @@ class DoctrineFormGenerator extends Generator
         foreach ($metadata->associationMappings as $fieldName => $relation) {
             if ($relation['type'] !== ClassMetadataInfo::ONE_TO_MANY) {
                 if ($relation['type'] === ClassMetadataInfo::MANY_TO_MANY) {
-                    $fields[$fieldName] = array('type' => 'relation_many');
+                    $fields[$fieldName] = array('type' => 'relation_many', 'entity' => $relation['targetEntity']);
                 } else {
-                    $fields[$fieldName] = array('type' => 'relation');
+                    $fields[$fieldName] = array('type' => 'relation', 'entity' => $relation['targetEntity']);
                 }
             }
         }

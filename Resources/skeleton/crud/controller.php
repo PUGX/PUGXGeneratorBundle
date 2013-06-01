@@ -51,10 +51,13 @@ class {{ entity_class }}Controller extends Controller
         {%- include 'actions/update.php' %}
     {%- endif %}
 
-    {%- if 'filter' in actions %}
-        {%- include 'actions/filter.php' %}
+    {%- if withSort %}
+        {%- include 'actions/sort.php' %}
     {%- endif %}
 
+    {%- if withFilter %}
+        {%- include 'actions/filter.php' %}
+    {%- endif %}
 
     {%- if 'delete' in actions %}
         {%- include 'actions/delete.php' %}

@@ -31,6 +31,8 @@ class DoctrineCrudGenerator extends Generator
     protected $usePaginator;
     protected $theme;
     protected $filterTemplate;
+    protected $withFilter;
+    protected $withSort;
 
     /**
      * Constructor.
@@ -71,11 +73,12 @@ class DoctrineCrudGenerator extends Generator
      * @param string            $bodyBlock        The name of body block in layout (default: "body")
      * @param boolean           $usePaginator     Wether or not to use paginator
      * @param string            $theme            Possible theme for forms
-     * @param booelan           $withFilter
+     * @param booelan           $withFilter       Wether or not to use filters
+     * @param booelan           $withSort         Wether or not to use sorting
      *
      * @throws \RuntimeException
      */
-    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $format, $routePrefix, $needWriteActions, $layout, $bodyBlock, $usePaginator = false, $theme = null, $withFilter = false)
+    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $format, $routePrefix, $needWriteActions, $layout, $bodyBlock, $usePaginator = false, $theme = null, $withFilter = false, $withSort = false)
     {
         $this->routePrefix = $routePrefix;
         $this->routeNamePrefix = str_replace('/', '_', $routePrefix);
@@ -100,6 +103,7 @@ class DoctrineCrudGenerator extends Generator
         $this->metadata     = $metadata;
         $this->usePaginator = $usePaginator;
         $this->withFilter   = $withFilter;
+        $this->withSort     = $withSort;
         $this->theme        = $theme;
         $this->setFormat($format);
 
@@ -215,6 +219,7 @@ class DoctrineCrudGenerator extends Generator
             'format'            => $this->format,
             'usePaginator'      => $this->usePaginator,
             'withFilter'        => $this->withFilter,
+            'withSort'          => $this->withSort,
         ));
     }
 
@@ -264,6 +269,7 @@ class DoctrineCrudGenerator extends Generator
             'bodyBlock'         => $this->bodyBlock,
             'usePaginator'      => $this->usePaginator,
             'withFilter'        => $this->withFilter,
+            'withSort'          => $this->withSort,
             'bundle'            => $this->bundle->getName(),
         ));
     }
