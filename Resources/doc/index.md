@@ -137,13 +137,10 @@ If you want more consistent boostrap forms, you can use a theme like this one:
 ```jinja
 {% block form_row %}
 {% spaceless %}
-    <div class="control-group{% if errors|length > 0 %} error{% endif %}{% if form.get('type') == 'time' %} input-append bootstrap-timepicker-componen{% endif %}">
+    <div class="control-group{% if errors|length > 0 %} error{% endif %}">
         {{ form_label(form) }}
-        {{ form_widget(form, {'attr': {'class': form.get('type') == 'time' ? 'timepicker-default input-small' : ''}}) }}
+        {{ form_widget(form) }}
         {{ form_errors(form) }}
-        {% if form.get('type') == 'time' %}
-            <span class="add-on"><i class="icon-time"></i></span>
-        {% endif %}
     </div>
 {% endspaceless %}
 {% endblock form_row %}
@@ -227,7 +224,7 @@ You are about to delete an item: Si sta per eliminare un elemento
 
 ### 7. Filters
 
-If you want to use filters (like the ones in the old symfony 1 admin generator), add 
+If you want to use filters (like the ones in the old symfony 1 admin generator), add
 [LexikFormFilterBundle](https://github.com/lexik/LexikFormFilterBundle) to your bundles.
 Then, use the ``with-filter`` flag in ``pugx:generate:crud`` command.
 
