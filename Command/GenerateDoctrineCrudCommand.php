@@ -27,7 +27,7 @@ class GenerateDoctrineCrudCommand extends BaseCommand
      * ctodo: change third param
      * @return type
      */
-    protected function getGenerator()
+    protected function getGenerator($bundle = null)
     {
         if (null === $this->generator) {
             // TODO vendor url
@@ -142,7 +142,7 @@ EOT
         $dialog->writeGeneratorSummary($output, $errors);
     }
 
-    protected function getFormGenerator()
+    protected function getFormGenerator($bundle = null)
     {
         if (null === $this->formGenerator) {
             $this->formGenerator = new DoctrineFormGenerator($this->getContainer()->get('filesystem'), __DIR__.'/../Resources/skeleton/form', __DIR__.'/../../../../../sensio/generator-bundle/Sensio/Bundle/GeneratorBundle/Resources/skeleton/form');
