@@ -23,18 +23,9 @@ class GenerateDoctrineCrudCommand extends BaseCommand
     private $formGenerator;
     private $filterGenerator;
 
-    /**
-     * ctodo: change third param
-     * @return type
-     */
-    protected function getGenerator($bundle = null)
+    protected function createGenerator($bundle = null)
     {
-        if (null === $this->generator) {
-            // TODO vendor url
-            $this->generator = new DoctrineCrudGenerator($this->getContainer()->get('filesystem'), __DIR__.'/../Resources/skeleton/crud', __DIR__.'/../../../../../sensio/generator-bundle/Sensio/Bundle/GeneratorBundle/Resources/skeleton/crud');
-        }
-
-        return $this->generator;
+        return new DoctrineCrudGenerator($this->getContainer()->get('filesystem'));
     }
 
     protected function configure()
@@ -46,6 +37,7 @@ class GenerateDoctrineCrudCommand extends BaseCommand
                 new InputOption('body-block', '', InputOption::VALUE_REQUIRED, 'The name of "body" block in your layout', 'body'),
                 new InputOption('route-prefix', '', InputOption::VALUE_REQUIRED, 'The route prefix'),
                 new InputOption('with-write', '', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
+                new InputOption('overwrite', '', InputOption::VALUE_NONE, 'Do not stop the generation if crud controller already exist, thus overwriting all generated files'),
                 new InputOption('format', '', InputOption::VALUE_REQUIRED, 'Use the format for configuration files (php, xml, yml, or annotation)', 'annotation'),
                 new InputOption('use-paginator', '', InputOption::VALUE_NONE,'Whether or not to use paginator'),
                 new InputOption('theme', '', InputOption::VALUE_OPTIONAL, 'A possible theme to use in forms'),
@@ -97,6 +89,7 @@ EOT
         $format = Validators::validateFormat($input->getOption('format'));
         $prefix = $this->getRoutePrefix($input, $entity);
         $withWrite = $input->getOption('with-write');
+        $forceOverwrite = $input->getOption('overwrite');
         $layout = $input->getOption('layout');  // TODO validate
         $bodyBlock = $input->getOption('body-block');  // TODO validate
         $usePaginator = $input->getOption('use-paginator');
@@ -110,12 +103,12 @@ EOT
 
         $dialog->writeSection($output, 'CRUD generation');  // TODO overwrite interaction
 
-        $entityClass = $this->getContainer()->get('doctrine')->getEntityNamespace($bundle).'\\'.$entity;
+        $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle).'\\'.$entity;
         $metadata    = $this->getEntityMetadata($entityClass);
         $bundle      = $this->getContainer()->get('kernel')->getBundle($bundle);
 
-        $generator = $this->getGenerator();
-        $generator->generate($bundle, $entity, $metadata[0], $format, $prefix, $withWrite, $layout, $bodyBlock, $usePaginator, $theme, $withFilter, $withSort);
+        $generator = $this->getGenerator($bundle);
+        $generator->generate($bundle, $entity, $metadata[0], $format, $prefix, $withWrite, $forceOverwrite, $layout, $bodyBlock, $usePaginator, $theme, $withFilter, $withSort);
 
         $output->writeln('Generating the CRUD code: <info>OK</info>');
 
@@ -145,7 +138,8 @@ EOT
     protected function getFormGenerator($bundle = null)
     {
         if (null === $this->formGenerator) {
-            $this->formGenerator = new DoctrineFormGenerator($this->getContainer()->get('filesystem'), __DIR__.'/../Resources/skeleton/form', __DIR__.'/../../../../../sensio/generator-bundle/Sensio/Bundle/GeneratorBundle/Resources/skeleton/form');
+            $this->formGenerator = new DoctrineFormGenerator($this->getContainer()->get('filesystem'));
+            $this->formGenerator->setSkeletonDirs($this->getSkeletonDirs($bundle));
         }
 
         return $this->formGenerator;
@@ -166,7 +160,7 @@ EOT
     protected function generateForm($bundle, $entity, $metadata)
     {
         try {
-            $this->getFormGenerator()->generate($bundle, $entity, $metadata[0]);
+            $this->getFormGenerator($bundle)->generate($bundle, $entity, $metadata[0]);
         } catch (\RuntimeException $e) {
             // form already exists
         }
@@ -182,5 +176,31 @@ EOT
         } catch (\RuntimeException $e ) {
             // form already exists
         }
+    }
+
+    /**
+     * adds this bundles skeleton dirs to the beginning of skeletonDirs array
+     *
+     * @param null $bundle
+     * @return array
+     */
+    protected function getSkeletonDirs($bundle = null)
+    {
+        $baseSkeletonDirs = parent::getSkeletonDirs($bundle);
+
+        $skeletonDirs = array();
+
+        if (isset($bundle) && is_dir($dir = $bundle->getPath().'/Resources/PUGXGeneratorBundle/skeleton')) {
+            $skeletonDirs[] = $dir;
+        }
+
+        if (is_dir($dir = $this->getContainer()->get('kernel')->getRootdir().'/Resources/PUGXGeneratorBundle/skeleton')) {
+            $skeletonDirs[] = $dir;
+        }
+
+        $skeletonDirs[] = __DIR__.'/../Resources/skeleton';
+        $skeletonDirs[] = __DIR__.'/../Resources';
+
+        return array_merge($skeletonDirs, $baseSkeletonDirs);
     }
 }

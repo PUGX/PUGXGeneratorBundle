@@ -23,13 +23,6 @@ class DoctrineFormGenerator extends Generator
     private $className;
     private $classPath;
 
-    public function __construct(Filesystem $filesystem, $skeletonDir, $baseSkeletonDir)
-    {
-        $this->filesystem = $filesystem;
-        $this->skeletonDir = $skeletonDir;
-        $this->baseSkeletonDir = $baseSkeletonDir;
-    }
-
     public function getClassName()
     {
         return $this->className;
@@ -67,12 +60,12 @@ class DoctrineFormGenerator extends Generator
         $parts = explode('\\', $entity);
         array_pop($parts);
 
-        $this->renderFile($this->skeletonDir, 'FormType.php', $this->classPath, array(
-            'dir'              => $this->skeletonDir,
+        $this->renderFile('form/FormType.php.twig', $this->classPath, array(
             'fields'           => $this->getFieldsFromMetadata($metadata),
             'namespace'        => $bundle->getNamespace(),
             'entity_namespace' => implode('\\', $parts),
             'entity_class'     => $entityClass,
+            'bundle'           => $bundle->getName(),
             'form_class'       => $this->className,
             'form_type_name'   => strtolower(str_replace('\\', '_', $bundle->getNamespace()).($parts ? '_' : '').implode('_', $parts).'_'.$this->className),
         ));
@@ -114,19 +107,6 @@ class DoctrineFormGenerator extends Generator
             'form_class'       => $this->className,
             'form_type_name'   => strtolower(str_replace('\\', '_', $bundle->getNamespace()).($parts ? '_' : '').implode('_', $parts).'_'.$this->className),
         ));
-    }
-
-    /**
-     * @inherit
-     */
-    protected function renderFile($skeletonDir, $template, $target, $parameters)
-    {
-        $extendedFile = $skeletonDir . "/" . $template;
-        if (!file_exists($extendedFile)) {
-            $skeletonDir = $this->baseSkeletonDir;
-        }
-
-        return parent::renderFile($skeletonDir, $template, $target, $parameters);
     }
 
     /**
