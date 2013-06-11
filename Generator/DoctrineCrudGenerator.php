@@ -13,12 +13,11 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Leonardo Proietti <leonardo.proietti@gmail.com>
  * @author Massimiliano Arione <garakkio@gmail.com>
+ * @author Eugenio Pombi <euxpom@gmail.com>
  */
 class DoctrineCrudGenerator extends Generator
 {
     protected $filesystem;
-    protected $skeletonDir;
-    protected $baseSkeletonDir;
     protected $routePrefix;
     protected $routeNamePrefix;
     protected $bundle;
@@ -47,18 +46,19 @@ class DoctrineCrudGenerator extends Generator
     /**
      * Generate the CRUD controller.
      *
-     * @param BundleInterface   $bundle           A bundle object
-     * @param string            $entity           The entity relative class name
-     * @param ClassMetadataInfo $metadata         The entity class metadata
-     * @param string            $format           The configuration format (xml, yaml, annotation)
-     * @param string            $routePrefix      The route name prefix
-     * @param boolean           $needWriteActions Wether or not to generate write actions
-     * @param string            $layout           The layout (default: "TwigBundle::layout.html.twig")
-     * @param string            $bodyBlock        The name of body block in layout (default: "body")
-     * @param boolean           $usePaginator     Wether or not to use paginator
-     * @param string            $theme            Possible theme for forms
-     * @param booelan           $withFilter       Wether or not to use filters
-     * @param booelan           $withSort         Wether or not to use sorting
+     * @param BundleInterface   $bundle             A bundle object
+     * @param string            $entity             The entity relative class name
+     * @param ClassMetadataInfo $metadata           The entity class metadata
+     * @param string            $format             The configuration format (xml, yaml, annotation)
+     * @param string            $routePrefix        The route name prefix
+     * @param bool              $needWriteActions   Wether or not to generate write actions
+     * @param bool              $forceOverwrite     Wether to overwrate the controller file if it already exists
+     * @param string            $layout             The layout (default: "TwigBundle::layout.html.twig")
+     * @param string            $bodyBlock          The name of body block in layout (default: "body")
+     * @param bool              $usePaginator       Wether or not to use paginator
+     * @param string            $theme              Possible theme for forms
+     * @param bool              $withFilter         Wether or not to use filters
+     * @param bool              $withSort           Wether or not to use sorting
      *
      * @throws \RuntimeException
      */
@@ -321,7 +321,7 @@ class DoctrineCrudGenerator extends Generator
      */
     private function generateFilterView($dir)
     {
-        $this->renderFile('views/filter.html.twig', $dir.'/filter.html.twig', array(
+        $this->renderFile('crud/views/filter.html.twig.twig', $dir.'/filter.html.twig', array(
             'bundle'            => $this->bundle->getName(),
             'route_prefix'      => $this->routePrefix,
             'route_name_prefix' => $this->routeNamePrefix,
@@ -343,29 +343,5 @@ class DoctrineCrudGenerator extends Generator
         return array_filter($this->actions, function($item) {
             return in_array($item, array('show', 'edit'));
         });
-    }
-
-    /**
-     * Returns an array of fields. Fields can be both column fields and
-     * association fields.
-     *
-     * @param ClassMetadataInfo $metadata
-     * @return array $fields
-     */
-    private function getFieldsFromMetadata(ClassMetadataInfo $metadata)
-    {
-        $fields = (array) $metadata->fieldMappings;
-
-        foreach ($metadata->associationMappings as $fieldName => $relation) {
-            if ($relation['type'] !== ClassMetadataInfo::ONE_TO_MANY) {
-                if ($relation['type'] === ClassMetadataInfo::MANY_TO_MANY) {
-                    $fields[$fieldName] = array('type' => 'relation_many');
-                } else {
-                    $fields[$fieldName] = array('type' => 'relation');
-                }
-            }
-        }
-
-        return $fields;
     }
 }

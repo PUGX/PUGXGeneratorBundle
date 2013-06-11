@@ -4,7 +4,6 @@ namespace PUGX\GeneratorBundle\Generator;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 
@@ -14,12 +13,10 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Hugo Hamon <hugo.hamon@sensio.com>
  * @author Massimiliano Arione
+ * @author Eugenio Pombi <euxpom@gmail.com>
  */
 class DoctrineFormGenerator extends Generator
 {
-    protected $baseSkeletonDir;
-    private $filesystem;
-    private $skeletonDir;
     private $className;
     private $classPath;
 
@@ -36,9 +33,11 @@ class DoctrineFormGenerator extends Generator
     /**
      * Generates the entity form class if it does not exist.
      *
-     * @param BundleInterface   $bundle   The bundle in which to create the class
-     * @param string            $entity   The entity relative class name
-     * @param ClassMetadataInfo $metadata The entity metadata class
+     * @param BundleInterface   $bundle     The bundle in which to create the class
+     * @param string            $entity     The entity relative class name
+     * @param ClassMetadataInfo $metadata   The entity metadata class
+     *
+     * @throws \RuntimeException
      */
     public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata)
     {
@@ -77,6 +76,7 @@ class DoctrineFormGenerator extends Generator
      * @param BundleInterface   $bundle   The bundle in which to create the class
      * @param string            $entity   The entity relative class name
      * @param ClassMetadataInfo $metadata The entity metadata class
+     * @throws \RuntimeException
      */
     public function generateFilter(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata)
     {
@@ -98,8 +98,8 @@ class DoctrineFormGenerator extends Generator
         $parts = explode('\\', $entity);
         array_pop($parts);
 
-        $this->renderFile($this->skeletonDir, 'FormFilterType.php', $this->classPath, array(
-            'dir'              => $this->skeletonDir,
+        $this->renderFile('filter/FormFilterType.php.twig', $this->classPath, array(
+            'bundle'           => $bundle->getName(),
             'fields'           => $this->getFieldsFromMetadata($metadata),
             'namespace'        => $bundle->getNamespace(),
             'entity_namespace' => implode('\\', $parts),

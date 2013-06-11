@@ -16,6 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Leonardo Proietti <leonardo.proietti@gmail.com>
  * @author Massimiliano Arione <garakkio@gmail.com>
+ * @author Eugenio Pombi <euxpom@gmail.com>
  */
 class GenerateDoctrineCrudCommand extends BaseCommand
 {
@@ -145,10 +146,11 @@ EOT
         return $this->formGenerator;
     }
 
-    protected function getFilterGenerator()
+    protected function getFilterGenerator($bundle = null)
     {
         if (null === $this->filterGenerator) {
-            $this->filterGenerator = new DoctrineFormGenerator($this->getContainer()->get('filesystem'), __DIR__.'/../Resources/skeleton/filter', null);
+            $this->filterGenerator = new DoctrineFormGenerator($this->getContainer()->get('filesystem'));
+            $this->filterGenerator->setSkeletonDirs($this->getSkeletonDirs($bundle));
         }
 
         return $this->filterGenerator;
@@ -172,16 +174,17 @@ EOT
     protected function generateFilter($bundle, $entity, $metadata)
     {
         try {
-            $this->getFilterGenerator()->generateFilter($bundle, $entity, $metadata[0]);
-        } catch (\RuntimeException $e ) {
+            $this->getFilterGenerator($bundle)->generateFilter($bundle, $entity, $metadata[0]);
+        } catch (\RuntimeException $e) {
             // form already exists
         }
     }
 
     /**
-     * adds this bundles skeleton dirs to the beginning of skeletonDirs array
+     * add this bundle skeleton dirs to the beginning of the parent skeletonDirs array
      *
      * @param null $bundle
+     *
      * @return array
      */
     protected function getSkeletonDirs($bundle = null)
