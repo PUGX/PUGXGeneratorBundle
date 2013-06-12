@@ -12,11 +12,10 @@
         {
             "name": "Leonardo Proietti",
             "email": "leonardo.proietti@gmail.com"
-        }    
+        }
     ],
-    "minimum-stability": "dev",
     "require": {
-        "sensio/generator-bundle": "*"
+        "sensio/generator-bundle": "2.2.*"
     },
     "suggest": {
         "knplabs/knp-paginator-bundle": "Needed for optional pagination",

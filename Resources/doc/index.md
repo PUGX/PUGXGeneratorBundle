@@ -1,7 +1,8 @@
 PUGXGeneratorBundle Documentation
 =================================
 
-This version of the bundle requires Symfony 2.1 or higher.
+This version of the bundle requires Symfony 2.2.
+For Symfony 2.3, please switch to master branch.
 
 ## Installation
 
@@ -23,7 +24,7 @@ Add the following lines in your composer.json:
 ```
 {
     "require-dev": {
-        "pugx/generator-bundle": "dev-master"
+        "pugx/generator-bundle": "2.2.*"
     }
 }
 
