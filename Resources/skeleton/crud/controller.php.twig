@@ -34,33 +34,33 @@ class {{ entity_class }}Controller extends Controller
 {
 
     {%- if 'index' in actions %}
-        {%- include 'actions/index.php' %}
+        {%- include 'crud/actions/index.php.twig' %}
     {%- endif %}
 
     {%- if 'show' in actions %}
-        {%- include 'actions/show.php' %}
+        {%- include 'crud/actions/show.php.twig' %}
     {%- endif %}
 
     {%- if 'new' in actions %}
-        {%- include 'actions/new.php' %}
-        {%- include 'actions/create.php' %}
+        {%- include 'crud/actions/new.php.twig' %}
+        {%- include 'crud/actions/create.php.twig' %}
     {%- endif %}
 
     {%- if 'edit' in actions %}
-        {%- include 'actions/edit.php' %}
-        {%- include 'actions/update.php' %}
+        {%- include 'crud/actions/edit.php.twig' %}
+        {%- include 'crud/actions/update.php.twig' %}
     {%- endif %}
 
     {%- if withSort %}
-        {%- include 'actions/sort.php' %}
+        {%- include 'crud/actions/sort.php.twig' %}
     {%- endif %}
 
     {%- if withFilter %}
-        {%- include 'actions/filter.php' %}
+        {%- include 'crud/actions/filter.php.twig' %}
     {%- endif %}
 
     {%- if 'delete' in actions %}
-        {%- include 'actions/delete.php' %}
+        {%- include 'crud/actions/delete.php.twig' %}
     {%- endif %}
 
 }
