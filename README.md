@@ -1,6 +1,11 @@
 PUGXGeneratorBundle
 ===================
 
+[![Total Downloads](https://poser.pugx.org/pugx/generator-bundle/downloads.png)](https://packagist.org/packages/pugx/generator-bundle)
+
+[![knpbundles.com](http://knpbundles.com/PUGX/PUGXGeneratorBundle/badge-short)](http://knpbundles.com/PUGX/PUGXGeneratorBundle)
+
+
 This bundle is an extension of [SensioGeneratorBundle](https://github.com/sensio/SensioGeneratorBundle).
 
 It adds many functionality on top of it, and corrects some minor issues:
