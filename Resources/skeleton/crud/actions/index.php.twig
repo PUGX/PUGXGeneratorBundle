@@ -28,6 +28,7 @@
         {% endif %}
 
 {% else %}
+        {# TODO qui non consideriamo withSort #}
         $entities = $em->getRepository('{{ bundle }}:{{ entity }}')->findAll();
 {% endif %}
 
