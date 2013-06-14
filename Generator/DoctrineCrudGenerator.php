@@ -236,7 +236,7 @@ class DoctrineCrudGenerator extends Generator
         $dir    = $this->bundle->getPath() .'/Tests/Controller';
         $target = $dir .'/'. str_replace('\\', '/', $entityNamespace).'/'. $entityClass .'ControllerTest.php';
 
-        $this->renderFile($this->skeletonDir, 'tests/test.php', $target, array(
+        $this->renderFile($this->skeletonDir, 'tests/test.php.twig', $target, array(
             'route_prefix'      => $this->routePrefix,
             'route_name_prefix' => $this->routeNamePrefix,
             'entity'            => $this->entity,
