@@ -206,4 +206,120 @@ EOT
 
         return array_merge($skeletonDirs, $baseSkeletonDirs);
     }
+
+    /**
+     * Override "interact" method to ask for adding parameters
+     */
+    protected function interact(InputInterface $input, OutputInterface $output)
+    {
+        $dialog = $this->getDialogHelper();
+        $dialog->writeSection($output, 'Welcome to the PUGX CRUD generator');
+
+        // namespace
+        $output->writeln(array(
+            '',
+            'This command helps you generate CRUD controllers and templates.',
+            '',
+            'First, you need to give the entity for which you want to generate a CRUD.',
+            'You can give an entity that does not exist yet and the wizard will help',
+            'you defining it.',
+            '',
+            'You must use the shortcut notation like <comment>AcmeBlogBundle:Post</comment>.',
+            '',
+        ));
+
+        $entity = $dialog->askAndValidate($output, $dialog->getQuestion('The Entity shortcut name', $input->getOption('entity')), array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateEntityName'), false, $input->getOption('entity'));
+        $input->setOption('entity', $entity);
+        list($bundle, $entity) = $this->parseShortcutNotation($entity);
+
+        // Entity exists?
+        $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle).'\\'.$entity;
+        $metadata = $this->getEntityMetadata($entityClass);
+
+        // layout
+        $template = $input->getOption('layout');
+        $output->writeln(array(
+            '',
+            'Select a layout. Example: <comment>AcmeDemoBundle::layout.html.twig</comment>',
+            '',
+        ));
+        // TODO add validator
+        $layout = $dialog->ask($output, $dialog->getQuestion('Layout name', $input->getOption('layout')), $input->getOption('layout'));
+        $input->setOption('layout', $layout);
+
+        // paginator?
+        $usePaginator = $input->getOption('use-paginator') ?: false;
+        $output->writeln(array(
+            '',
+            'By default, the generator creates an index action with list of all entites.',
+            'You can also ask it to generate a paginator. Please notice that <comment>KnpPaginatorBundle</comment> is required.',
+            '',
+        ));
+        $usePaginator = $dialog->askConfirmation($output, $dialog->getQuestion('Do you want a paginator', $usePaginator ? 'yes' : 'no', '?'), $usePaginator);
+        $input->setOption('use-paginator', $usePaginator);
+
+        // filter?
+        $withFilter = $input->getOption('with-filter') ?: false;
+        $output->writeln(array(
+            '',
+            'You can add a filter to generated index. Please notice that <comment>LexikFormFilterBundle </comment> is required.',
+            '',
+        ));
+        $withFilter = $dialog->askConfirmation($output, $dialog->getQuestion('Do you want filter', $withFilter ? 'yes' : 'no', '?'), $withFilter);
+        $input->setOption('with-filter', $withFilter);
+
+        // sort?
+        $withSort = $input->getOption('with-sort') ?: false;
+        $output->writeln(array(
+            '',
+            'You can add sort links to columns of generated index.',
+            '',
+        ));
+        $withSort = $dialog->askConfirmation($output, $dialog->getQuestion('Do you want sort', $withSort ? 'yes' : 'no', '?'), $withSort);
+        $input->setOption('with-sort', $withSort);
+
+        // write?
+        $withWrite = $input->getOption('with-write') ?: false;
+        $output->writeln(array(
+            '',
+            'By default, the generator creates two actions: list and show.',
+            'You can also ask it to generate "write" actions: new, update, and delete.',
+            '',
+        ));
+        $withWrite = $dialog->askConfirmation($output, $dialog->getQuestion('Do you want to generate the "write" actions', $withWrite ? 'yes' : 'no', '?'), $withWrite);
+        $input->setOption('with-write', $withWrite);
+
+        // format
+        $format = $input->getOption('format');
+        $output->writeln(array(
+            '',
+            'Determine the format to use for the generated CRUD.',
+            '',
+        ));
+        $format = $dialog->askAndValidate($output, $dialog->getQuestion('Configuration format (yml, xml, php, or annotation)', $format), array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateFormat'), false, $format);
+        $input->setOption('format', $format);
+
+        // route prefix
+        $prefix = $this->getRoutePrefix($input, $entity);
+        $output->writeln(array(
+            '',
+            'Determine the routes prefix (all the routes will be "mounted" under this',
+            'prefix: /prefix/, /prefix/new, ...).',
+            '',
+        ));
+        $prefix = $dialog->ask($output, $dialog->getQuestion('Routes prefix', '/'.$prefix), '/'.$prefix);
+        $input->setOption('route-prefix', $prefix);
+
+
+
+        // summary
+        $output->writeln(array(
+            '',
+            $this->getHelper('formatter')->formatBlock('Summary before generation', 'bg=blue;fg=white', true),
+            '',
+            sprintf("You are going to generate a CRUD controller for \"<info>%s:%s</info>\"", $bundle, $entity),
+            sprintf("using the \"<info>%s</info>\" format.", $format),
+            '',
+        ));
+    }
 }
