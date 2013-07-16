@@ -7,7 +7,7 @@ It adds many functionality on top of it, and corrects some minor issues:
 * pages with layout (main block name is customizable)
 * forms in correct namespace (under Type, not under Form)
 * @ParamConverter in actions
-* different format for dates and datetimes
+* different format for dates/times/datetimes
 * include relation fields in show and index templates
 * shorter form names
 * real entity names instead of "$entity" in actions and templates
