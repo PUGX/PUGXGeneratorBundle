@@ -216,8 +216,11 @@ Delete:                          Elimina
 "Do you want to proceed?":       "Procedere?"
 Edit:                            Modifica
 edit:                            modifica
+Filter:                          Filtra
 No:                              No
+Reset filters:                   Azzera filtri
 show:                            vedi
+"Show/hide filters":             "Mostra/nascondi filtri"
 this procedure is irreversible:  questa procedura è irreversibile
 Yes:                             Sì
 You are about to delete an item: Si sta per eliminare un elemento
