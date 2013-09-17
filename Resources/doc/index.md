@@ -24,7 +24,7 @@ Add the following lines in your composer.json:
 ```
 {
     "require-dev": {
-        "pugx/generator-bundle": "dev-master"
+        "pugx/generator-bundle": "2.3.*"
     }
 }
 
