@@ -21,7 +21,6 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
  */
 class GenerateDoctrineCrudCommand extends BaseCommand
 {
-    private $generator;
     private $formGenerator;
     private $filterGenerator;
 
@@ -233,12 +232,7 @@ EOT
         $input->setOption('entity', $entity);
         list($bundle, $entity) = $this->parseShortcutNotation($entity);
 
-        // Entity exists?
-        $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle).'\\'.$entity;
-        $metadata = $this->getEntityMetadata($entityClass);
-
         // layout
-        $template = $input->getOption('layout');
         $output->writeln(array(
             '',
             'Select a layout. Example: <comment>AcmeDemoBundle::layout.html.twig</comment>',
@@ -310,8 +304,6 @@ EOT
         ));
         $prefix = $dialog->ask($output, $dialog->getQuestion('Routes prefix', '/'.$prefix), '/'.$prefix);
         $input->setOption('route-prefix', $prefix);
-
-
 
         // summary
         $output->writeln(array(
