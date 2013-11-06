@@ -4,6 +4,11 @@ PUGXGeneratorBundle Documentation
 This version of the bundle requires Symfony 2.3.
 For Symfony 2.2, please switch to 2.2 branch.
 
+A small note on branches and tags: version numbers are not necessarily consistent
+with Symfony ones. We know we should have started versioning by something like ``0.1`` or
+``1.1``, but we cannot change that decision now, for compatibility issues.
+
+
 ## Installation
 
 1. [Download PUGXGeneratorBundle](#1-download-pugxgeneratorbundle)
@@ -19,25 +24,14 @@ For Symfony 2.2, please switch to 2.2 branch.
 
 **Using composer**
 
-Add the following lines in your composer.json:
-
-```
-{
-    "require-dev": {
-        "pugx/generator-bundle": "2.3.*"
-    }
-}
-
-```
-Of course, if you already have other dependencies in your "require-dev", adapt lines.
-If your "require" section contains "sensio/generator-bundle", you can delete it (since
-it is required by "pugx/generator-bundle".
-
-Now, run composer to download the bundle:
+Run composer to download the bundle:
 
 ``` bash
-$ php composer.phar update pugx/generator-bundle
+$ php composer.phar require pugx/generator-bundle:2.4.*
 ```
+
+Notice that if your composer.json requires "sensio/generator-bundle", you can delete it (since
+it is required by "pugx/generator-bundle").
 
 ### 2. Enable the bundle
 
@@ -70,6 +64,8 @@ $ php app/console pugx:generate:crud --help
 
 This bundle is ready to be used with [Bootstrap](http://twitter.github.com/bootstrap/) and
 with [Font Awesome](http://fortawesome.github.com/Font-Awesome/)
+Please note that current supported versions are Boostrap 3 and Font Awesome 4. If you use
+older versions, please use branch 2.3 of PUGXGeneratorBundle.
 
 So, you can download Bootstrap (and, optionally, Font Awesome) and put it in your bundle.
 Then, you can use a simple layout, like this one:
@@ -79,13 +75,12 @@ Then, you can use a simple layout, like this one:
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>{% block title %}{% endblock %}</title>
+        <title>{% block title '' %}</title>
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% stylesheets
             '@AcmeDemoBundle/Resources/public/css/bootstrap.css'
             '@AcmeDemoBundle/Resources/public/css/font-awesome.css'
-            '@AcmeDemoBundle/Resources/public/css/bootstrap-responsive.css'
         %}
         <link rel="stylesheet" href="{{ asset_url }}">
         {% endstylesheets %}
@@ -93,12 +88,11 @@ Then, you can use a simple layout, like this one:
         {% endblock %}
     </head>
     <body>
-        <div class="navbar navbar-fixed-top">
+        <nav class="navbar navbar-fixed-top">
             <!-- put your nav bar here -->
-        </div>
+        </nav>
         <div class="container">
-            {% block body %}
-            {% endblock %}
+            {% block body '' %}
         </div>
         <script src="http://code.jquery.com/jquery.min.js"></script>
         {% javascripts
@@ -114,7 +108,7 @@ Then, you can use a simple layout, like this one:
 If you want the confirm delete functionality, you can add the following Javascript code,
 based on jQuery, in one of you files (e.g. ``acme.js`` in layout above):
 
-``` js+php
+``` js
 $().ready(function() {
     /* delete confirm */
     $('form#delete').submit(function(e) {
@@ -235,7 +229,6 @@ Then, use the ``with-filter`` flag in ``pugx:generate:crud`` command.
 Since filters require some additional methods in generated controllers, moving them to
 a generic ``Controller`` class (and extending it instead of Symfony default one)
 could be a good idea.
-Please notice that, for now, support for filters is experimental.
 There is a known limitation for generation of relations in filter form class, so you
 need to adapt field configuration by hand.
 

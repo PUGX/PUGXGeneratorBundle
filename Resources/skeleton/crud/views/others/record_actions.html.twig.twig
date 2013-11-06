@@ -6,17 +6,17 @@
     <div class="btn-group record_actions">
 
         <a class="btn btn-info" href="{{ "{{ path('"~ route_name_prefix ~"') }}" }}">
-            <i class="icon-list"></i> {{ "{{ 'Back to the list'|trans({}, 'admin') }}" }}
+            <i class="fa fa-list"></i> {{ "{{ 'Back to the list'|trans({}, 'admin') }}" }}
         </a>
 
 {% if ('edit' in actions) and (not hide_edit) %}
         <a class="btn btn-primary" href="{{ "{{ path('"~ route_name_prefix ~"_edit', {id: "~ entity|lower ~".id}) }}" }}">
-            <i class="icon-edit"></i> {{ "{{ 'Edit'|trans({}, 'admin') }}" }}
+            <i class="fa fa-edit"></i> {{ "{{ 'Edit'|trans({}, 'admin') }}" }}
         </a>
 {% endif %}
 
 {% if ('delete' in actions) and (not hide_delete) %}
-        <button class="btn btn-danger" type="submit"><i class="icon-trash"></i> {{ "{{ 'Delete'|trans({}, 'admin') }}" }}</button>
+        <button class="btn btn-danger" type="submit"><i class="fa fa-trash-o"></i> {{ "{{ 'Delete'|trans({}, 'admin') }}" }}</button>
 {% endif %}
 
     </div>
@@ -25,18 +25,22 @@
     <input name="modal" type="hidden" value="0">
 </form>
 
-<div id="delete_confirm" class="modal hide fade">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3>{{ "{{ 'Confirm delete'|trans({}, 'admin') }}" }}</h3>
-    </div>
-    <div class="modal-body">
-        <p>{{ "{{ 'You are about to delete an item'|trans({}, 'admin') }}" }}, {{ "{{ 'this procedure is irreversible'|trans({}, 'admin') }}" }}.</p>
-        <p>{{ "{{ 'Do you want to proceed?'|trans({}, 'admin') }}" }}</p>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-danger">{{ "{{ 'Yes'|trans({}, 'admin') }}" }}</button>
-        <button class="btn btn-secondary" data-dismiss="modal">{{ "{{ 'No'|trans({}, 'admin') }}" }}</button>
+<div id="delete_confirm" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>{{ "{{ 'Confirm delete'|trans({}, 'admin') }}" }}</h3>
+            </div>
+            <div class="modal-body">
+                <p>{{ "{{ 'You are about to delete an item'|trans({}, 'admin') }}" }}, {{ "{{ 'this procedure is irreversible'|trans({}, 'admin') }}" }}.</p>
+                <p>{{ "{{ 'Do you want to proceed?'|trans({}, 'admin') }}" }}</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger">{{ "{{ 'Yes'|trans({}, 'admin') }}" }}</button>
+                <button class="btn btn-secondary" data-dismiss="modal">{{ "{{ 'No'|trans({}, 'admin') }}" }}</button>
+            </div>
+        </div>
     </div>
 </div>
 {% endif %}

@@ -75,7 +75,7 @@
 
             {%- elseif metadata.type == 'boolean' %}
 
-                <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}<i class="icon-ok"></i>{% endif %}' }}</td>
+                <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}<i class="fa fa-ok"></i>{% endif %}' }}</td>
 
             {%- else %}
 
@@ -106,7 +106,7 @@
     <ul class="new_entry unstyled">
         <li>
             <a class="btn btn-info" href="{{ "{{ path('"~ route_name_prefix ~"_new') }}" }}">
-                <i class="icon-plus"></i> {{ "{{ 'Create a new entry'|trans({}, 'admin') }}" }}
+                <i class="fa fa-plus"></i> {{ "{{ 'Create a new entry'|trans({}, 'admin') }}" }}
             </a>
         </li>
     </ul>
