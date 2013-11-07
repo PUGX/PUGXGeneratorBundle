@@ -63,7 +63,7 @@ $ php app/console pugx:generate:crud --help
 ### 4. Layout
 
 This bundle is ready to be used with [Bootstrap](http://getbootstrap.com/) and
-with [Font Awesome](http://fortawesome.github.com/Font-Awesome/)
+with [Font Awesome](http://fortawesome.github.com/Font-Awesome/).
 Please note that current supported versions are Boostrap 3 and Font Awesome 4. If you use
 older versions, please use branch 2.3 of PUGXGeneratorBundle.
 
