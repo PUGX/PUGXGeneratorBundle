@@ -28,7 +28,7 @@
 
     {% if withFilter -%}
     {{ "{% include '"~ bundle ~":"~ entity ~":filter.html.twig' with {form: form} %}" }}
-    {% endif %}
+    {% endif -%}
 
     <table class="table table-striped table-hover table-bordered records_list">
         <thead>
@@ -49,51 +49,51 @@
             </tr>
         </thead>
         <tbody>
-        {{ '{% for '~ entity|lower ~' in ' ~ (usePaginator ? 'paginator' : 'entities') ~ ' %}' }}
-            <tr>
-
-        {%- for field, metadata in fields %}
-            {%- if loop.first and ('show' in actions) %}
-
-                <td><a href="{{ "{{ path('"~ route_name_prefix ~"_show', {id: "~ entity|lower ~".id}) }}" }}">{{ '{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' }}' }}</a></td>
-
-            {%- elseif metadata.type == 'date' %}
-
-                <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|date(\'Y-m-d\') }}{% endif %}' }}</td>
-
-            {%- elseif metadata.type == 'datetime' %}
-
-                <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|date(\'Y-m-d H:i:s\') }}{% endif %}' }}</td>
-
-            {%- elseif metadata.type == 'time' %}
-
-                <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|date(\'H:i:s\') }}{% endif %}' }}</td>
-
-            {%- elseif metadata.type == 'relation_many' %}
-
-                <td>{{ '{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|join(\', \') }}' }}</td>
-
-            {%- elseif metadata.type == 'boolean' %}
-
-                <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}<i class="fa fa-ok"></i>{% endif %}' }}</td>
-
-            {%- else %}
-
-                <td>{{ '{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' }}' }}</td>
-
-            {%- endif %}
-
-            {%- if loop.last %}
-
-                <td>
-                    {% include "crud/views/others/actions.html.twig.twig" %}
-                </td>
-
-            {%- endif %}
-        {%- endfor %}
-
-            </tr>
-        {{ '{% endfor %}' }}
+            {{ '{% for '~ entity|lower ~' in ' ~ (usePaginator ? 'paginator' : 'entities') ~ ' %}' }}
+                <tr>
+    
+            {%- for field, metadata in fields %}
+                {%- if loop.first and ('show' in actions) %}
+    
+                    <td><a href="{{ "{{ path('"~ route_name_prefix ~"_show', {id: "~ entity|lower ~".id}) }}" }}">{{ '{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' }}' }}</a></td>
+    
+                {%- elseif metadata.type == 'date' %}
+    
+                    <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|date(\'Y-m-d\') }}{% endif %}' }}</td>
+    
+                {%- elseif metadata.type == 'datetime' %}
+    
+                    <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|date(\'Y-m-d H:i:s\') }}{% endif %}' }}</td>
+    
+                {%- elseif metadata.type == 'time' %}
+    
+                    <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|date(\'H:i:s\') }}{% endif %}' }}</td>
+    
+                {%- elseif metadata.type == 'relation_many' %}
+    
+                    <td>{{ '{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|join(\', \') }}' }}</td>
+    
+                {%- elseif metadata.type == 'boolean' %}
+    
+                    <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}<i class="fa fa-ok"></i>{% endif %}' }}</td>
+    
+                {%- else %}
+    
+                    <td>{{ '{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' }}' }}</td>
+    
+                {%- endif %}
+    
+                {%- if loop.last %}
+    
+                    <td>
+                        {%- include "crud/views/others/actions.html.twig.twig" %}
+                    </td>
+    
+                {%- endif %}
+            {%- endfor %}
+    
+                </tr>
+            {{ '{% endfor %}' }}
         </tbody>
     </table>
 
@@ -103,7 +103,7 @@
 
     {% if 'new' in actions %}
 
-    <ul class="new_entry unstyled">
+    <ul class="new_entry list-unstyled">
         <li>
             <a class="btn btn-info" href="{{ "{{ path('"~ route_name_prefix ~"_new') }}" }}">
                 <i class="fa fa-plus"></i> {{ "{{ 'Create a new entry'|trans({}, 'admin') }}" }}

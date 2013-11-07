@@ -62,7 +62,7 @@ $ php app/console pugx:generate:crud --help
 
 ### 4. Layout
 
-This bundle is ready to be used with [Bootstrap](http://twitter.github.com/bootstrap/) and
+This bundle is ready to be used with [Bootstrap](http://getbootstrap.com/) and
 with [Font Awesome](http://fortawesome.github.com/Font-Awesome/)
 Please note that current supported versions are Boostrap 3 and Font Awesome 4. If you use
 older versions, please use branch 2.3 of PUGXGeneratorBundle.
@@ -84,8 +84,7 @@ Then, you can use a simple layout, like this one:
         %}
         <link rel="stylesheet" href="{{ asset_url }}">
         {% endstylesheets %}
-        {% block stylesheets %}
-        {% endblock %}
+        {% block stylesheets '' %}
     </head>
     <body>
         <nav class="navbar navbar-fixed-top">
@@ -101,6 +100,7 @@ Then, you can use a simple layout, like this one:
         %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
+        {% block javascripts '' %}
     </body>
 </html>
 ```
@@ -224,7 +224,7 @@ You are about to delete an item: Si sta per eliminare un elemento
 
 If you want to use filters (like the ones in the old symfony 1 admin generator), add
 [LexikFormFilterBundle](https://github.com/lexik/LexikFormFilterBundle) to your bundles.
-Then, use the ``with-filter`` flag in ``pugx:generate:crud`` command.
+Then, use the ``--with-filter`` flag in ``pugx:generate:crud`` command.
 
 Since filters require some additional methods in generated controllers, moving them to
 a generic ``Controller`` class (and extending it instead of Symfony default one)
