@@ -132,7 +132,7 @@ If you want more consistent boostrap forms, you can use a theme like this one:
 ```jinja
 {% block form_row %}
 {% spaceless %}
-    <div class="control-group{% if errors|length > 0 %} error{% endif %}">
+    <div class="form-group{% if errors|length > 0 %} error{% endif %}">
         {{ form_label(form) }}
         {{ form_widget(form) }}
         {{ form_errors(form) }}
@@ -165,6 +165,55 @@ If you want more consistent boostrap forms, you can use a theme like this one:
     {% endif %}
 {% endspaceless %}
 {% endblock form_errors %}
+
+{% block date_widget %}
+{% spaceless %}
+    {% if widget == 'single_text' %}
+        {{ block('form_widget_simple') }}
+    {% else %}
+        <div {{ block('widget_container_attributes') }}>
+            <div class="row">
+                {{ date_pattern|replace({
+                    '{{ year }}':  '<div class="col-xs-2">' ~ form_widget(form.year) ~ '</div>',
+                    '{{ month }}': '<div class="col-xs-2">' ~ form_widget(form.month) ~ '</div>',
+                    '{{ day }}':   '<div class="col-xs-1">' ~ form_widget(form.day) ~ '</div>',
+                })|raw }}
+            </div>
+        </div>
+    {% endif %}
+{% endspaceless %}
+{% endblock date_widget %}
+
+{% block time_widget %}
+{% spaceless %}
+    {% if widget == 'single_text' %}
+        {{ block('form_widget_simple') }}
+    {% else %}
+        {% set vars = widget == 'text' ? { 'attr': { 'size': 1 }} : {} %}
+        <div {{ block('widget_container_attributes') }}>
+            <div class="row">
+                <div class="col-xs-1">{{ form_widget(form.hour, vars) }}</div>{% if with_minutes %} <div class="col-xs-1">{{ form_widget(form.minute, vars) }}</div>{% endif %}{% if with_seconds %} <div class="col-xs-1">{{ form_widget(form.second, vars) }}</div>{% endif %}
+            </div>
+        </div>
+    {% endif %}
+{% endspaceless %}
+{% endblock time_widget %}
+
+{% block widget_attributes %}
+{% spaceless %}
+    {% set classFound = false %}
+    id="{{ id }}" name="{{ full_name }}"{% if read_only %} readonly="readonly"{% endif %}{% if disabled %} disabled="disabled"{% endif %}{% if required %} required="required"{% endif %}{% if max_length %} maxlength="{{ max_length }}"{% endif %}{% if pattern %} pattern="{{ pattern }}"{% endif %}
+    {% for attrname, attrvalue in attr %}
+        {% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}
+        {% if attrname == 'class' %}
+            {% set attrvalue = attrvalue ~ ' form-control' %}
+        {% endif %}
+    {% endfor %}
+    {% if not classFound %}
+        class="form-control"
+    {% endif %}
+{% endspaceless %}
+{% endblock widget_attributes %}
 ```
 
 If you put such theme file in ``src/Acme/DemoBundle/Resources/views/Form/theme.html.twig``,
