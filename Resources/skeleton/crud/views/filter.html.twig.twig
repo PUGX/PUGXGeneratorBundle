@@ -1,5 +1,5 @@
-<button type="button" class="btn filter" data-toggle="collapse" data-target="#filter">{{ "{{ 'Show/hide filters'|trans({}, 'admin') }}" }} <i class="fa fa-angle-right"></i></button>
-<div id="filter" class="collapse in">
+<button type="button" class="btn filter" data-toggle="collapse" data-target="#filter">{{ "{{ 'Show/hide filters'|trans({}, 'admin') }}" }} <i class="fa fa-angle-{{ "{{ app.session.get('filter." ~ entity|lower ~ "') ? 'right' : 'down' }}" }}"></i></button>
+<div id="filter" class="collapse {{ "{% if app.session.get('filter." ~ entity|lower ~ "') %} in{% endif %}" }}">
     <form method="get" action="">
         {{ "{{ form_widget(form) }}" }}
         <p>

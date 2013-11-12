@@ -109,7 +109,7 @@ If you want the confirm delete functionality, you can add the following Javascri
 based on jQuery, in one of you files (e.g. ``acme.js`` in layout above):
 
 ``` js
-$().ready(function() {
+$(document).ready(function() {
     /* delete confirm */
     $('form#delete').submit(function(e) {
         var $form = $(this);
@@ -229,6 +229,28 @@ Then, use the ``--with-filter`` flag in ``pugx:generate:crud`` command.
 Since filters require some additional methods in generated controllers, moving them to
 a generic ``Controller`` class (and extending it instead of Symfony default one)
 could be a good idea.
+
+To enable automatic opening/closing of filters, based on session, you can add following
+code to your Javascript:
+
+``` js
+$(document).ready(function() {
+    /* filter icon */
+    $('button.filter').click(function() {
+        var $icon = $(this).find('i');
+        var target = $(this).attr('data-target');
+        if ($icon.length) {
+            var $div = $(target);
+            if ($div.height() > 0) {
+                $icon.attr('class', 'fa fa-icon-angle-down')
+            } else {
+                $icon.attr('class', 'fa fa-icon-angle-right')
+            }
+        }
+    });
+});
+```
+
 There is a known limitation for generation of relations in filter form class, so you
 need to adapt field configuration by hand.
 
