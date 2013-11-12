@@ -3,7 +3,9 @@
     /**
      * Save order.
      *
+{% if 'annotation' == format %}
      * @Route("/order/{field}/{type}", name="{{ route_name_prefix }}_sort")
+{% endif %}
      */
     public function sortAction($field, $type)
     {

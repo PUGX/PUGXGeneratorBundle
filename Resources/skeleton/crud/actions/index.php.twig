@@ -29,9 +29,17 @@
         {% endif %}
 
 {% else -%}
-        {# TODO qui non consideriamo withSort #}
-        $entities = $em->getRepository('{{ bundle }}:{{ entity }}')->findAll();
-{% endif %}
+
+     	{% if withSort %}
+        if (is_array($order = $this->getOrder('{{ entity|lower }}'))) {
+            $entities = $em->getRepository('{{ bundle }}:{{ entity }}')->findBy(array(), array($order['field'] => $order['type']));
+        } else {
+            $entities = $em->getRepository('{{ bundle }}:{{ entity }}')->findAll();
+        }
+        {% else %}
+			$entities = $em->getRepository('{{ bundle }}:{{ entity }}')->findAll();
+        {% endif %}
+{% endif -%}
 
 {% if 'annotation' == format %}
         return array(
