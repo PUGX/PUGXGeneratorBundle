@@ -102,7 +102,7 @@ EOT
             throw new \RuntimeException(sprintf('Cannot use filter without paginator.'));
         }
 
-        $dialog->writeSection($output, 'CRUD generation');  // TODO overwrite interaction
+        $dialog->writeSection($output, 'CRUD generation');
 
         $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle).'\\'.$entity;
         $metadata    = $this->getEntityMetadata($entityClass);
