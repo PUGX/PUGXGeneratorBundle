@@ -42,6 +42,7 @@ class GenerateDoctrineCrudCommand extends BaseCommand
                 new InputOption('format', '', InputOption::VALUE_REQUIRED, 'Use the format for configuration files (php, xml, yml, or annotation)', 'annotation'),
                 new InputOption('use-paginator', '', InputOption::VALUE_NONE,'Whether or not to use paginator'),
                 new InputOption('theme', '', InputOption::VALUE_OPTIONAL, 'A possible theme to use in forms'),
+                new InputOption('dest', '', InputOption::VALUE_OPTIONAL, 'Change the default destination of the generated code', null),
                 new InputOption('with-filter', '', InputOption::VALUE_NONE, 'Whether or not to add filter'),
                 new InputOption('with-sort', '', InputOption::VALUE_NONE, 'Whether or not to add sorting'),
             ))
@@ -97,6 +98,7 @@ EOT
         $theme = $input->getOption('theme');  // TODO validate
         $withFilter = $input->getOption('with-filter');  // TODO validate
         $withSort = $input->getOption('with-sort');  // TODO validate
+        $dest = $input->getOption('dest')?:$bundle;
 
         if ($withFilter && !$usePaginator) {
             throw new \RuntimeException(sprintf('Cannot use filter without paginator.'));
@@ -106,7 +108,7 @@ EOT
 
         $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle).'\\'.$entity;
         $metadata    = $this->getEntityMetadata($entityClass);
-        $bundle      = $this->getContainer()->get('kernel')->getBundle($bundle);
+        $bundle      = $this->getContainer()->get('kernel')->getBundle($dest);
 
         $generator = $this->getGenerator($bundle);
         $generator->generate($bundle, $entity, $metadata[0], $format, $prefix, $withWrite, $forceOverwrite, $layout, $bodyBlock, $usePaginator, $theme, $withFilter, $withSort);
