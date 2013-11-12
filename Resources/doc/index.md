@@ -234,6 +234,6 @@ need to adapt field configuration by hand.
 
 ### 8. Sorting
 
-You can add sorting in columns, by using ``with-sort`` flag in ``pugx:generate:crud`` command.
+You can add sorting in columns, by using ``--with-sort`` flag in ``pugx:generate:crud`` command.
 If you do so, instead of simple labels, table headers will contain links to toggle sorting
 ascending and descending.
