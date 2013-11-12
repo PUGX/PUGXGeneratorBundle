@@ -171,7 +171,11 @@ If you put such theme file in ``src/Acme/DemoBundle/Resources/views/Form/theme.h
 you can use the ``--theme`` option of ``pugx:generate:crud`` command, like in this example:
 
 ``` bash
-$ php app/console pugx:generate:crud --entity=AcmeDemoBundle:Entity --with-write --layout=AcmeDemoBundle::layout.html.twig --theme=AcmeDemoBundle:Form:theme.html.twig
+$ php app/console pugx:generate:crud \
+    --entity=AcmeDemoBundle:Entity \
+    --layout=AcmeDemoBundle::layout.html.twig \
+    --theme=AcmeDemoBundle:Form:theme.html.twig \
+    --with-write
 ```
 
 ### 5. Pagination
