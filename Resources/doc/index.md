@@ -19,6 +19,7 @@ with Symfony ones. We know we should have started versioning by something like `
 6. [I18n](#6-i18n)
 7. [Filters](#7-filters)
 8. [Sorting](#8-sorting)
+9. [Cleanup](#9-cleanup)
 
 ### 1. Download PUGXGeneratorBundle
 
@@ -312,3 +313,12 @@ need to adapt field configuration by hand.
 You can add sorting in columns, by using ``--with-sort`` flag in ``pugx:generate:crud`` command.
 If you do so, instead of simple labels, table headers will contain links to toggle sorting
 ascending and descending.
+
+### 9. Cleanup
+
+As already mentioned in [filters section](#7-filters), if you run more than one generation, it
+could be a good idea to refactor procteted methods in controllers to an abstract class, to avoid
+duplicate code.
+
+Also, since it's not easy to always generate correct spaces, because they depend on dynamic names,
+another good idea could be running a coding stadard fixer, like the [SensioLabs one](http://cs.sensiolabs.org/).
