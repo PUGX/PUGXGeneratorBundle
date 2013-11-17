@@ -296,9 +296,9 @@ $(document).ready(function() {
         if ($icon.length) {
             var $div = $(target);
             if ($div.height() > 0) {
-                $icon.attr('class', 'fa fa-icon-angle-down')
+                $icon.attr('class', 'fa fa-angle-down')
             } else {
-                $icon.attr('class', 'fa fa-icon-angle-right')
+                $icon.attr('class', 'fa fa-angle-right')
             }
         }
     });
