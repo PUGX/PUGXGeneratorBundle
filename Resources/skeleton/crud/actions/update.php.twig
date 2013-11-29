@@ -1,4 +1,3 @@
-
     /**
      * Edits an existing {{ entity }} entity.
      *
@@ -11,7 +10,7 @@
     public function updateAction({{ entity }} ${{ entity|lower }}, Request $request)
     {
         $editForm = $this->createForm(new {{ entity_class }}Type(), ${{ entity|lower }});
-        if ($editForm->bind($request)->isValid()) {
+        if ($editForm->handleRequest($request)->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirect($this->generateUrl('{{ route_name_prefix }}_edit', array('id' => ${{ entity|lower }}->getId())));
