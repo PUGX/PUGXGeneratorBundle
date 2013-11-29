@@ -1,4 +1,3 @@
-
     /**
      * Save filters
      *
@@ -12,7 +11,7 @@
     {
         $request = $this->getRequest();
         $url = is_null($route) ? $this->generateUrl($name) : $this->generateUrl($route, is_null($params) ? array() : $params);
-        if ($request->query->has('submit-filter') && $form->bind($request)->isValid()) {
+        if ($request->query->has('submit-filter') && $form->handleRequest($request)->isValid()) {
             $request->getSession()->set('filter.' . $name, $request->query->get($form->getName()));
 
             return $this->redirect($url);
@@ -33,7 +32,7 @@
     protected function filter(FormInterface $form, QueryBuilder $qb, $name)
     {
         if (!is_null($values = $this->getFilter($name))) {
-            if ($form->bind($values)->isValid()) {
+            if ($form->handleRequest($values)->isValid()) {
                 $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($form, $qb);
             }
         }
