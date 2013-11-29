@@ -1,4 +1,3 @@
-
     /**
      * Deletes a {{ entity }} entity.
      *
@@ -10,7 +9,7 @@
     public function deleteAction({{ entity }} ${{ entity|lower }}, Request $request)
     {
         $form = $this->createDeleteForm(${{ entity|lower }}->getId());
-        if ($form->bind($request)->isValid()) {
+        if ($form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove(${{ entity|lower }});
             $em->flush();
