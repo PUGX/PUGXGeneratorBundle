@@ -9,9 +9,9 @@
         {% set sort = app.session.get('sort.' ~ name) %}
         {% if sort and sort.field == field %}
             {% if sort.type == 'DESC' %}
-                <a href=\"{{ path('"~ route_name_prefix ~"_sort', {field: field, type: 'ASC'}) }}\">{{ label }} <i class=\"fa fa-sort-down\"></i></a>
+                <a href=\"{{ path('"~ route_name_prefix ~"_sort', {field: field, type: 'ASC'}) }}\">{{ label }} <i class=\"fa fa-sort-desc\"></i></a>
             {% elseif sort.type == 'ASC' %}
-                <a href=\"{{ path('"~ route_name_prefix ~"_sort', {field: field, type: 'DESC'}) }}\">{{ label }} <i class=\"fa fa-sort-up\"></i></a>
+                <a href=\"{{ path('"~ route_name_prefix ~"_sort', {field: field, type: 'DESC'}) }}\">{{ label }} <i class=\"fa fa-sort-asc\"></i></a>
             {% endif %}
         {% else %}
             <a href=\"{{ path('"~ route_name_prefix ~"_sort', {field: field, type: 'ASC'}) }}\">{{ label }} <i class=\"fa fa-sort\"></i></a>
