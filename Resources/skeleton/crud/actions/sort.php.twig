@@ -3,7 +3,9 @@
     /**
      * Save order.
      *
+{% if 'annotation' == format %}
      * @Route("/order/{field}/{type}", name="{{ route_name_prefix }}_sort")
+{% endif %}
      */
     public function sortAction($field, $type)
     {
@@ -24,7 +26,7 @@
 
     /**
      * @param  string $name
-     * @return string
+     * @return array
      */
     protected function getOrder($name)
     {

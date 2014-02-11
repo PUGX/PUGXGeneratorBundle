@@ -75,7 +75,7 @@
 
             {%- elseif metadata.type == 'boolean' %}
 
-                <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}<i class="icon-ok"></i>{% endif %}' }}</td>
+                <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}<i class="fa fa-check"></i>{% endif %}' }}</td>
 
             {%- else %}
 
@@ -86,7 +86,7 @@
             {%- if loop.last %}
 
                 <td>
-                    {% include "crud/views/others/actions.html.twig.twig" %}
+                    {%- include "crud/views/others/actions.html.twig.twig" %}
                 </td>
 
             {%- endif %}
@@ -103,10 +103,10 @@
 
     {% if 'new' in actions %}
 
-    <ul class="new_entry unstyled">
+    <ul class="new_entry list-unstyled">
         <li>
             <a class="btn btn-info" href="{{ "{{ path('"~ route_name_prefix ~"_new') }}" }}">
-                <i class="icon-plus"></i> {{ "{{ 'Create a new entry'|trans({}, 'admin') }}" }}
+                <i class="fa fa-plus"></i> {{ "{{ 'Create a new entry'|trans({}, 'admin') }}" }}
             </a>
         </li>
     </ul>

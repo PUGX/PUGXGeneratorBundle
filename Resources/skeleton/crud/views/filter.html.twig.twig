@@ -1,10 +1,14 @@
-<button type="button" class="btn filter" data-toggle="collapse" data-target="#filter">{{ "{{ 'Show/hide filters'|trans({}, 'admin') }}" }} <i class="icon-angle-right"></i></button>
-<div id="filter" class="collapse in">
+
+{% if theme -%}
+{{ "{% form_theme form '"~ theme ~"' %}" }}
+{% endif %}
+<button type="button" class="btn btn-default filter" data-toggle="collapse" data-target="#filter">{{ "{{ 'Show/hide filters'|trans({}, 'admin') }}" }} <i class="fa fa-angle-{{ "{{ app.session.get('filter." ~ entity|lower ~ "') ? 'right' : 'down' }}" }}"></i></button>
+<div id="filter" class="collapse {{ "{% if app.session.get('filter." ~ entity|lower ~ "') %} in{% endif %}" }}">
     <form method="get" action="">
         {{ "{{ form_widget(form) }}" }}
         <p>
-            <button class="btn" type="submit" name="submit-filter"><i class="icon-filter"></i> {{ "{{ 'Filter'|trans({}, 'admin') }}" }}</button>
-            <a class="btn" href="?reset-filter"><i class="icon-remove"></i> {{ "{{ 'Reset filters'|trans({}, 'admin') }}" }}</a>
+            <button class="btn btn-default" type="submit" name="submit-filter"><i class="fa fa-filter"></i> {{ "{{ 'Filter'|trans({}, 'admin') }}" }}</button>
+            <a class="btn btn-default" href="?reset-filter"><i class="fa fa-times"></i> {{ "{{ 'Reset filters'|trans({}, 'admin') }}" }}</a>
         </p>
     </form>
 </div>
