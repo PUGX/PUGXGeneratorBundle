@@ -21,6 +21,7 @@ class DoctrineCrudGenerator extends Generator
     protected $routePrefix;
     protected $routeNamePrefix;
     protected $bundle;
+    protected $destBundle;
     protected $entity;
     protected $metadata;
     protected $format;
@@ -47,6 +48,7 @@ class DoctrineCrudGenerator extends Generator
      * Generate the CRUD controller.
      *
      * @param BundleInterface   $bundle             A bundle object
+     * @param BundleInterface   $destBundle         The destination bundle object
      * @param string            $entity             The entity relative class name
      * @param ClassMetadataInfo $metadata           The entity class metadata
      * @param string            $format             The configuration format (xml, yaml, annotation)
@@ -62,7 +64,7 @@ class DoctrineCrudGenerator extends Generator
      *
      * @throws \RuntimeException
      */
-    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $format, $routePrefix, $needWriteActions, $forceOverwrite, $layout, $bodyBlock, $usePaginator = false, $theme = null, $withFilter = false, $withSort = false)
+    public function generate(BundleInterface $bundle, BundleInterface $destBundle, $entity, ClassMetadataInfo $metadata, $format, $routePrefix, $needWriteActions, $forceOverwrite, $layout, $bodyBlock, $usePaginator = false, $theme = null, $withFilter = false, $withSort = false)
     {
         $this->routePrefix = $routePrefix;
         $this->routeNamePrefix = str_replace('/', '_', $routePrefix);
@@ -82,6 +84,7 @@ class DoctrineCrudGenerator extends Generator
 
         $this->entity       = $entity;
         $this->bundle       = $bundle;
+        $this->destBundle   = $destBundle;
         $this->layout       = $layout;
         $this->bodyBlock    = $bodyBlock;
         $this->metadata     = $metadata;
@@ -93,7 +96,7 @@ class DoctrineCrudGenerator extends Generator
 
         $this->generateControllerClass($forceOverwrite);
 
-        $dir = sprintf('%s/Resources/views/%s', $this->bundle->getPath(), str_replace('\\', '/', $this->entity));
+        $dir = sprintf('%s/Resources/views/%s', $this->destBundle->getPath(), str_replace('\\', '/', $this->entity));
 
         if (!file_exists($dir)) {
             $this->filesystem->mkdir($dir, 0777);
@@ -173,7 +176,7 @@ class DoctrineCrudGenerator extends Generator
      */
     protected function generateControllerClass($forceOverwrite)
     {
-        $dir = $this->bundle->getPath();
+        $dir = $this->destBundle->getPath();
 
         $parts = explode('\\', $this->entity);
         $entityClass = array_pop($parts);
@@ -195,9 +198,11 @@ class DoctrineCrudGenerator extends Generator
             'route_prefix'      => $this->routePrefix,
             'route_name_prefix' => $this->routeNamePrefix,
             'bundle'            => $this->bundle->getName(),
+            'dest_bundle'       => $this->destBundle->getName(),
             'entity'            => $this->entity,
             'entity_class'      => $entityClass,
-            'namespace'         => $this->bundle->getNamespace(),
+            'namespace'         => $this->destBundle->getNamespace(),
+            'bundle_namespace'  => $this->bundle->getNamespace(),
             'entity_namespace'  => $entityNamespace,
             'format'            => $this->format,
             'usePaginator'      => $this->usePaginator,
@@ -216,7 +221,7 @@ class DoctrineCrudGenerator extends Generator
         $entityClass = array_pop($parts);
         $entityNamespace = implode('\\', $parts);
 
-        $dir    = $this->bundle->getPath() .'/Tests/Controller';
+        $dir    = $this->destBundle->getPath() .'/Tests/Controller';
         $target = $dir .'/'. str_replace('\\', '/', $entityNamespace).'/'. $entityClass .'ControllerTest.php';
 
         $this->renderFile('crud/tests/test.php.twig', $target, array(
@@ -242,6 +247,7 @@ class DoctrineCrudGenerator extends Generator
     {
         $this->renderFile('crud/views/index.html.twig.twig', $dir.'/index.html.twig', array(
             'bundle'            => $this->bundle->getName(),
+            'dest_bundle'       => $this->destBundle->getName(),
             'entity'            => $this->entity,
             'fields'            => $this->metadata->fieldMappings,
             'actions'           => $this->actions,

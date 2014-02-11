@@ -21,6 +21,7 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
  */
 class GenerateDoctrineCrudCommand extends BaseCommand
 {
+    private $generator;
     private $formGenerator;
     private $filterGenerator;
 
@@ -98,7 +99,7 @@ EOT
         $theme = $input->getOption('theme');  // TODO validate
         $withFilter = $input->getOption('with-filter');  // TODO validate
         $withSort = $input->getOption('with-sort');  // TODO validate
-        $dest = $input->getOption('dest')?:$bundle;
+        $dest = $input->getOption('dest')?:$bundle;  // TODO validate
 
         if ($withFilter && !$usePaginator) {
             throw new \RuntimeException(sprintf('Cannot use filter without paginator.'));
@@ -108,10 +109,11 @@ EOT
 
         $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle).'\\'.$entity;
         $metadata    = $this->getEntityMetadata($entityClass);
-        $bundle      = $this->getContainer()->get('kernel')->getBundle($dest);
+        $bundle      = $this->getContainer()->get('kernel')->getBundle($bundle);
+        $destBundle  = $this->getContainer()->get('kernel')->getBundle($dest);
 
         $generator = $this->getGenerator($bundle);
-        $generator->generate($bundle, $entity, $metadata[0], $format, $prefix, $withWrite, $forceOverwrite, $layout, $bodyBlock, $usePaginator, $theme, $withFilter, $withSort);
+        $generator->generate($bundle, $destBundle, $entity, $metadata[0], $format, $prefix, $withWrite, $forceOverwrite, $layout, $bodyBlock, $usePaginator, $theme, $withFilter, $withSort);
 
         $output->writeln('Generating the CRUD code: <info>OK</info>');
 
@@ -120,13 +122,13 @@ EOT
 
         // form
         if ($withWrite) {
-            $this->generateForm($bundle, $entity, $metadata);
+            $this->doGenerateForm($bundle, $destBundle, $entity, $metadata);
             $output->writeln('Generating the Form code: <info>OK</info>');
         }
 
         // filter form
         if ($withFilter) {
-            $this->generateFilter($bundle, $entity, $metadata);
+            $this->doGenerateFilter($bundle, $destBundle, $entity, $metadata);
             $output->writeln('Generating the Filter code: <info>OK</info>');
         }
 
@@ -158,25 +160,19 @@ EOT
         return $this->filterGenerator;
     }
 
-    /**
-     * Tries to generate forms if they don't exist yet and if we need write operations on entities.
-     */
-    protected function generateForm($bundle, $entity, $metadata)
+    protected function doGenerateForm($bundle, $destBundle, $entity, $metadata)
     {
         try {
-            $this->getFormGenerator($bundle)->generate($bundle, $entity, $metadata[0]);
+            $this->getFormGenerator($bundle)->generate($bundle, $destBundle, $entity, $metadata[0]);
         } catch (\RuntimeException $e) {
             // form already exists
         }
     }
 
-    /**
-     * Tries to generate filter forms if they don't exist yet
-     */
-    protected function generateFilter($bundle, $entity, $metadata)
+    protected function doGenerateFilter($bundle, $destBundle, $entity, $metadata)
     {
         try {
-            $this->getFilterGenerator($bundle)->generateFilter($bundle, $entity, $metadata[0]);
+            $this->getFilterGenerator($bundle)->generateFilter($bundle, $destBundle, $entity, $metadata[0]);
         } catch (\RuntimeException $e) {
             // form already exists
         }
@@ -234,7 +230,12 @@ EOT
         $input->setOption('entity', $entity);
         list($bundle, $entity) = $this->parseShortcutNotation($entity);
 
+        // Entity exists?
+        $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle).'\\'.$entity;
+        $metadata = $this->getEntityMetadata($entityClass);
+
         // layout
+        $template = $input->getOption('layout');
         $output->writeln(array(
             '',
             'Select a layout. Example: <comment>AcmeDemoBundle::layout.html.twig</comment>',
@@ -306,6 +307,8 @@ EOT
         ));
         $prefix = $dialog->ask($output, $dialog->getQuestion('Routes prefix', '/'.$prefix), '/'.$prefix);
         $input->setOption('route-prefix', $prefix);
+
+
 
         // summary
         $output->writeln(array(

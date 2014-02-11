@@ -1,10 +1,9 @@
-
-                        <div class="btn-group">
+                <div class="btn-group">
                     {%- for action in record_actions %}
 
-                            <a class="btn btn-default btn-sm" href="{{ "{{ path('"~ route_name_prefix ~"_"~ action ~"', {'id': "~ entity|lower ~".id}) }}" }}">
-                                <i class="fa fa-{{ action == 'show' ? 'file-o' : action }}"></i> {{ "{{ '"~ action ~"'|trans({}, 'admin') }}" }}
-                            </a>
+                        <a class="btn btn-small" href="{{ "{{ path('"~ route_name_prefix ~"_"~ action ~"', {'id': "~ entity|lower ~".id}) }}" }}">
+                            <i class="icon-{{ action == 'show' ? 'file' : action }}"></i> {{ "{{ '"~ action ~"'|trans({}, 'admin') }}" }}
+                        </a>
                     {%- endfor %}
 
-                        </div>
+                </div>

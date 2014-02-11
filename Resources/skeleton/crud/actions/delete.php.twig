@@ -7,10 +7,10 @@
      * @Method("POST")
 {% endif %}
      */
-    public function deleteAction({{ entity }} ${{ entity|lower }}, Request $request)
+    public function deleteAction({{ entity }} ${{ entity|lower }})
     {
         $form = $this->createDeleteForm(${{ entity|lower }}->getId());
-        if ($form->bind($request)->isValid()) {
+        if ($form->bind($this->getRequest())->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove(${{ entity|lower }});
             $em->flush();
