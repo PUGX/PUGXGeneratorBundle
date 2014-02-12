@@ -4,7 +4,7 @@
 {% if 'annotation' == format %}
      * @Route("/create", name="{{ route_name_prefix }}_create")
      * @Method("POST")
-     * @Template("{{ bundle }}:{{ entity }}:new.html.twig")
+     * @Template("{{ dest_bundle }}:{{ entity }}:new.html.twig")
 {% endif %}
      */
     public function createAction(Request $request)

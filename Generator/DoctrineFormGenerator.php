@@ -33,19 +33,20 @@ class DoctrineFormGenerator extends Generator
     /**
      * Generates the entity form class if it does not exist.
      *
-     * @param BundleInterface   $bundle     The bundle in which to create the class
+     * @param BundleInterface   $bundle     The origin bundle
+     * @param BundleInterface   $destBundle The destination bundle
      * @param string            $entity     The entity relative class name
      * @param ClassMetadataInfo $metadata   The entity metadata class
      *
      * @throws \RuntimeException
      */
-    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata)
+    public function generate(BundleInterface $bundle, BundleInterface $destBundle, $entity, ClassMetadataInfo $metadata)
     {
         $parts       = explode('\\', $entity);
         $entityClass = array_pop($parts);
 
         $this->className = $entityClass.'Type';
-        $dirPath         = $bundle->getPath().'/Form/Type';
+        $dirPath         = $destBundle->getPath().'/Form/Type';
         $this->classPath = $dirPath.'/'.str_replace('\\', '/', $entity).'Type.php';
 
         if (file_exists($this->classPath)) {
@@ -61,7 +62,8 @@ class DoctrineFormGenerator extends Generator
 
         $this->renderFile('form/FormType.php.twig', $this->classPath, array(
             'fields'           => $this->getFieldsFromMetadata($metadata),
-            'namespace'        => $bundle->getNamespace(),
+            'namespace'        => $destBundle->getNamespace(),
+            'bundle_namespace' => $bundle->getNamespace(),
             'entity_namespace' => implode('\\', $parts),
             'entity_class'     => $entityClass,
             'bundle'           => $bundle->getName(),
@@ -73,18 +75,19 @@ class DoctrineFormGenerator extends Generator
     /**
      * Generates the entity form class if it does not exist.
      *
-     * @param BundleInterface   $bundle   The bundle in which to create the class
-     * @param string            $entity   The entity relative class name
-     * @param ClassMetadataInfo $metadata The entity metadata class
+     * @param BundleInterface   $bundle         The origin bundle
+     * @param BundleInterface   $destBundle     The bundle in which to create the class
+     * @param string            $entity         The entity relative class name
+     * @param ClassMetadataInfo $metadata       The entity metadata class
      * @throws \RuntimeException
      */
-    public function generateFilter(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata)
+    public function generateFilter(BundleInterface $bundle, BundleInterface $destBundle, $entity, ClassMetadataInfo $metadata)
     {
         $parts       = explode('\\', $entity);
         $entityClass = array_pop($parts);
 
         $this->className = $entityClass.'FilterType';
-        $dirPath         = $bundle->getPath().'/Form/Type';
+        $dirPath         = $destBundle->getPath().'/Form/Type';
         $this->classPath = $dirPath.'/'.str_replace('\\', '/', $entity).'FilterType.php';
 
         if (file_exists($this->classPath)) {
@@ -101,7 +104,8 @@ class DoctrineFormGenerator extends Generator
         $this->renderFile('filter/FormFilterType.php.twig', $this->classPath, array(
             'bundle'           => $bundle->getName(),
             'fields'           => $this->getFieldsFromMetadata($metadata),
-            'namespace'        => $bundle->getNamespace(),
+            'namespace'        => $destBundle->getNamespace(),
+            'bundle_namespace' => $bundle->getNamespace(),
             'entity_namespace' => implode('\\', $parts),
             'entity_class'     => $entityClass,
             'form_class'       => $this->className,

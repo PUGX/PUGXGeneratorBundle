@@ -6,8 +6,9 @@
     "license": "LGPL-3.0+",
     "authors": [
         {
-            "name":"Massimiliano Arione",
-            "email":"garakkio@gmail.com"
+            "name": "Massimiliano Arione",
+            "email": "garakkio@gmail.com",
+            "homepage": "http://massimilianoarione.it"
         },
         {
             "name": "Leonardo Proietti",
@@ -15,7 +16,7 @@
         }
     ],
     "require": {
-        "sensio/generator-bundle": "2.3.*"
+        "sensio/generator-bundle": "~2.3"
     },
     "suggest": {
         "knplabs/knp-paginator-bundle": "Needed for optional pagination",
