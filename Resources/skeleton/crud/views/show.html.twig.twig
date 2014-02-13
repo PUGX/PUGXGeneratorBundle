@@ -20,6 +20,10 @@
 
                 <td>{{ '{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|date(\'Y-m-d H:i:s\') }}' }}</td>
 
+            {%- elseif metadata.type == 'datetimetz' %}
+
+                <td>{{ '{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|date(\'Y-m-d H:i:s P\') }}' }}</td>
+
             {%- elseif metadata.type == 'time' %}
 
                 <td>{{ '{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|date(\'H:i:s\') }}' }}</td>
