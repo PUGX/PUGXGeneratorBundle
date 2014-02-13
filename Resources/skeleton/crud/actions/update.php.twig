@@ -1,4 +1,3 @@
-
     /**
      * Edits an existing {{ entity }} entity.
      *
@@ -8,12 +7,12 @@
      * @Template("{{ dest_bundle }}:{{ entity }}:edit.html.twig")
 {% endif %}
      */
-    public function updateAction({{ entity }} ${{ entity|lower }})
+    public function updateAction({{ entity }} ${{ entity|lower }}, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $deleteForm = $this->createDeleteForm(${{ entity|lower }}->getId());
         $editForm = $this->createForm(new {{ entity_class }}Type(), ${{ entity|lower }});
-        if ($editForm->bind($this->getRequest())->isValid()) {
+        if ($editForm->handleRequest($request)->isValid()) {
             $em->flush();
 
             return $this->redirect($this->generateUrl('{{ route_name_prefix }}_edit', array('id' => ${{ entity|lower }}->getId())));
