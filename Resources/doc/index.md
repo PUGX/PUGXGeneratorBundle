@@ -28,7 +28,7 @@ with Symfony ones. We know we should have started versioning by something like `
 Run composer to download the bundle:
 
 ``` bash
-$ php composer.phar require pugx/generator-bundle:2.4.*
+$ php composer.phar require pugx/generator-bundle:2.4.* --dev
 ```
 
 Notice that if your composer.json requires "sensio/generator-bundle", you can delete it (since

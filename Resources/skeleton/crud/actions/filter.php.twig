@@ -32,7 +32,7 @@
     protected function filter(FormInterface $form, QueryBuilder $qb, $name)
     {
         if (!is_null($values = $this->getFilter($name))) {
-            if ($form->handleRequest($values)->isValid()) {
+            if ($form->submit($values)->isValid()) {
                 $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($form, $qb);
             }
         }
