@@ -17,17 +17,32 @@
         }
 {% endif %}
 {% if usePaginator %}
-
+    {% if withSort %}
         {% if withFilter -%}
-
         $qb = $em->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('{{ entity|lower|slice(0, 1) }}');
+        if (is_array($order = $this->getOrder('{{ entity|lower }}'))) {
+        $qb->orderBy($order['field'], $order['type']);
+        }
+        $paginator = $this->filter($form, $qb, '{{ entity|lower }}');
+        {% else -%}
+        $qb = $em->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('{{ entity|lower|slice(0, 1) }}');
+        if (is_array($order = $this->getOrder('{{ entity|lower }}'))) {
+        $qb->orderBy($order['field'], $order['type']);
+        }
+        $q = $qb->getQuery();
+        $paginator = $this->get('knp_paginator')->paginate($q, $request->query->get('page', 1), 20);
+        {% endif %}
+    {% else %}
+        {% if withFilter -%}
+        $qb = $em->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('{{ entity|lower|slice(0, 1) }}');
+        if (is_array($order = $this->getOrder('{{ entity|lower }}'))) {
         $paginator = $this->filter($form, $qb, '{{ entity|lower }}');
         {% else -%}
 
         $q = $em->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('{{ entity|lower|slice(0, 1) }}')->getQuery();
         $paginator = $this->get('knp_paginator')->paginate($q, $request->query->get('page', 1), 20);
         {% endif %}
-
+    {% endif %}
 {% else -%}
 
      	{% if withSort %}
@@ -44,20 +59,23 @@
 {% if 'annotation' == format %}
         return array(
 {% if withFilter %}
-            'form' => $form->createView(),
+            'form'      => $form->createView(),
 {% endif %}
 {% if usePaginator %}
             'paginator' => $paginator,
 {% else %}
-            'entities' => $entities,
+            'entities'  => $entities,
 {% endif %}
         );
 {% else %}
         return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:index.html.twig', array(
+{% if withFilter %}
+            'form'      => $form->createView(),
+{% endif %}
 {% if usePaginator %}
             'paginator' => $paginator,
 {% else %}
-            'entities' => $entities,
+            'entities'  => $entities,
 {% endif %}
         ));
 {% endif %}
