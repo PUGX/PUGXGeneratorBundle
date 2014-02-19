@@ -69,6 +69,11 @@ class DoctrineCrudGenerator extends Generator
         $this->routePrefix = $routePrefix;
         $this->routeNamePrefix = str_replace('/', '_', $routePrefix);
         $this->actions = $needWriteActions ? array('index', 'show', 'new', 'edit', 'delete') : array('index', 'show');
+
+        if ($withSort) {
+            $this->actions[] = 'sort';
+        }
+
         if ($withFilter) {
             $this->actions[] = 'filter';
             $this->filterTemplate = '';
