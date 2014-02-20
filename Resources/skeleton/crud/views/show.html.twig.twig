@@ -34,7 +34,7 @@
 
             {%- elseif metadata.type == 'boolean' %}
 
-                <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}<i class="fa fa-check"></i>{% endif %}' }}</td>
+                <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}' }}</td>
 
             {%- else %}
 
