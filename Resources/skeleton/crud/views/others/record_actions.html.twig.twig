@@ -6,17 +6,17 @@
     <div class="btn-group record_actions">
 
         <a class="btn btn-info" href="{{ "{{ path('"~ route_name_prefix ~"') }}" }}">
-            <i class="icon-list"></i> {{ "{{ 'Back to the list'|trans({}, 'admin') }}" }}
+            <i class="fa fa-list"></i> {{ "{{ 'Back to the list'|trans({}, 'admin') }}" }}
         </a>
 
 {% if ('edit' in actions) and (not hide_edit) %}
         <a class="btn btn-primary" href="{{ "{{ path('"~ route_name_prefix ~"_edit', {id: "~ entity|lower ~".id}) }}" }}">
-            <i class="icon-edit"></i> {{ "{{ 'Edit'|trans({}, 'admin') }}" }}
+            <i class="fa fa-edit"></i> {{ "{{ 'Edit'|trans({}, 'admin') }}" }}
         </a>
 {% endif %}
 
 {% if ('delete' in actions) and (not hide_delete) %}
-        <button class="btn btn-danger" type="submit"><i class="icon-trash"></i> {{ "{{ 'Delete'|trans({}, 'admin') }}" }}</button>
+        <button class="btn btn-danger" type="submit"><i class="fa fa-trash-o"></i> {{ "{{ 'Delete'|trans({}, 'admin') }}" }}</button>
 {% endif %}
 
     </div>
