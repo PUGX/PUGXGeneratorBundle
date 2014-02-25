@@ -45,6 +45,7 @@ class {{ form_class }} extends AbstractType
             'data_class'        => '{{ bundle_namespace }}\Entity{{ entity_namespace ? '\\' ~ entity_namespace : '' }}\{{ entity_class }}',
             'csrf_protection'   => false,
             'validation_groups' => array('filter'),
+            'method'            => 'GET',
         ));
     }
 
