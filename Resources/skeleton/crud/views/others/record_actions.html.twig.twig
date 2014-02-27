@@ -25,18 +25,22 @@
     <input name="modal" type="hidden" value="0">
 </form>
 
-<div id="delete_confirm" class="modal hide fade">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3>{{ "{{ 'Confirm delete'|trans({}, 'admin') }}" }}</h3>
-    </div>
-    <div class="modal-body">
-        <p>{{ "{{ 'You are about to delete an item'|trans({}, 'admin') }}" }}, {{ "{{ 'this procedure is irreversible'|trans({}, 'admin') }}" }}.</p>
-        <p>{{ "{{ 'Do you want to proceed?'|trans({}, 'admin') }}" }}</p>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-danger">{{ "{{ 'Yes'|trans({}, 'admin') }}" }}</button>
-        <button class="btn btn-secondary" data-dismiss="modal">{{ "{{ 'No'|trans({}, 'admin') }}" }}</button>
+<div id="delete_confirm" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>{{ "{{ 'Confirm delete'|trans({}, 'admin') }}" }}</h3>
+            </div>
+            <div class="modal-body">
+                <p>{{ "{{ 'You are about to delete an item'|trans({}, 'admin') }}" }}, {{ "{{ 'this procedure is irreversible'|trans({}, 'admin') }}" }}.</p>
+                <p>{{ "{{ 'Do you want to proceed?'|trans({}, 'admin') }}" }}</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger">{{ "{{ 'Yes'|trans({}, 'admin') }}" }}</button>
+                <button class="btn btn-secondary" data-dismiss="modal">{{ "{{ 'No'|trans({}, 'admin') }}" }}</button>
+            </div>
+        </div>
     </div>
 </div>
 {% endif %}
