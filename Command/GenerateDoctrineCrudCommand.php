@@ -49,21 +49,25 @@ class GenerateDoctrineCrudCommand extends BaseCommand
             ))
             ->setDescription('Generates a CRUD based on a Doctrine entity')
             ->setHelp(<<<EOT
-The <info>pugx:generate:crud</info> command generates a CRUD based on a Doctrine entity.
+The <info>%command.name%</info> command generates a CRUD based on a Doctrine entity.
 
-The default command only generates the list and show actions.
+The default command only generates the <comment>list</comment> and <comment>show</comment> actions.
 
 <info>php app/console pugx:generate:crud --entity=AcmeBlogBundle:Post --route-prefix=post_admin</info>
 
-Using the --with-write option allows to generate the new, edit and delete actions.
+Using the --with-write option allows to generate the <comment>new</comment>, <comment>edit</comment> and <comment>delete</comment> actions.
 
 <info>php app/console pugx:generate:crud --entity=AcmeBlogBundle:Post --route-prefix=post_admin --with-write</info>
 
-Using the --use-paginator option allows to generate list action with paginator.
+Using the --use-paginator option allows to generate <comment>list</comment> action with paginator.
 
-Using the --with-filter option allows to generate list action with filter.
+Using the --with-filter option allows to generate <comment>list</comment> action with filter.
 
-Using the --with-sort option allows to generate list action with sorting.
+Using the --with-sort option allows to generate <comment>list</comment> action with sorting.
+
+Using the --dest option allows to generate CRUD in a different bundle:
+
+<info>php %command.full_name% --entity=AcmeBlogBundle:Post --dest=AnotherBundle</info>
 EOT
             )
             ->setName('pugx:generate:crud')
