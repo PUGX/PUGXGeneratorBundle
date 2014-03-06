@@ -2,7 +2,7 @@
 
 namespace {{ namespace }}\Controller{{ entity_namespace ? '\\' ~ entity_namespace : '' }};
 
-{% if 'new' in actions or 'edit' in actions or 'delete' in actions %}
+{% if 'new' in actions or 'edit' in actions or 'delete' in actions or usePaginator %}
 use Symfony\Component\HttpFoundation\Request;
 {%- endif %}
 
