@@ -25,5 +25,10 @@
     "autoload": {
         "psr-0": { "PUGX\\GeneratorBundle": "" }
     },
-    "target-dir": "PUGX/GeneratorBundle"
+    "target-dir": "PUGX/GeneratorBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.5.x-dev"
+        }
+    }
 }
