@@ -21,7 +21,6 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
  */
 class GenerateDoctrineCrudCommand extends BaseCommand
 {
-    private $generator;
     private $formGenerator;
     private $filterGenerator;
 
@@ -236,10 +235,9 @@ EOT
 
         // Entity exists?
         $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle).'\\'.$entity;
-        $metadata = $this->getEntityMetadata($entityClass);
+        $this->getEntityMetadata($entityClass);
 
         // layout
-        $template = $input->getOption('layout');
         $output->writeln(array(
             '',
             'Select a layout. Example: <comment>AcmeDemoBundle::layout.html.twig</comment>',
