@@ -76,16 +76,13 @@ Then, you can use a simple layout, like this one:
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>{% block title '' %}</title>
+        <title>{% block title 'My admin' %}</title>
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        {% stylesheets
-            '@AcmeDemoBundle/Resources/public/css/bootstrap.css'
-            '@AcmeDemoBundle/Resources/public/css/font-awesome.css'
-        %}
-        <link rel="stylesheet" href="{{ asset_url }}">
-        {% endstylesheets %}
-        {% block stylesheets '' %}
+        {% block stylesheets %}
+            <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+        {% endblock %}
     </head>
     <body>
         <nav class="navbar navbar-fixed-top">
@@ -94,14 +91,10 @@ Then, you can use a simple layout, like this one:
         <div class="container">
             {% block body '' %}
         </div>
-        <script src="http://code.jquery.com/jquery.min.js"></script>
-        {% javascripts
-            '@AcmeDemoBundle/Resources/public/js/bootstrap.js'
-            '@AcmeDemoBundle/Resources/public/js/acme.js'
-        %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-        {% block javascripts '' %}
+        {% block javascripts %}
+            <script src="//code.jquery.com/jquery-2.1.0.js"></script>
+            <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        {% endblock %}
     </body>
 </html>
 ```
@@ -111,16 +104,16 @@ based on jQuery, in one of you files (e.g. ``acme.js`` in layout above):
 
 ``` js
 $(document).ready(function() {
+    'use strict';
     /* delete confirm */
-    $('form#delete').submit(function(e) {
-        var $form = $(this);
-        var $hidden = $form.find('input[name="modal"]');
-        if ($hidden.val() != 1) {
+    $('form#delete').submit(function (e) {
+        var $form = $(this), $hidden = $form.find('input[name="modal"]');
+        if ($hidden.val() === '0') {
             e.preventDefault();
             $('#delete_confirm').modal('show');
-            $('#delete_confirm').find('button.btn-danger').click(function() {
+            $('#delete_confirm').find('button.btn-danger').click(function () {
                 $('#delete_confirm').modal('hide');
-                $hidden.val(1);
+                $hidden.val('1');
                 $form.submit();
             });
         }
@@ -288,17 +281,16 @@ To enable automatic opening/closing of filters, based on session, you can add fo
 code to your Javascript:
 
 ``` js
-$(document).ready(function() {
+$(document).ready(function () {
+    'use strict';
     /* filter icon */
-    $('button.filter').click(function() {
-        var $icon = $(this).find('i');
-        var target = $(this).attr('data-target');
+    $('button.filter').click(function () {
+        var $icon = $(this).find('i'), target = $(this).attr('data-target');
         if ($icon.length) {
-            var $div = $(target);
-            if ($div.height() > 0) {
-                $icon.attr('class', 'fa fa-angle-down')
+            if ($(target).height() > 0) {
+                $icon.attr('class', 'fa fa-angle-down');
             } else {
-                $icon.attr('class', 'fa fa-angle-right')
+                $icon.attr('class', 'fa fa-angle-right');
             }
         }
     });
