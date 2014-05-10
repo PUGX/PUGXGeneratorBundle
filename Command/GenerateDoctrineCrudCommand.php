@@ -202,7 +202,9 @@ EOT
             $skeletonDirs[] = $dir;
         }
 
-        $skeletonDirs[] = __DIR__.'/../Resources/skeleton';
+        $bundlesDirectories = $this->getContainer()->get('kernel')->locateResource('@PUGXGeneratorBundle/Resources/skeleton', null, false);
+
+        $skeletonDirs = array_merge($skeletonDirs, $bundlesDirectories);
         $skeletonDirs[] = __DIR__.'/../Resources';
 
         return array_merge($skeletonDirs, $baseSkeletonDirs);
