@@ -239,7 +239,8 @@ class DoctrineCrudGenerator extends Generator
             'entity_namespace'  => $entityNamespace,
             'actions'           => $this->actions,
             'form_type_name'    => strtolower($entityClass),
-            // TODO 'usePaginator'      => $this->usePaginator,
+            'withFilter'        => $this->withFilter,
+            'withSort'          => $this->withSort,
         ));
     }
 
