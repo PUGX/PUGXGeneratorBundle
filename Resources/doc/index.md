@@ -311,6 +311,9 @@ ascending and descending.
 As already mentioned in [filters section](#7-filters), if you run more than one generation, it
 could be a good idea to refactor procteted methods in controllers to an abstract class, to avoid
 duplicate code.
+If you find yourself repeating generating many CRUDs, you can also copy templates from
+``skeleton`` directory (inside this bundle) to ``app\Resources\PUGXGeneratorBundle\skeleton`` (in
+your project).
 
 Also, since it's not easy to always generate correct spaces, because they depend on dynamic names,
-another good idea could be running a coding stadard fixer, like the [SensioLabs one](http://cs.sensiolabs.org/).
+another good idea could be running a coding standard fixer, like the [SensioLabs one](http://cs.sensiolabs.org/).

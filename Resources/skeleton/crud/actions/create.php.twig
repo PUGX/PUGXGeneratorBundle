@@ -1,3 +1,4 @@
+
     /**
      * Creates a new {{ entity }} entity.
      *
@@ -11,7 +12,6 @@
     {
         ${{ entity|lower }} = new {{ entity_class }}();
         $form = $this->createForm(new {{ entity_class }}Type(), ${{ entity|lower }});
-
         if ($form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist(${{ entity|lower }});

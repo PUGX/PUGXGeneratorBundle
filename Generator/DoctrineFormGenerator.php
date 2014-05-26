@@ -6,13 +6,12 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
-
 /**
  * Generates a form class based on a Doctrine entity.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Hugo Hamon <hugo.hamon@sensio.com>
- * @author Massimiliano Arione
+ * @author Massimiliano Arione <garakkio@gmail.com>
  * @author Eugenio Pombi <euxpom@gmail.com>
  */
 class DoctrineFormGenerator extends Generator
@@ -75,10 +74,10 @@ class DoctrineFormGenerator extends Generator
     /**
      * Generates the entity form class if it does not exist.
      *
-     * @param BundleInterface   $bundle         The origin bundle
-     * @param BundleInterface   $destBundle     The bundle in which to create the class
-     * @param string            $entity         The entity relative class name
-     * @param ClassMetadataInfo $metadata       The entity metadata class
+     * @param  BundleInterface   $bundle     The origin bundle
+     * @param  BundleInterface   $destBundle The bundle in which to create the class
+     * @param  string            $entity     The entity relative class name
+     * @param  ClassMetadataInfo $metadata   The entity metadata class
      * @throws \RuntimeException
      */
     public function generateFilter(BundleInterface $bundle, BundleInterface $destBundle, $entity, ClassMetadataInfo $metadata)
@@ -117,8 +116,8 @@ class DoctrineFormGenerator extends Generator
      * Returns an array of fields. Fields can be both column fields and
      * association fields.
      *
-     * @param ClassMetadataInfo $metadata
-     * @return array $fields
+     * @param  ClassMetadataInfo $metadata
+     * @return array             $fields
      */
     private function getFieldsFromMetadata(ClassMetadataInfo $metadata)
     {

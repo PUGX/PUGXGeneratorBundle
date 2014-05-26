@@ -47,20 +47,20 @@ class DoctrineCrudGenerator extends Generator
     /**
      * Generate the CRUD controller.
      *
-     * @param BundleInterface   $bundle             A bundle object
-     * @param BundleInterface   $destBundle         The destination bundle object
-     * @param string            $entity             The entity relative class name
-     * @param ClassMetadataInfo $metadata           The entity class metadata
-     * @param string            $format             The configuration format (xml, yaml, annotation)
-     * @param string            $routePrefix        The route name prefix
-     * @param bool              $needWriteActions   Wether or not to generate write actions
-     * @param bool              $forceOverwrite     Wether to overwrate the controller file if it already exists
-     * @param string            $layout             The layout (default: "TwigBundle::layout.html.twig")
-     * @param string            $bodyBlock          The name of body block in layout (default: "body")
-     * @param bool              $usePaginator       Wether or not to use paginator
-     * @param string            $theme              Possible theme for forms
-     * @param bool              $withFilter         Wether or not to use filters
-     * @param bool              $withSort           Wether or not to use sorting
+     * @param BundleInterface   $bundle           A bundle object
+     * @param BundleInterface   $destBundle       The destination bundle object
+     * @param string            $entity           The entity relative class name
+     * @param ClassMetadataInfo $metadata         The entity class metadata
+     * @param string            $format           The configuration format (xml, yaml, annotation)
+     * @param string            $routePrefix      The route name prefix
+     * @param bool              $needWriteActions Wether or not to generate write actions
+     * @param bool              $forceOverwrite   Wether to overwrate the controller file if it already exists
+     * @param string            $layout           The layout (default: "TwigBundle::layout.html.twig")
+     * @param string            $bodyBlock        The name of body block in layout (default: "body")
+     * @param bool              $usePaginator     Wether or not to use paginator
+     * @param string            $theme            Possible theme for forms
+     * @param bool              $withFilter       Wether or not to use filters
+     * @param bool              $withSort         Wether or not to use sorting
      *
      * @throws \RuntimeException
      */
@@ -241,6 +241,7 @@ class DoctrineCrudGenerator extends Generator
             'form_type_name'    => strtolower($entityClass),
             'withFilter'        => $this->withFilter,
             'withSort'          => $this->withSort,
+            'fields'            => $this->metadata->fieldMappings,
         ));
     }
 
@@ -352,7 +353,7 @@ class DoctrineCrudGenerator extends Generator
      */
     private function getRecordActions()
     {
-        return array_filter($this->actions, function($item) {
+        return array_filter($this->actions, function ($item) {
             return in_array($item, array('show', 'edit'));
         });
     }

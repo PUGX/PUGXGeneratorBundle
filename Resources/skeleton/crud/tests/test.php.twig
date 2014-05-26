@@ -20,8 +20,10 @@ class {{ entity_class }}ControllerTest extends WebTestCase
         $this->assertCount(0, $crawler->filter('table.records_list tbody tr'));
         $crawler = $client->click($crawler->filter('.new_entry a')->link());
         $form = $crawler->filter('form button[type="submit"]')->form(array(
-            '{{ form_type_name|lower }}[field_name]' => 'First value',
-            // ... change field_name and add other fields here
+            {% for field, metadata in fields if field != 'id' %}
+'{{ form_type_name|lower }}[{{ field }}]' => 'First value',
+            {% endfor %}
+// ... adapt fields value here...
         ));
         $client->submit($form);
         $crawler = $client->followRedirect();
@@ -50,8 +52,10 @@ class {{ entity_class }}ControllerTest extends WebTestCase
         $this->assertCount(0, $crawler->filter('table.records_list tbody tr:contains("Changed")'));
         $crawler = $client->click($crawler->filter('table.records_list tbody tr td .btn-group a')->eq(1)->link());
         $form = $crawler->filter('form button[type="submit"]')->form(array(
-            '{{ form_type_name|lower }}[field_name]' => 'Changed',
-            // ... change field_name here
+            {% for field, metadata in fields if field != 'id' %}
+'{{ form_type_name|lower }}[{{ field }}]' => 'Changed',
+            {% endfor %}
+// ... adapt fields value here ...
         ));
         $client->submit($form);
         $crawler = $client->followRedirect();
@@ -70,7 +74,7 @@ class {{ entity_class }}ControllerTest extends WebTestCase
         $crawler = $client->click($crawler->filter('table.records_list tbody tr td .btn-group a')->eq(1)->link());
         $form = $crawler->filter('form button[type="submit"]')->form(array(
             '{{ form_type_name|lower }}[field_name]' => '',
-            // ... use a required field here
+            // ... use a required field here ...
         ));
         $crawler = $client->submit($form);
         $this->assertGreaterThan(0, $crawler->filter('form div.has-error')->count());
@@ -91,6 +95,8 @@ class {{ entity_class }}ControllerTest extends WebTestCase
         $this->assertCount(0, $crawler->filter('table.records_list tbody tr'));
     }
     {%- if withFilter %}
+
+
     /**
      * @depends testCreate
      */
@@ -99,8 +105,10 @@ class {{ entity_class }}ControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/{{ route_prefix }}/');
         $form = $crawler->filter('div#filter form button[type="submit"]')->form(array(
-            '{{ form_type_name|lower }}[field_name]' => 'First%',
-            // change field_name here
+            {% for field, metadata in fields if field != 'id' %}
+'{{ form_type_name|lower }}_filter[{{ field }}]' => 'First%',
+            {% endfor %}
+// ... maybe use just one field here ...
         ));
         $client->submit($form);
         $crawler = $client->followRedirect();

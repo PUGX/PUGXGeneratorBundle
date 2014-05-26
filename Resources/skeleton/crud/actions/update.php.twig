@@ -1,3 +1,4 @@
+
     /**
      * Edits an existing {{ entity }} entity.
      *
@@ -10,13 +11,13 @@
     public function updateAction({{ entity }} ${{ entity|lower }}, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $deleteForm = $this->createDeleteForm(${{ entity|lower }}->getId());
         $editForm = $this->createForm(new {{ entity_class }}Type(), ${{ entity|lower }});
         if ($editForm->handleRequest($request)->isValid()) {
             $em->flush();
 
             return $this->redirect($this->generateUrl('{{ route_name_prefix }}_edit', array('id' => ${{ entity|lower }}->getId())));
         }
+        $deleteForm = $this->createDeleteForm(${{ entity|lower }}->getId());
 
 {% if 'annotation' == format %}
         return array(
