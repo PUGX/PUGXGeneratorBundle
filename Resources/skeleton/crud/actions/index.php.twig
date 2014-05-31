@@ -4,6 +4,7 @@
      *
 {% if 'annotation' == format %}
      * @Route("/", name="{{ route_name_prefix }}")
+     * @Method("GET")
      * @Template()
 {% endif %}
      */
@@ -49,7 +50,7 @@
             $entities = $em->getRepository('{{ bundle }}:{{ entity }}')->findAll();
         }
         {% else %}
-            $entities = $em->getRepository('{{ bundle }}:{{ entity }}')->findAll();
+        $entities = $em->getRepository('{{ bundle }}:{{ entity }}')->findAll();
         {% endif %}
 {% endif -%}
 

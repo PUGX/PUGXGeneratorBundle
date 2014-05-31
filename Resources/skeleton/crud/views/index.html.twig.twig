@@ -21,12 +21,14 @@
 
 {{ "{% from _self import thead %}" }}
 
-{% endif -%}
+{% endif %}
+
 
 {{ '{% block ' ~ bodyBlock ~ ' %}' }}
     <h1>{{ "{{ '%entity% list'|trans({'%entity%': '"~ entity ~"'}, 'admin') }}" }}</h1>
+    {%- if withFilter %}
 
-    {% if withFilter -%}
+
     {{ "{% include '"~ dest_bundle ~":"~ entity ~":filter.html.twig' with {form: form} %}" }}
     {% endif %}
 
@@ -49,63 +51,63 @@
             </tr>
         </thead>
         <tbody>
-        {{ '{% for '~ entity|lower ~' in ' ~ (usePaginator ? 'paginator' : 'entities') ~ ' %}' }}
-            <tr>
+            {{ '{% for '~ entity|lower ~' in ' ~ (usePaginator ? 'paginator' : 'entities') ~ ' %}' }}
+                <tr>
 
-        {%- for field, metadata in fields %}
-            {%- if loop.first and ('show' in actions) %}
+            {%- for field, metadata in fields %}
+                {%- if loop.first and ('show' in actions) %}
 
-                <td><a href="{{ "{{ path('"~ route_name_prefix ~"_show', {id: "~ entity|lower ~".id}) }}" }}">{{ '{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' }}' }}</a></td>
+                    <td><a href="{{ "{{ path('"~ route_name_prefix ~"_show', {id: "~ entity|lower ~".id}) }}" }}">{{ '{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' }}' }}</a></td>
 
-            {%- elseif metadata.type == 'date' %}
+                {%- elseif metadata.type == 'date' %}
 
-                <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|date(\'Y-m-d\') }}{% endif %}' }}</td>
+                    <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|date(\'Y-m-d\') }}{% endif %}' }}</td>
 
-            {%- elseif metadata.type == 'datetime' %}
+                {%- elseif metadata.type == 'datetime' %}
 
-                <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|date(\'Y-m-d H:i:s\') }}{% endif %}' }}</td>
+                    <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|date(\'Y-m-d H:i:s\') }}{% endif %}' }}</td>
 
-            {%- elseif metadata.type == 'datetimetz' %}
+                {%- elseif metadata.type == 'datetimetz' %}
 
-                <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|date(\'Y-m-d H:i:s P\') }}{% endif %}' }}</td>
+                    <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|date(\'Y-m-d H:i:s P\') }}{% endif %}' }}</td>
 
-            {%- elseif metadata.type == 'time' %}
+                {%- elseif metadata.type == 'time' %}
 
-                <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|date(\'H:i:s\') }}{% endif %}' }}</td>
+                    <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|date(\'H:i:s\') }}{% endif %}' }}</td>
 
-            {%- elseif metadata.type == 'relation_many' %}
+                {%- elseif metadata.type == 'relation_many' %}
 
-                <td>{{ '{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|join(\', \') }}' }}</td>
+                    <td>{{ '{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|join(\', \') }}' }}</td>
 
-            {%- elseif metadata.type == 'boolean' %}
+                {%- elseif metadata.type == 'boolean' %}
 
-                <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}' }}</td>
+                    <td>{{ '{% if '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}' }}</td>
 
-            {%- else %}
+                {%- else %}
 
-                <td>{{ '{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' }}' }}</td>
+                    <td>{{ '{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~' }}' }}</td>
 
-            {%- endif %}
+                {%- endif %}
 
-            {%- if loop.last %}
+                {%- if loop.last %}
 
-                <td>
-                    {%- include "crud/views/others/actions.html.twig.twig" %}
-                </td>
+                    <td>
+                        {%- include "crud/views/others/actions.html.twig.twig" %}
+                    </td>
 
-            {%- endif %}
-        {%- endfor %}
+                {%- endif %}
+            {%- endfor %}
 
-            </tr>
-        {{ '{% endfor %}' }}
+                </tr>
+            {{ '{% endfor %}' }}
         </tbody>
     </table>
+    {% if usePaginator %}
 
-    {% if usePaginator -%}
     {{ '{{ knp_pagination_render(paginator) }}' }}
-    {%- endif %}
+    {% endif -%}
 
-    {% if 'new' in actions %}
+    {%- if 'new' in actions %}
 
     <ul class="new_entry list-unstyled">
         <li>

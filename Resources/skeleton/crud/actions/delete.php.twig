@@ -4,7 +4,7 @@
      *
 {% if 'annotation' == format %}
      * @Route("/{id}/delete", name="{{ route_name_prefix }}_delete", requirements={"id"="\d+"})
-     * @Method("POST")
+     * @Method("DELETE")
 {% endif %}
      */
     public function deleteAction({{ entity }} ${{ entity|lower }}, Request $request)
@@ -23,12 +23,13 @@
      * Create Delete form
      *
      * @param integer $id
-     * @return FormBuilder
+     * @return \Symfony\Component\Form\Form
      */
     protected function createDeleteForm($id)
     {
-        return $this->createFormBuilder(array('id' => $id))
-            ->add('id', 'hidden')
+        return $this->createFormBuilder(null, array('attr' => array('id' => 'delete')))
+            ->setAction($this->generateUrl('{{ route_name_prefix }}_delete', array('id' => $id)))
+            ->setMethod('DELETE')
             ->getForm()
         ;
     }

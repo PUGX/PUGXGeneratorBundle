@@ -4,12 +4,16 @@
      *
 {% if 'annotation' == format %}
      * @Route("/{id}/edit", name="{{ route_name_prefix }}_edit", requirements={"id"="\d+"})
+     * @Method("GET")
      * @Template()
 {% endif %}
      */
     public function editAction({{ entity }} ${{ entity|lower }})
     {
-        $editForm = $this->createForm(new {{ entity_class }}Type(), ${{ entity|lower }});
+        $editForm = $this->createForm(new {{ entity_class }}Type(), ${{ entity|lower }}, array(
+            'action' => $this->generateUrl('{{ route_name_prefix }}_update', array('id' => ${{ entity|lower }}->getid())),
+            'method' => 'PUT',
+        ));
         $deleteForm = $this->createDeleteForm(${{ entity|lower }}->getId());
 
 {% if 'annotation' == format %}

@@ -1,5 +1,5 @@
 {% if ('delete' in actions) and (not hide_delete) %}
-<form id="delete" action="{{ "{{ path('"~ route_name_prefix ~"_delete', {id: "~ entity|lower ~".id}) }}" }}" method="post">
+{{ '{{ form_start(delete_form) }}' }}
         {{ '{{ form_widget(delete_form) }}' }}
 {% endif %}
 
@@ -23,7 +23,7 @@
 
 {% if ('delete' in actions) and (not hide_delete) %}
         <input name="modal" type="hidden" value="0">
-    </form>
+    {{ '{{ form_end(delete_form) }}' }}
 
     <div id="delete_confirm" class="modal fade">
         <div class="modal-dialog">
