@@ -34,7 +34,7 @@ class {{ entity_class }}ControllerTest extends WebTestCase
     public function testCreateError()
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/{{ route_prefix }}//new');
+        $crawler = $client->request('GET', '/{{ route_prefix }}/new');
         $form = $crawler->filter('form button[type="submit"]')->form();
         $crawler = $client->submit($form);
         $this->assertGreaterThan(0, $crawler->filter('form div.has-error')->count());

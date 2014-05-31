@@ -3,7 +3,7 @@
      * Edits an existing {{ entity }} entity.
      *
 {% if 'annotation' == format %}
-     * @Route("/{id}/update", name="{{ route_name_prefix }}_update")
+     * @Route("/{id}/update", name="{{ route_name_prefix }}_update", requirements={"id"="\d+"})
      * @Method("POST")
      * @Template("{{ dest_bundle }}:{{ entity }}:edit.html.twig")
 {% endif %}
