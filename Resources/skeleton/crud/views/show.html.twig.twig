@@ -28,7 +28,7 @@
 
                 <td>{{ '{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|date(\'H:i:s\') }}' }}</td>
 
-            {%- elseif metadata.type == 'relation_many' %}
+            {%- elseif metadata.type == 'relation_many' or metadata.type == 'array' or metadata.type == 'simple_array' %}
 
                 <td>{{ '{{ '~ entity|lower ~'.'~ field|replace({'_': ''}) ~'|join(\', \') }}' }}</td>
 
