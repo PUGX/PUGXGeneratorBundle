@@ -21,7 +21,6 @@
     {%- if withSort %}
         {%- if withFilter %}
         $qb = $em->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('{{ entity|lower|slice(0, 1) }}');
-        $qb->orderBy($order['field'], $order['type']);
         $paginator = $this->filter($form, $qb, '{{ entity|lower }}');
         {% else -%}
         $qb = $em->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('{{ entity|lower|slice(0, 1) }}');
