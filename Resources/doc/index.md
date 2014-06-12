@@ -1,7 +1,7 @@
 PUGXGeneratorBundle Documentation
 =================================
 
-This version of the bundle requires Symfony 2.3.
+This version of the bundle requires Symfony 2.3 or newer.
 For Symfony 2.2, please switch to 2.2 branch.
 
 A small note on branches and tags: version numbers are not necessarily consistent
