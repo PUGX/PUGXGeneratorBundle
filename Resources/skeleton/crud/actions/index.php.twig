@@ -8,7 +8,7 @@
      * @Template()
 {% endif %}
      */
-    public function indexAction({% if usePaginator %}Request $request{% endif %})
+    public function indexAction({% if usePaginator and not withFilter %}Request $request{% endif %})
     {
         $em = $this->getDoctrine()->getManager();
 {% if withFilter %}
@@ -22,10 +22,10 @@
         {%- if withFilter %}
         $qb = $em->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('{{ entity|lower|slice(0, 1) }}');
         $paginator = $this->filter($form, $qb, '{{ entity|lower }}');
-        {% else -%}
+        {% else %}
         $qb = $em->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('{{ entity|lower|slice(0, 1) }}');
         if (is_array($order = $this->getOrder('{{ entity|lower }}'))) {
-        $qb->orderBy($order['field'], $order['type']);
+            $qb->orderBy($order['field'], $order['type']);
         }
         $q = $qb->getQuery();
         $paginator = $this->get('knp_paginator')->paginate($q, $request->query->get('page', 1), 20);

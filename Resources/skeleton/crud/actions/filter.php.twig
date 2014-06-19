@@ -3,15 +3,15 @@
      * Save filters
      *
      * @param  FormInterface $form
-     * @param  string        $name        route/entity name
-     * @param  string        $route       route name, if different from entity name
-     * @param  array         $params      possible route parameters
+     * @param  string        $name   route/entity name
+     * @param  string        $route  route name, if different from entity name
+     * @param  array         $params possible route parameters
      * @return Response
      */
     protected function saveFilter(FormInterface $form, $name, $route = null, array $params = null)
     {
         $request = $this->getRequest();
-        $url = is_null($route) ? $this->generateUrl($name) : $this->generateUrl($route, is_null($params) ? array() : $params);
+        $url = $this->generateUrl($route ?: $name, is_null($params) ? array() : $params);
         if ($request->query->has('submit-filter') && $form->handleRequest($request)->isValid()) {
             $request->getSession()->set('filter.' . $name, $request->query->get($form->getName()));
 
@@ -26,9 +26,10 @@
     /**
      * Filter form
      *
-     * @param  FormInterface  $form
-     * @param  QueryBuilder   $qb
-     * @return SlidingPagination
+     * @param  FormInterface                                       $form
+     * @param  QueryBuilder                                        $qb
+     * @param  string                                              $name
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface
      */
     protected function filter(FormInterface $form, QueryBuilder $qb, $name)
     {

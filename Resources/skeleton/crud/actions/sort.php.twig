@@ -21,7 +21,7 @@
      */
     protected function setOrder($name, $field, $type = 'ASC')
     {
-        $this->getRequest()->getSession()->set('sort.' . $name, compact('field', 'type'));
+        $this->getRequest()->getSession()->set('sort.' . $name, array('field' => $field, 'type' => $type));
     }
 
     /**

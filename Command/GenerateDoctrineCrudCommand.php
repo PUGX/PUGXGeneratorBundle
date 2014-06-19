@@ -2,6 +2,8 @@
 
 namespace PUGX\GeneratorBundle\Command;
 
+use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Mapping\MappingException;
 use PUGX\GeneratorBundle\Generator\DoctrineCrudGenerator;
 use PUGX\GeneratorBundle\Generator\DoctrineFormGenerator;
 use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCrudCommand as BaseCommand;
@@ -90,7 +92,7 @@ EOT
         }
 
         $entity = Validators::validateEntityName($input->getOption('entity'));
-        list($bundle, $entity) = $this->parseShortcutNotation($entity);
+        list($alias, $bundle, $entity) = $this->parseShortcutNotation($entity);
 
         $format = Validators::validateFormat($input->getOption('format'));
         $prefix = $this->getRoutePrefix($input, $entity);
@@ -102,7 +104,7 @@ EOT
         $theme = $input->getOption('theme');  // TODO validate
         $withFilter = $input->getOption('with-filter');  // TODO validate
         $withSort = $input->getOption('with-sort');  // TODO validate
-        $dest = $input->getOption('dest')?:$bundle;  // TODO validate
+        $dest = $input->getOption('dest') ?: $bundle;  // TODO validate
 
         if ($withFilter && !$usePaginator) {
             throw new \RuntimeException(sprintf('Cannot use filter without paginator.'));
@@ -110,10 +112,15 @@ EOT
 
         $dialog->writeSection($output, 'CRUD generation');
 
-        $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle).'\\'.$entity;
-        $metadata    = $this->getEntityMetadata($entityClass);
-        $bundle      = $this->getContainer()->get('kernel')->getBundle($bundle);
-        $destBundle  = $this->getContainer()->get('kernel')->getBundle($dest);
+        // see https://github.com/sensiolabs/SensioGeneratorBundle/issues/277
+        try {
+            $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($alias) . '\\' . $entity;
+        } catch (ORMException $e) {
+            $entityClass = $alias . '\\' . $entity;
+        }
+        $metadata   = $this->getEntityMetadata($entityClass);
+        $bundle     = $this->getContainer()->get('kernel')->getBundle($bundle);
+        $destBundle = $this->getContainer()->get('kernel')->getBundle($dest);
 
         $generator = $this->getGenerator($bundle);
         $generator->generate($bundle, $destBundle, $entity, $metadata[0], $format, $prefix, $withWrite, $forceOverwrite, $layout, $bodyBlock, $usePaginator, $theme, $withFilter, $withSort);
@@ -233,10 +240,15 @@ EOT
 
         $entity = $dialog->askAndValidate($output, $dialog->getQuestion('The Entity shortcut name', $input->getOption('entity')), array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateEntityName'), false, $input->getOption('entity'));
         $input->setOption('entity', $entity);
-        list($bundle, $entity) = $this->parseShortcutNotation($entity);
+        list($alias, $bundle, $entity) = $this->parseShortcutNotation($entity);
 
+        // see https://github.com/sensiolabs/SensioGeneratorBundle/issues/277
         // Entity exists?
-        $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle).'\\'.$entity;
+        try {
+            $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($alias) . '\\' . $entity;
+        } catch (ORMException $e) {
+            $entityClass = $alias . '\\' . $entity;
+        }
         $this->getEntityMetadata($entityClass);
 
         // layout
@@ -321,5 +333,30 @@ EOT
             sprintf("using the \"<info>%s</info>\" format.", $format),
             '',
         ));
+    }
+
+    /**
+     * Original method is not working with aliases set by configuration
+     *
+     * See https://github.com/sensiolabs/SensioGeneratorBundle/issues/277
+     */
+    protected function parseShortcutNotation($shortcut)
+    {
+        $entity = str_replace('/', '\\', $shortcut);
+
+        if (false === $pos = strpos($entity, ':')) {
+            throw new \InvalidArgumentException(sprintf('The entity name must contain a : ("%s" given, expecting something like AcmeBlogBundle:Blog/Post)', $entity));
+        }
+        $bundle = substr($entity, 0, $pos);
+
+        try {
+            $alias = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle);
+            $bundleName = str_replace(array('\\', 'Entity'), '', $alias);
+        } catch (ORMException $e) {
+            $alias = $bundle;
+            $bundleName = $bundle;
+        }
+
+        return array($alias, $bundleName, substr($entity, $pos + 1));
     }
 }
