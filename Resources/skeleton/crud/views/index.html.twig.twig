@@ -1,6 +1,6 @@
 {{ '{% extends "' ~ layout ~ '" %}' }}
 
-{{ '{% block title %}' ~ "{{ '%entity% list'|trans({'%entity%': '"~ entity ~"'}, 'admin') }}" ~ '{% endblock %}' }}
+{{ '{% block title %}' ~ "{{ '%entity% list'|trans({'%entity%': '"~ entity ~"'}, 'admin') }} - {{ parent() }}" ~ '{% endblock %}' }}
 
 {%- if withSort %}
 

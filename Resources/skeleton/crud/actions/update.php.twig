@@ -19,7 +19,7 @@
 
             return $this->redirect($this->generateUrl('{{ route_name_prefix }}_edit', array('id' => ${{ entity|lower }}->getId())));
         }
-        $deleteForm = $this->createDeleteForm(${{ entity|lower }}->getId());
+        $deleteForm = $this->createDeleteForm(${{ entity|lower }}->getId(), '{{ route_name_prefix }}_delete');
 
 {% if 'annotation' == format %}
         return array(

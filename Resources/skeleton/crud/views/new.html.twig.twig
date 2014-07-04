@@ -4,7 +4,7 @@
 {{ "{% form_theme form '"~ theme ~"' %}" }}
 {% endif %}
 
-{{ '{% block title %}' ~ "{{ '%entity% creation'|trans({'%entity%': '"~ entity ~"'}, 'admin') }}" ~ '{% endblock %}' }}
+{{ '{% block title %}' ~ "{{ '%entity% creation'|trans({'%entity%': '"~ entity ~"'}, 'admin') }} - {{ parent() }}" ~ '{% endblock %}' }}
 
 {{ '{% block ' ~ bodyBlock ~ ' %}' }}
     <h1>{{ "{{ '%entity% creation'|trans({'%entity%': '"~ entity ~"'}, 'admin') }}" }}</h1>

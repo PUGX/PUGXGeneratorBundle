@@ -1,6 +1,6 @@
 {{ '{% extends "' ~ layout ~ '" %}' }}
 
-{{ '{% block title %}' ~ entity ~ '{% endblock %}' }}
+{{ '{% block title %}' ~ entity ~ ' - {{ parent() }}{% endblock %}' }}
 
 {{ '{% block ' ~ bodyBlock ~ ' %}' }}
     <h1>{{ entity }}</h1>
