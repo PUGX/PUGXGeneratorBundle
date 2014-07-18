@@ -6,6 +6,7 @@ use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Mapping\MappingException;
 use PUGX\GeneratorBundle\Generator\DoctrineCrudGenerator;
 use PUGX\GeneratorBundle\Generator\DoctrineFormGenerator;
+use PUGX\GeneratorBundle\Generator\DoctrineFixturesGenerator;
 use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCrudCommand as BaseCommand;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,6 +26,7 @@ class GenerateDoctrineCrudCommand extends BaseCommand
 {
     private $formGenerator;
     private $filterGenerator;
+    private $fixturesGenerator;
 
     protected function createGenerator($bundle = null)
     {
@@ -47,6 +49,7 @@ class GenerateDoctrineCrudCommand extends BaseCommand
                 new InputOption('dest', '', InputOption::VALUE_OPTIONAL, 'Change the default destination of the generated code', null),
                 new InputOption('with-filter', '', InputOption::VALUE_NONE, 'Whether or not to add filter'),
                 new InputOption('with-sort', '', InputOption::VALUE_NONE, 'Whether or not to add sorting'),
+                new InputOption('fixtures', '', InputOption::VALUE_OPTIONAL, 'Possibile number of fixtures to generate', 0),
             ))
             ->setDescription('Generates a CRUD based on a Doctrine entity')
             ->setHelp(<<<EOT
@@ -105,6 +108,7 @@ EOT
         $withFilter = $input->getOption('with-filter');  // TODO validate
         $withSort = $input->getOption('with-sort');  // TODO validate
         $dest = $input->getOption('dest') ?: $bundle;  // TODO validate
+        $fixtures = $input->getOption('fixtures');  // TODO validate
 
         if ($withFilter && !$usePaginator) {
             throw new \RuntimeException(sprintf('Cannot use filter without paginator.'));
@@ -147,6 +151,12 @@ EOT
             $runner($this->updateRouting($dialog, $input, $output, $bundle, $format, $entity, $prefix));
         }
 
+        // fixtures
+        if ($fixtures > 0) {
+            $this->doGenerateFixtures($bundle, $destBundle, $entity, $metadata, $fixtures);
+            $output->writeln(sprintf('Generating %d fixture%s: <info>OK</info>', $fixtures, $fixtures > 1 ? 's' : ''));
+        }
+
         $dialog->writeGeneratorSummary($output, $errors);
     }
 
@@ -170,6 +180,20 @@ EOT
         return $this->filterGenerator;
     }
 
+    /**
+     * @param  string                    $bundle
+     * @return DoctrineFixturesGenerator
+     */
+    protected function getFixturesGenerator($bundle = null)
+    {
+        if (null === $this->fixturesGenerator) {
+            $this->fixturesGenerator = new DoctrineFixturesGenerator($this->getContainer()->get('filesystem'));
+            $this->fixturesGenerator->setSkeletonDirs($this->getSkeletonDirs($bundle));
+        }
+
+        return $this->fixturesGenerator;
+    }
+
     protected function doGenerateForm($bundle, $destBundle, $entity, $metadata)
     {
         try {
@@ -186,6 +210,20 @@ EOT
         } catch (\RuntimeException $e) {
             // form already exists
         }
+    }
+
+    /**
+     * Generate fixtures
+     *
+     * @param string  $bundle
+     * @param string  $destBundle
+     * @param string  $entity
+     * @param array   $metadata    array of \Doctrine\ORM\Mapping\ClassMetadata objects
+     * @param integer $num
+     */
+    protected function doGenerateFixtures($bundle, $destBundle, $entity, $metadata, $num = 1)
+    {
+        $this->getFixturesGenerator($bundle)->generate($bundle, $destBundle, $entity, $metadata[0], $num);
     }
 
     /**
@@ -323,6 +361,8 @@ EOT
         ));
         $prefix = $dialog->ask($output, $dialog->getQuestion('Routes prefix', '/'.$prefix), '/'.$prefix);
         $input->setOption('route-prefix', $prefix);
+
+        // TODO fixtures...
 
         // summary
         $output->writeln(array(

@@ -25,6 +25,7 @@ It adds many functionality on top of it, and corrects some minor issues:
 * support for sorting
 * optional target bundle
 * better generated tests
+* (experimental) fixtures generation
 
 Documentation
 -------------

@@ -1,0 +1,51 @@
+<?php
+
+namespace {{ namespace }}\DataFixtures\ORM;
+
+use {{ namespace }}\Entity\{{ entity }};
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\Persistence\ObjectManager;
+
+/**
+ * Fixtures {{ entity }}
+ */
+class {{ entity }}Data extends AbstractFixture
+{
+    /**
+     * {@inheritDoc}
+     */
+    public function load(ObjectManager $manager)
+    {
+        // TODO check for possible references...
+        {% for i in 1..num -%}
+
+        ${{ entity|lower }}{{ i }} = new {{ entity_class }}();
+        ${{ entity|lower }}{{ i }}
+        {% for field, metadata in fields -%}
+        {%- if metadata.type == 'relation' or metadata.type == 'relation_many' %}
+
+            ->set{{ field|capitalize }}($this->getReference('{{ metadata.entity|lower|split('\\')|last }}{{ i }}'))
+        {%- elseif metadata.type == 'boolean' %}
+
+            ->set{{ field|capitalize }}(true)
+        {%- elseif metadata.type == 'integer' and field != 'id' %}
+
+            ->set{{ field|capitalize }}(42)
+        {%- elseif metadata.type == 'date' or metadata.type == 'datetime' %}
+
+            ->set{{ field|capitalize }}(new \DateTime())
+        {%- elseif field != 'id' %}
+
+            ->set{{ field|capitalize }}('Lorem ipsum dolor sit amet')
+        {%- endif %}
+        {%- endfor %}
+
+        ;
+        $manager->persist(${{ entity|lower }}{{ i }});
+        $this->addReference('{{ entity|lower }}{{ i }}', ${{ entity|lower }}{{ i }});
+
+        {% endfor %}
+
+        $manager->flush();
+    }
+}

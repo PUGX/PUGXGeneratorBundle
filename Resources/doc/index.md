@@ -19,7 +19,8 @@ with Symfony ones. We know we should have started versioning by something like `
 6. [I18n](#6-i18n)
 7. [Filters](#7-filters)
 8. [Sorting](#8-sorting)
-9. [Cleanup](#9-cleanup)
+9. [Fixtures](#9-fixtures)
+10. [Cleanup](#10-cleanup)
 
 ### 1. Download PUGXGeneratorBundle
 
@@ -81,7 +82,7 @@ Then, you can use a simple layout, like this one:
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% block stylesheets %}
             <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-            <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+            <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
         {% endblock %}
     </head>
     <body>
@@ -92,7 +93,7 @@ Then, you can use a simple layout, like this one:
             {% block body '' %}
         </div>
         {% block javascripts %}
-            <script src="//code.jquery.com/jquery-2.1.0.js"></script>
+            <script src="//code.jquery.com/jquery-2.1.1.js"></script>
             <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
         {% endblock %}
     </body>
@@ -306,7 +307,17 @@ You can add sorting in columns, by using ``--with-sort`` flag in ``pugx:generate
 If you do so, instead of simple labels, table headers will contain links to toggle sorting
 ascending and descending.
 
-### 9. Cleanup
+### 9. Fixtures
+
+> **Warning**: support for fixtures is still experimental. You need to use ``dev-master``
+> (or ``2.5.*@dev``) to get this feature.
+
+You can generate some fixtures by using something like ``--fixtures=2``, when ``2`` is the
+number of objects that will be generated in fixtures class (can be any number greater than 0).
+If your entity has some relations, references need to be adapted.
+For now, there is no support for ``DependentFixtureInterface``.
+
+### 10. Cleanup
 
 As already mentioned in [filters section](#7-filters), if you run more than one generation, it
 could be a good idea to refactor procteted methods in controllers to an abstract class, to avoid
