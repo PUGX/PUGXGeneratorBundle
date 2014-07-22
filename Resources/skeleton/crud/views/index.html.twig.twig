@@ -39,9 +39,9 @@
 
                 <th scope="col">
                 {%- if withSort -%}
-                {{ "{{ thead('" ~ entity|lower ~"', '"~ field ~"', '"~ field|replace({'_': ' '})|capitalize ~"') }}" }}
+                {{ "{{ thead('" ~ entity|lower ~"', '"~ field ~"', '"~ field|replace({'_': ' '})|title ~"') }}" }}
                 {%- else -%}
-                {{ field|replace({'_': ' '})|capitalize }}
+                {{ field|replace({'_': ' '})|title }}
                 {%- endif -%}
                 </th>
 

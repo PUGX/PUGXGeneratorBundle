@@ -10,7 +10,7 @@
         {%- for field, metadata in fields %}
 
             <tr>
-                <th scope="row">{{ field|replace({'_': ' '})|capitalize }}</th>
+                <th scope="row">{{ field|replace({'_': ' '})|title }}</th>
 
             {%- if metadata.type == 'date' %}
 

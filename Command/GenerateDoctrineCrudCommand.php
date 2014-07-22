@@ -3,7 +3,6 @@
 namespace PUGX\GeneratorBundle\Command;
 
 use Doctrine\ORM\ORMException;
-use Doctrine\ORM\Mapping\MappingException;
 use PUGX\GeneratorBundle\Generator\DoctrineCrudGenerator;
 use PUGX\GeneratorBundle\Generator\DoctrineFormGenerator;
 use PUGX\GeneratorBundle\Generator\DoctrineFixturesGenerator;
@@ -218,7 +217,7 @@ EOT
      * @param string  $bundle
      * @param string  $destBundle
      * @param string  $entity
-     * @param array   $metadata    array of \Doctrine\ORM\Mapping\ClassMetadata objects
+     * @param array   $metadata   array of \Doctrine\ORM\Mapping\ClassMetadata objects
      * @param integer $num
      */
     protected function doGenerateFixtures($bundle, $destBundle, $entity, $metadata, $num = 1)
