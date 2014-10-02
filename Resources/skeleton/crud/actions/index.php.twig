@@ -27,8 +27,7 @@
         if (is_array($order = $this->getOrder('{{ entity|lower }}'))) {
             $qb->orderBy($order['field'], $order['type']);
         }
-        $q = $qb->getQuery();
-        $paginator = $this->get('knp_paginator')->paginate($q, $request->query->get('page', 1), 20);
+        $paginator = $this->get('knp_paginator')->paginate($qb, $request->query->get('page', 1), 20);
         {% endif %}
     {%- else %}
         {%- if withFilter %}
@@ -36,8 +35,8 @@
         $paginator = $this->filter($form, $qb, '{{ entity|lower }}');
         {% else -%}
 
-        $q = $em->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('{{ entity|lower|slice(0, 1) }}')->getQuery();
-        $paginator = $this->get('knp_paginator')->paginate($q, $request->query->get('page', 1), 20);
+        $qb = $em->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('{{ entity|lower|slice(0, 1) }}');
+        $paginator = $this->get('knp_paginator')->paginate($qb, $request->query->get('page', 1), 20);
         {%- endif %}
     {%- endif %}
 {% else -%}

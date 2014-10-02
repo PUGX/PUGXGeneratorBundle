@@ -2,7 +2,8 @@
     "name": "pugx/generator-bundle",
     "type": "symfony-bundle",
     "description": "Extension of SensioGeneratorBundle",
-    "keywords": ["symfony2 form field"],
+    "keywords": ["symfony2", "code generation"],
+    "homepage": "http://pugx.org/",
     "license": "LGPL-3.0+",
     "authors": [
         {
