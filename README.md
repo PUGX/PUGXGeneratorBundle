@@ -9,7 +9,8 @@ PUGXGeneratorBundle
 This bundle is an extension of [SensioGeneratorBundle](https://github.com/sensio/SensioGeneratorBundle).
 
 It adds many functionality on top of it, and corrects some minor issues:
-* pages with layout (main block name is customizable)
+
+* main block name customizable in layout
 * forms in correct namespace (under Type, not under Form)
 * @ParamConverter in actions
 * different format for dates/times/datetimes
@@ -25,7 +26,7 @@ It adds many functionality on top of it, and corrects some minor issues:
 * support for sorting
 * optional target bundle
 * better generated tests
-* (experimental) fixtures generation
+* fixtures generation
 
 Documentation
 -------------

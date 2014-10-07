@@ -24,19 +24,19 @@ class {{ entity }}Data extends AbstractFixture
         {% for field, metadata in fields -%}
         {%- if metadata.type == 'relation' or metadata.type == 'relation_many' %}
 
-            ->set{{ field|capitalize }}($this->getReference('{{ metadata.entity|lower|split('\\')|last }}{{ i }}'))
+            ->set{{ field|first|upper ~ field[1:] }}($this->getReference('{{ metadata.entity|lower|split('\\')|last }}{{ i }}'))
         {%- elseif metadata.type == 'boolean' %}
 
-            ->set{{ field|capitalize }}(true)
+            ->set{{ field|first|upper ~ field[1:] }}(true)
         {%- elseif metadata.type == 'integer' and field != 'id' %}
 
-            ->set{{ field|capitalize }}(42)
+            ->set{{ field|first|upper ~ field[1:] }}(42)
         {%- elseif metadata.type == 'date' or metadata.type == 'datetime' %}
 
-            ->set{{ field|capitalize }}(new \DateTime())
+            ->set{{ field|first|upper ~ field[1:] }}(new \DateTime())
         {%- elseif field != 'id' %}
 
-            ->set{{ field|capitalize }}('Lorem ipsum dolor sit amet')
+            ->set{{ field|first|upper ~ field[1:] }}('Lorem ipsum dolor sit amet')
         {%- endif %}
         {%- endfor %}
 

@@ -1,3 +1,21 @@
+{% macro fieldValue(metadata, text = 'Lorem ipsum dolor sit amet') %}
+{% spaceless %}
+        {% if metadata.type == 'relation' or metadata.type == 'relation_many' %}
+            $this->getReference('{{ metadata.entity|lower|split('\\')|last }}{{ i }}')
+        {% elseif metadata.type == 'boolean' %}
+            true
+        {% elseif metadata.type == 'integer' or metadata.type == 'smallint' %}
+            42
+        {% elseif metadata.type == 'decimal' %}
+            10.99
+        {% elseif metadata.type == 'date' or metadata.type == 'datetime' %}
+            new \DateTime()
+        {%- else %}
+            '{{ text }}'
+        {%- endif %}
+{% endspaceless %}
+{% endmacro %}
+{% from _self import fieldValue -%}
 <?php
 
 namespace {{ namespace }}\Tests\Controller{{ entity_namespace ? '\\' ~ entity_namespace : '' }};
@@ -21,9 +39,8 @@ class {{ entity_class }}ControllerTest extends WebTestCase
         $crawler = $client->click($crawler->filter('.new_entry a')->link());
         $form = $crawler->filter('form button[type="submit"]')->form(array(
             {% for field, metadata in fields if field != 'id' %}
-'{{ form_type_name|lower }}[{{ field }}]' => 'First value',
+'{{ form_type_name|lower }}[{{ field }}]' => {{ fieldValue(metadata) }},
             {% endfor %}
-// ... adapt fields value here...
         ));
         $client->submit($form);
         $crawler = $client->followRedirect();
@@ -53,7 +70,7 @@ class {{ entity_class }}ControllerTest extends WebTestCase
         $crawler = $client->click($crawler->filter('table.records_list tbody tr td .btn-group a')->eq(1)->link());
         $form = $crawler->filter('form button[type="submit"]')->form(array(
             {% for field, metadata in fields if field != 'id' %}
-'{{ form_type_name|lower }}[{{ field }}]' => 'Changed',
+'{{ form_type_name|lower }}[{{ field }}]' => {{ fieldValue(metadata, 'Changed') }},
             {% endfor %}
 // ... adapt fields value here ...
         ));
@@ -106,7 +123,7 @@ class {{ entity_class }}ControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/{{ route_prefix }}/');
         $form = $crawler->filter('div#filter form button[type="submit"]')->form(array(
             {% for field, metadata in fields if field != 'id' %}
-'{{ form_type_name|lower }}_filter[{{ field }}]' => 'First%',
+'{{ form_type_name|lower }}_filter[{{ field }}]' => {{ fieldValue(metadata, 'First%') }},
             {% endfor %}
 // ... maybe use just one field here ...
         ));

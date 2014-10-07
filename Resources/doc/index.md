@@ -9,7 +9,7 @@ with Symfony ones. We know we should have started versioning by something like `
 ``1.1``, but we cannot change that decision now, for compatibility issues.
 
 
-## Installation
+## Table of contents
 
 1. [Download PUGXGeneratorBundle](#1-download-pugxgeneratorbundle)
 2. [Enable the Bundle](#2-enable-the-bundle)
@@ -20,7 +20,8 @@ with Symfony ones. We know we should have started versioning by something like `
 7. [Filters](#7-filters)
 8. [Sorting](#8-sorting)
 9. [Fixtures](#9-fixtures)
-10. [Cleanup](#10-cleanup)
+10. [Target bundle](#11-target-bundle)
+11. [Cleanup](#11-cleanup)
 
 ### 1. Download PUGXGeneratorBundle
 
@@ -33,7 +34,7 @@ $ php composer.phar require pugx/generator-bundle:2.4.* --dev
 ```
 
 Notice that if your composer.json requires "sensio/generator-bundle", you can delete it (since
-it is required by "pugx/generator-bundle").
+it is already required by "pugx/generator-bundle").
 
 ### 2. Enable the bundle
 
@@ -69,7 +70,7 @@ with [Font Awesome](http://fortawesome.github.com/Font-Awesome/).
 Please note that current supported versions are Boostrap 3 and Font Awesome 4. If you use
 older versions, please use branch 2.3 of PUGXGeneratorBundle.
 
-So, you can download Bootstrap (and, optionally, Font Awesome) and put it in your bundle.
+So, you can download Bootstrap and Font Awesome in your bundle, or use a CDN.
 Then, you can use a simple layout, like this one:
 
 ``` html+php
@@ -81,8 +82,8 @@ Then, you can use a simple layout, like this one:
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% block stylesheets %}
-            <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-            <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
+            <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+            <link href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css" rel="stylesheet">
         {% endblock %}
     </head>
     <body>
@@ -94,14 +95,14 @@ Then, you can use a simple layout, like this one:
         </div>
         {% block javascripts %}
             <script src="//code.jquery.com/jquery-2.1.1.js"></script>
-            <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+            <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         {% endblock %}
     </body>
 </html>
 ```
 
-If you want the confirm delete functionality, you can add the following Javascript code,
-based on jQuery, in one of you files (e.g. ``acme.js`` in layout above):
+If you want the confirm delete functionality, you can add the following JavaScript code,
+based on jQuery, in one of you files (e.g. ``acme.js``):
 
 ``` js
 $(document).ready(function() {
@@ -122,96 +123,11 @@ $(document).ready(function() {
 });
 ```
 
-If you want more consistent boostrap forms, you can use a theme like this one:
+If you want more consistent boostrap forms, you can use a theme, like the one provided
+in [Symfony 2.6](https://github.com/symfony/symfony/blob/master/src/Symfony/Bridge/Twig/Resources/views/Form/bootstrap_3_layout.html.twig)
 
-```jinja
-{% block form_row %}
-{% spaceless %}
-    <div class="form-group{% if errors|length > 0 %} error{% endif %}">
-        {{ form_label(form) }}
-        {{ form_widget(form) }}
-        {{ form_errors(form) }}
-    </div>
-{% endspaceless %}
-{% endblock form_row %}
-
-{% block form_errors %}
-{% spaceless %}
-    {% if errors|length > 0 %}
-        {% if compound %}
-            <div class="alert alert-error">
-                {% for error in errors %}
-                    <div>{{
-                        error.messagePluralization is null
-                            ? error.messageTemplate|trans(error.messageParameters, 'validators')
-                            : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
-                    }}</div>
-                {% endfor %}
-            </div>
-        {% else %}
-            {% for error in errors %}
-                <span class="help-inline">{{
-                    error.messagePluralization is null
-                        ? error.messageTemplate|trans(error.messageParameters, 'validators')
-                        : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
-                }}</span>
-            {% endfor %}
-        {% endif %}
-    {% endif %}
-{% endspaceless %}
-{% endblock form_errors %}
-
-{% block date_widget %}
-{% spaceless %}
-    {% if widget == 'single_text' %}
-        {{ block('form_widget_simple') }}
-    {% else %}
-        <div {{ block('widget_container_attributes') }}>
-            <div class="row">
-                {{ date_pattern|replace({
-                    '{{ year }}':  '<div class="col-xs-2">' ~ form_widget(form.year) ~ '</div>',
-                    '{{ month }}': '<div class="col-xs-2">' ~ form_widget(form.month) ~ '</div>',
-                    '{{ day }}':   '<div class="col-xs-1">' ~ form_widget(form.day) ~ '</div>',
-                })|raw }}
-            </div>
-        </div>
-    {% endif %}
-{% endspaceless %}
-{% endblock date_widget %}
-
-{% block time_widget %}
-{% spaceless %}
-    {% if widget == 'single_text' %}
-        {{ block('form_widget_simple') }}
-    {% else %}
-        {% set vars = widget == 'text' ? { 'attr': { 'size': 1 }} : {} %}
-        <div {{ block('widget_container_attributes') }}>
-            <div class="row">
-                <div class="col-xs-1">{{ form_widget(form.hour, vars) }}</div>{% if with_minutes %} <div class="col-xs-1">{{ form_widget(form.minute, vars) }}</div>{% endif %}{% if with_seconds %} <div class="col-xs-1">{{ form_widget(form.second, vars) }}</div>{% endif %}
-            </div>
-        </div>
-    {% endif %}
-{% endspaceless %}
-{% endblock time_widget %}
-
-{% block widget_attributes %}
-{% spaceless %}
-    {% set classFound = false %}
-    id="{{ id }}" name="{{ full_name }}"{% if read_only %} readonly="readonly"{% endif %}{% if disabled %} disabled="disabled"{% endif %}{% if required %} required="required"{% endif %}{% if max_length %} maxlength="{{ max_length }}"{% endif %}{% if pattern %} pattern="{{ pattern }}"{% endif %}
-    {% for attrname, attrvalue in attr %}
-        {% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}
-        {% if attrname == 'class' %}
-            {% set attrvalue = attrvalue ~ ' form-control' %}
-        {% endif %}
-    {% endfor %}
-    {% if not classFound %}
-        class="form-control"
-    {% endif %}
-{% endspaceless %}
-{% endblock widget_attributes %}
-```
-
-If you put such theme file in ``src/Acme/DemoBundle/Resources/views/Form/theme.html.twig``,
+If you're using a previous Symfony version, you can copy the theme file in a location
+like ``src/Acme/DemoBundle/Resources/views/Form/theme.html.twig``, then
 you can use the ``--theme`` option of ``pugx:generate:crud`` command, like in this example:
 
 ``` bash
@@ -220,6 +136,16 @@ $ php app/console pugx:generate:crud \
     --layout=AcmeDemoBundle::layout.html.twig \
     --theme=AcmeDemoBundle:Form:theme.html.twig \
     --with-write
+```
+
+If you prefer to use such theme for all your forms, you can instead change your
+configuration:
+
+```yaml
+# app/config.yml
+twig:
+    form:
+        resources: ['src/Acme/DemoBundle/Resources/views/Form/theme.html.twig']
 ```
 
 ### 5. Pagination
@@ -309,22 +235,29 @@ ascending and descending.
 
 ### 9. Fixtures
 
-> **Warning**: support for fixtures is still experimental. You need to use ``dev-master``
-> (or ``2.5.*@dev``) to get this feature.
-
 You can generate some fixtures by using something like ``--fixtures=2``, when ``2`` is the
 number of objects that will be generated in fixtures class (can be any number greater than 0).
 If your entity has some relations, references need to be adapted.
 For now, there is no support for ``DependentFixtureInterface``.
 
-### 10. Cleanup
+### 10. Target bundle
+
+If you want to generate your CRUD inside a bundle that is not the same bundle as your
+entity, you can use the ``--dest`` option:
+
+``` bash
+$ php app/console pugx:generate:crud --entity=AcmeDemoBundle:Foo --dest=AcmeAnotherBundle
+```
+
+### 11. Cleanup
 
 As already mentioned in [filters section](#7-filters), if you run more than one generation, it
 could be a good idea to refactor procteted methods in controllers to an abstract class, to avoid
 duplicate code.
 If you find yourself repeating generating many CRUDs, you can also copy templates from
-``skeleton`` directory (inside this bundle) to ``app\Resources\PUGXGeneratorBundle\skeleton`` (in
-your project).
+``skeleton`` directory (inside this bundle) to ``app\Resources\PUGXGeneratorBundle\skeleton``
+(in your project).
 
 Also, since it's not easy to always generate correct spaces, because they depend on dynamic names,
-another good idea could be running a coding standard fixer, like the [SensioLabs one](http://cs.sensiolabs.org/).
+another good idea could be running a coding standard fixer, like the
+[SensioLabs one](http://cs.sensiolabs.org/).
