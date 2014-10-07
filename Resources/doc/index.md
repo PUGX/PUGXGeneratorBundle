@@ -205,7 +205,7 @@ a generic ``Controller`` class (and extending it instead of Symfony default one)
 could be a good idea.
 
 To enable automatic opening/closing of filters, based on session, you can add following
-code to your Javascript:
+code to your JavaScript:
 
 ``` js
 $(document).ready(function () {
