@@ -56,11 +56,11 @@ The <info>%command.name%</info> command generates a CRUD based on a Doctrine ent
 
 The default command only generates the <comment>list</comment> and <comment>show</comment> actions.
 
-<info>php app/console pugx:generate:crud --entity=AcmeBlogBundle:Post --route-prefix=post_admin</info>
+<info>php %command.full_name% --entity=AcmeBlogBundle:Post --route-prefix=post_admin</info>
 
 Using the --with-write option allows to generate the <comment>new</comment>, <comment>edit</comment> and <comment>delete</comment> actions.
 
-<info>php app/console pugx:generate:crud --entity=AcmeBlogBundle:Post --route-prefix=post_admin --with-write</info>
+<info>php %command.full_name% --entity=AcmeBlogBundle:Post --route-prefix=post_admin --with-write</info>
 
 Using the --use-paginator option allows to generate <comment>list</comment> action with paginator.
 
