@@ -1,8 +1,8 @@
 PUGXGeneratorBundle Documentation
 =================================
 
-This version of the bundle requires Symfony 2.3 or newer.
-For Symfony 2.2, please switch to 2.2 branch.
+This version of the bundle requires Symfony 2.5 or newer.
+For Symfony 2.3 and 2.4, please use tag 2.4.5.
 
 A small note on branches and tags: version numbers are not necessarily consistent
 with Symfony ones. We know we should have started versioning by something like ``0.1`` or
@@ -35,6 +35,8 @@ $ php composer.phar require pugx/generator-bundle:2.4.* --dev
 
 Notice that if your composer.json requires "sensio/generator-bundle", you can delete it (since
 it is already required by "pugx/generator-bundle").
+If you are using Symfony 2.3 or Symfony 2.4, you must require 2.4.5 version. This is caused by a change
+in SesioGeneratorBundle.
 
 ### 2. Enable the bundle
 
