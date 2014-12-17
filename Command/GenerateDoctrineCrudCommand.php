@@ -259,7 +259,7 @@ EOT
      */
     protected function interact(InputInterface $input, OutputInterface $output)
     {
-        $dialog = $this->getDialogHelper();
+        $dialog = $this->getQuestionHelper();
         $dialog->writeSection($output, 'Welcome to the PUGX CRUD generator');
 
         // namespace
