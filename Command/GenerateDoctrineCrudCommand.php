@@ -11,6 +11,8 @@ use Sensio\Bundle\GeneratorBundle\Command\Validators;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
@@ -275,7 +277,9 @@ EOT
             '',
         ));
 
-        $entity = $dialog->askAndValidate($output, $dialog->getQuestion('The Entity shortcut name', $input->getOption('entity')), array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateEntityName'), false, $input->getOption('entity'));
+        $question = new Question($dialog->getQuestion('The Entity shortcut name', $input->getOption('entity')), $input->getOption('entity'));
+        $question->setValidator(array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateEntityName'));
+        $entity = $dialog->ask($input, $output, $question);
         $input->setOption('entity', $entity);
         list($alias, $bundle, $entity) = $this->parseShortcutNotation($entity);
 
@@ -347,7 +351,9 @@ EOT
             'Determine the format to use for the generated CRUD.',
             '',
         ));
-        $format = $dialog->askAndValidate($output, $dialog->getQuestion('Configuration format (yml, xml, php, or annotation)', $format), array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateFormat'), false, $format);
+        $question = new Question($dialog->getQuestion('Configuration format (yml, xml, php, or annotation)', $format), $format);
+        $question->setValidator(array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateFormat'));
+        $format = $dialog->ask($input, $output, $question);
         $input->setOption('format', $format);
 
         // route prefix
