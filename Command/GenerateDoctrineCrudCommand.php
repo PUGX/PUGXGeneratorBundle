@@ -85,10 +85,10 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $dialog = $this->getQuestionHelper();
 
+        $dialog = $this->getHelper('question');
         if ($input->isInteractive()) {
-            if (!$dialog->askConfirmation($output, $dialog->getQuestion('Do you confirm generation', 'yes', '?'), true)) {
+            if (!$dialog->ask($input, $output, new ConfirmationQuestion($dialog->getQuestion('Do you confirm generation', 'yes', '?'), true))) {
                 $output->writeln('<error>Command aborted</error>');
 
                 return 1;
@@ -261,8 +261,8 @@ EOT
      */
     protected function interact(InputInterface $input, OutputInterface $output)
     {
-        $dialog = $this->getQuestionHelper();
-        $dialog->writeSection($output, 'Welcome to the PUGX CRUD generator');
+        $questionHelper = $this->getQuestionHelper();
+        $questionHelper->writeSection($output, 'Welcome to the PUGX CRUD generator');
 
         // namespace
         $output->writeln(array(
@@ -277,9 +277,9 @@ EOT
             '',
         ));
 
-        $question = new Question($dialog->getQuestion('The Entity shortcut name', $input->getOption('entity')), $input->getOption('entity'));
+        $question = new Question($questionHelper->getQuestion('The Entity shortcut name', $input->getOption('entity')), $input->getOption('entity'));
         $question->setValidator(array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateEntityName'));
-        $entity = $dialog->ask($input, $output, $question);
+        $entity = $questionHelper->ask($input, $output, $question);
         $input->setOption('entity', $entity);
         list($alias, $bundle, $entity) = $this->parseShortcutNotation($entity);
 
@@ -299,7 +299,8 @@ EOT
             '',
         ));
         // TODO add validator
-        $layout = $dialog->ask($output, $dialog->getQuestion('Layout name', $input->getOption('layout')), $input->getOption('layout'));
+        $question = new Question($questionHelper->getQuestion('Layout name', $input->getOption('layout')), $input->getOption('layout'));
+        $layout = $questionHelper->ask($input, $output, $question);
         $input->setOption('layout', $layout);
 
         // paginator?
@@ -310,8 +311,10 @@ EOT
             'You can also ask it to generate a paginator. Please notice that <comment>KnpPaginatorBundle</comment> is required.',
             '',
         ));
-        $usePaginator = $dialog->askConfirmation($output, $dialog->getQuestion('Do you want a paginator', $usePaginator ? 'yes' : 'no', '?'), $usePaginator);
-        $input->setOption('use-paginator', $usePaginator);
+        $helper = $this->getHelper('question');
+        $question = new ConfirmationQuestion($questionHelper->getQuestion('Do you want a paginator', $usePaginator ? 'yes' : 'no', '?', $usePaginator),
+                                             $usePaginator);
+        $input->setOption('use-paginator', $helper->ask($input, $output, $question) != false);
 
         // filter?
         $withFilter = $input->getOption('with-filter') ?: false;
@@ -320,8 +323,9 @@ EOT
             'You can add a filter to generated index. Please notice that <comment>LexikFormFilterBundle </comment> is required.',
             '',
         ));
-        $withFilter = $dialog->askConfirmation($output, $dialog->getQuestion('Do you want filter', $withFilter ? 'yes' : 'no', '?'), $withFilter);
-        $input->setOption('with-filter', $withFilter);
+        $question = new ConfirmationQuestion($questionHelper->getQuestion('Do you want filter', $withFilter ? 'yes' : 'no', '?', $withFilter),
+                                             $withFilter);
+        $input->setOption('with-filter', $helper->ask($input, $output, $question) != false);
 
         // sort?
         $withSort = $input->getOption('with-sort') ?: false;
@@ -330,8 +334,9 @@ EOT
             'You can add sort links to columns of generated index.',
             '',
         ));
-        $withSort = $dialog->askConfirmation($output, $dialog->getQuestion('Do you want sort', $withSort ? 'yes' : 'no', '?'), $withSort);
-        $input->setOption('with-sort', $withSort);
+        $question = new ConfirmationQuestion($questionHelper->getQuestion('Do you want sort', $withSort ? 'yes' : 'no', '?', $withSort),
+                                             $withSort);
+        $input->setOption('with-sort', $helper->ask($input, $output, $question) != false);
 
         // write?
         $withWrite = $input->getOption('with-write') ?: false;
@@ -341,8 +346,8 @@ EOT
             'You can also ask it to generate "write" actions: new, update, and delete.',
             '',
         ));
-        $withWrite = $dialog->askConfirmation($output, $dialog->getQuestion('Do you want to generate the "write" actions', $withWrite ? 'yes' : 'no', '?'), $withWrite);
-        $input->setOption('with-write', $withWrite);
+        $question = new ConfirmationQuestion($questionHelper->getQuestion('Do you want to generate the "write" actions', $withWrite ? 'yes' : 'no', '?', $withWrite), $withWrite);
+        $input->setOption('with-write', $helper->ask($input, $output, $question) != false);
 
         // format
         $format = $input->getOption('format');
@@ -351,9 +356,9 @@ EOT
             'Determine the format to use for the generated CRUD.',
             '',
         ));
-        $question = new Question($dialog->getQuestion('Configuration format (yml, xml, php, or annotation)', $format), $format);
+        $question = new Question($questionHelper->getQuestion('Configuration format (yml, xml, php, or annotation)', $format), $format);
         $question->setValidator(array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateFormat'));
-        $format = $dialog->ask($input, $output, $question);
+        $format = $questionHelper->ask($input, $output, $question);
         $input->setOption('format', $format);
 
         // route prefix
@@ -364,7 +369,8 @@ EOT
             'prefix: /prefix/, /prefix/new, ...).',
             '',
         ));
-        $prefix = $dialog->ask($output, $dialog->getQuestion('Routes prefix', '/'.$prefix), '/'.$prefix);
+        $question = new Question($questionHelper->getQuestion('Routes prefix', '/'.$prefix), '/'.$prefix);
+        $prefix = $questionHelper->ask($input, $output, $question);
         $input->setOption('route-prefix', $prefix);
 
         // TODO fixtures...
