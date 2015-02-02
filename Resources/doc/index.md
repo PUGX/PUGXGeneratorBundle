@@ -129,14 +129,12 @@ If you want more consistent boostrap forms, you can use a theme, like the one pr
 in [Symfony 2.6](https://github.com/symfony/symfony/blob/master/src/Symfony/Bridge/Twig/Resources/views/Form/bootstrap_3_layout.html.twig)
 
 If you're using a previous Symfony version, you can copy the theme file in a location
-like ``src/Acme/DemoBundle/Resources/views/Form/theme.html.twig``, then
+like ``src/AppBundle/Resources/views/Form/theme.html.twig``, then
 you can use the ``--theme`` option of ``pugx:generate:crud`` command, like in this example:
 
 ``` bash
-$ php app/console pugx:generate:crud \
-    --entity=AcmeDemoBundle:Entity \
-    --layout=AcmeDemoBundle::layout.html.twig \
-    --theme=AcmeDemoBundle:Form:theme.html.twig \
+$ php app/console pugx:generate:crud --entity=AppBundle:Entity \
+    --layout=AppBundle::layout.html.twig --theme=AppBundle:Form:theme.html.twig \
     --with-write
 ```
 
@@ -147,7 +145,7 @@ configuration:
 # app/config.yml
 twig:
     form:
-        resources: ['src/Acme/DemoBundle/Resources/views/Form/theme.html.twig']
+        resources: ['src/AppBundle/Resources/views/Form/theme.html.twig']
 ```
 
 ### 5. Pagination
@@ -173,7 +171,7 @@ Messages catalogue is named "admin". Here is an example of a working translation
 in YAML format, for Italian language:
 
 ```yaml
-# src/Acme/DemoBundle/Resources/translations/admin.it.yml
+# app/Resources/translations/admin.it.yml
 "%entity% creation":             "Creazione %entity%"
 "%entity% edit":                 "Modifica %entity%"
 "%entity% list":                 "Elenco %entity%"
@@ -248,7 +246,7 @@ If you want to generate your CRUD inside a bundle that is not the same bundle as
 entity, you can use the ``--dest`` option:
 
 ``` bash
-$ php app/console pugx:generate:crud --entity=AcmeDemoBundle:Foo --dest=AcmeAnotherBundle
+$ php app/console pugx:generate:crud --entity=AppBundle:Foo --dest=AcmeAnotherBundle
 ```
 
 ### 11. Cleanup
