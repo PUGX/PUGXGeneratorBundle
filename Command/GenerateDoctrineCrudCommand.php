@@ -85,10 +85,10 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
-        $dialog = $this->getHelper('question');
+        $questionHelper = $this->getQuestionHelper();
         if ($input->isInteractive()) {
-            if (!$dialog->ask($input, $output, new ConfirmationQuestion($dialog->getQuestion('Do you confirm generation', 'yes', '?'), true))) {
+            $question = new Question($questionHelper->getQuestion('Do you confirm generation', 'yes', '?'), true);
+            if (!$questionHelper->ask($input, $output, $question)) {
                 $output->writeln('<error>Command aborted</error>');
 
                 return 1;
@@ -115,7 +115,7 @@ EOT
             throw new \RuntimeException(sprintf('Cannot use filter without paginator.'));
         }
 
-        $dialog->writeSection($output, 'CRUD generation');
+        $questionHelper->writeSection($output, 'CRUD generation');
 
         // see https://github.com/sensiolabs/SensioGeneratorBundle/issues/277
         try {
@@ -133,7 +133,7 @@ EOT
         $output->writeln('Generating the CRUD code: <info>OK</info>');
 
         $errors = array();
-        $runner = $dialog->getRunner($output, $errors);
+        $runner = $questionHelper->getRunner($output, $errors);
 
         // form
         if ($withWrite) {
@@ -149,7 +149,7 @@ EOT
 
         // routing
         if ('annotation' != $format) {
-            $runner($this->updateRouting($dialog, $input, $output, $bundle, $format, $entity, $prefix));
+            $runner($this->updateRouting($questionHelper, $input, $output, $bundle, $format, $entity, $prefix));
         }
 
         // fixtures
@@ -158,7 +158,7 @@ EOT
             $output->writeln(sprintf('Generating %d fixture%s: <info>OK</info>', $fixtures, $fixtures > 1 ? 's' : ''));
         }
 
-        $dialog->writeGeneratorSummary($output, $errors);
+        $questionHelper->writeGeneratorSummary($output, $errors);
     }
 
     protected function getFormGenerator($bundle = null)
