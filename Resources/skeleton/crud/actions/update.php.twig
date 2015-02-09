@@ -11,7 +11,7 @@
     public function updateAction({{ entity }} ${{ entity|lower }}, Request $request)
     {
         $editForm = $this->createForm(new {{ entity_class }}Type(), ${{ entity|lower }}, array(
-            'action' => $this->generateUrl('{{ route_name_prefix }}_update', array('id' => ${{ entity|lower }}->getid())),
+            'action' => $this->generateUrl('{{ route_name_prefix }}_update', array('id' => ${{ entity|lower }}->getId())),
             'method' => 'PUT',
         ));
         if ($editForm->handleRequest($request)->isValid()) {
