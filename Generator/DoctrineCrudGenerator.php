@@ -101,7 +101,8 @@ class DoctrineCrudGenerator extends Generator
 
         $this->generateControllerClass($forceOverwrite);
 
-        $dir = sprintf('%s/Resources/views/%s', $this->destBundle->getPath(), str_replace('\\', '/', $this->entity));
+        // TODO for now we do strtolower, but we need a CamelCase to snake_case conversion
+        $dir = sprintf('%s/Resources/views/%s', $this->destBundle->getPath(), strtolower(str_replace('\\', '/', $this->entity)));
 
         if (!file_exists($dir)) {
             $this->filesystem->mkdir($dir, 0777);

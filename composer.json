@@ -2,7 +2,7 @@
     "name": "pugx/generator-bundle",
     "type": "symfony-bundle",
     "description": "Extension of SensioGeneratorBundle",
-    "keywords": ["symfony2", "code generation"],
+    "keywords": ["Symfony", "code generation"],
     "homepage": "http://pugx.org/",
     "license": "LGPL-3.0+",
     "authors": [
@@ -24,9 +24,8 @@
         "lexik/form-filter-bundle": "Needed for optional filters"
     },
     "autoload": {
-        "psr-0": { "PUGX\\GeneratorBundle": "" }
+        "psr-4": { "PUGX\\GeneratorBundle\\": "" }
     },
-    "target-dir": "PUGX/GeneratorBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "2.5.x-dev"
