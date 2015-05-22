@@ -36,7 +36,7 @@ $ php composer.phar require pugx/generator-bundle:2.4.* --dev
 Notice that if your composer.json requires "sensio/generator-bundle", you can delete it (since
 it is already required by "pugx/generator-bundle").
 If you are using Symfony 2.3 or Symfony 2.4, you must require 2.4.5 version. This is caused by a change
-in SesioGeneratorBundle.
+in SensioGeneratorBundle.
 
 ### 2. Enable the bundle
 
