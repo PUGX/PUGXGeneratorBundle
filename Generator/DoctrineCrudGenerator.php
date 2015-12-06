@@ -2,10 +2,10 @@
 
 namespace PUGX\GeneratorBundle\Generator;
 
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 /**
  * Generates a CRUD controller.
@@ -41,7 +41,7 @@ class DoctrineCrudGenerator extends Generator
      */
     public function __construct(Filesystem $filesystem)
     {
-        $this->filesystem  = $filesystem;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -87,16 +87,16 @@ class DoctrineCrudGenerator extends Generator
             throw new \RuntimeException('The CRUD generator expects the entity object has a primary key field named "id" with a getId() method.');
         }
 
-        $this->entity       = $entity;
-        $this->bundle       = $bundle;
-        $this->destBundle   = $destBundle;
-        $this->layout       = $layout;
-        $this->bodyBlock    = $bodyBlock;
-        $this->metadata     = $metadata;
+        $this->entity = $entity;
+        $this->bundle = $bundle;
+        $this->destBundle = $destBundle;
+        $this->layout = $layout;
+        $this->bodyBlock = $bodyBlock;
+        $this->metadata = $metadata;
         $this->usePaginator = $usePaginator;
-        $this->withFilter   = $withFilter;
-        $this->withSort     = $withSort;
-        $this->theme        = $theme;
+        $this->withFilter = $withFilter;
+        $this->withSort = $withSort;
+        $this->theme = $theme;
         $this->setFormat($format);
 
         $this->generateControllerClass($forceOverwrite);
@@ -152,7 +152,6 @@ class DoctrineCrudGenerator extends Generator
 
     /**
      * Generates the routing configuration.
-     *
      */
     protected function generateConfiguration()
     {
@@ -168,17 +167,16 @@ class DoctrineCrudGenerator extends Generator
         );
 
         $this->renderFile('crud/config/routing.'.$this->format.'.twig', $target, array(
-            'actions'           => $this->actions,
-            'route_prefix'      => $this->routePrefix,
+            'actions' => $this->actions,
+            'route_prefix' => $this->routePrefix,
             'route_name_prefix' => $this->routeNamePrefix,
-            'bundle'            => $this->bundle->getName(),
-            'entity'            => $this->entity,
+            'bundle' => $this->bundle->getName(),
+            'entity' => $this->entity,
         ));
     }
 
     /**
      * Generates the controller class only.
-     *
      */
     protected function generateControllerClass($forceOverwrite)
     {
@@ -200,26 +198,25 @@ class DoctrineCrudGenerator extends Generator
         }
 
         $this->renderFile('crud/controller.php.twig', $target, array(
-            'actions'           => $this->actions,
-            'route_prefix'      => $this->routePrefix,
+            'actions' => $this->actions,
+            'route_prefix' => $this->routePrefix,
             'route_name_prefix' => $this->routeNamePrefix,
-            'bundle'            => $this->bundle->getName(),
-            'dest_bundle'       => $this->destBundle->getName(),
-            'entity'            => $this->entity,
-            'entity_class'      => $entityClass,
-            'namespace'         => $this->destBundle->getNamespace(),
-            'bundle_namespace'  => $this->bundle->getNamespace(),
-            'entity_namespace'  => $entityNamespace,
-            'format'            => $this->format,
-            'usePaginator'      => $this->usePaginator,
-            'withFilter'        => $this->withFilter,
-            'withSort'          => $this->withSort,
+            'bundle' => $this->bundle->getName(),
+            'dest_bundle' => $this->destBundle->getName(),
+            'entity' => $this->entity,
+            'entity_class' => $entityClass,
+            'namespace' => $this->destBundle->getNamespace(),
+            'bundle_namespace' => $this->bundle->getNamespace(),
+            'entity_namespace' => $entityNamespace,
+            'format' => $this->format,
+            'usePaginator' => $this->usePaginator,
+            'withFilter' => $this->withFilter,
+            'withSort' => $this->withSort,
         ));
     }
 
     /**
      * Generates the functional test class only.
-     *
      */
     protected function generateTestClass()
     {
@@ -227,22 +224,22 @@ class DoctrineCrudGenerator extends Generator
         $entityClass = array_pop($parts);
         $entityNamespace = implode('\\', $parts);
 
-        $dir    = $this->destBundle->getPath() .'/Tests/Controller';
-        $target = $dir .'/'. str_replace('\\', '/', $entityNamespace).'/'. $entityClass .'ControllerTest.php';
+        $dir = $this->destBundle->getPath().'/Tests/Controller';
+        $target = $dir.'/'.str_replace('\\', '/', $entityNamespace).'/'.$entityClass.'ControllerTest.php';
 
         $this->renderFile('crud/tests/test.php.twig', $target, array(
-            'route_prefix'      => $this->routePrefix,
+            'route_prefix' => $this->routePrefix,
             'route_name_prefix' => $this->routeNamePrefix,
-            'entity'            => $this->entity,
-            'bundle'            => $this->bundle->getName(),
-            'entity_class'      => $entityClass,
-            'namespace'         => $this->bundle->getNamespace(),
-            'entity_namespace'  => $entityNamespace,
-            'actions'           => $this->actions,
-            'form_type_name'    => strtolower($entityClass),
-            'withFilter'        => $this->withFilter,
-            'withSort'          => $this->withSort,
-            'fields'            => $this->metadata->fieldMappings,
+            'entity' => $this->entity,
+            'bundle' => $this->bundle->getName(),
+            'entity_class' => $entityClass,
+            'namespace' => $this->bundle->getNamespace(),
+            'entity_namespace' => $entityNamespace,
+            'actions' => $this->actions,
+            'form_type_name' => strtolower($entityClass),
+            'withFilter' => $this->withFilter,
+            'withSort' => $this->withSort,
+            'fields' => $this->metadata->fieldMappings,
         ));
     }
 
@@ -254,20 +251,20 @@ class DoctrineCrudGenerator extends Generator
     protected function generateIndexView($dir)
     {
         $this->renderFile('crud/views/index.html.twig.twig', $dir.'/index.html.twig', array(
-            'bundle'            => $this->bundle->getName(),
-            'dest_bundle'       => $this->destBundle->getName(),
-            'entity'            => $this->entity,
-            'fields'            => $this->metadata->fieldMappings,
-            'actions'           => $this->actions,
-            'record_actions'    => $this->getRecordActions(),
-            'route_prefix'      => $this->routePrefix,
+            'bundle' => $this->bundle->getName(),
+            'dest_bundle' => $this->destBundle->getName(),
+            'entity' => $this->entity,
+            'fields' => $this->metadata->fieldMappings,
+            'actions' => $this->actions,
+            'record_actions' => $this->getRecordActions(),
+            'route_prefix' => $this->routePrefix,
             'route_name_prefix' => $this->routeNamePrefix,
-            'layout'            => $this->layout,
-            'bodyBlock'         => $this->bodyBlock,
-            'usePaginator'      => $this->usePaginator,
-            'withFilter'        => $this->withFilter,
-            'withSort'          => $this->withSort,
-            'bundle'            => $this->bundle->getName(),
+            'layout' => $this->layout,
+            'bodyBlock' => $this->bodyBlock,
+            'usePaginator' => $this->usePaginator,
+            'withFilter' => $this->withFilter,
+            'withSort' => $this->withSort,
+            'bundle' => $this->bundle->getName(),
         ));
     }
 
@@ -279,14 +276,14 @@ class DoctrineCrudGenerator extends Generator
     private function generateShowView($dir)
     {
         $this->renderFile('crud/views/show.html.twig.twig', $dir.'/show.html.twig', array(
-            'bundle'            => $this->bundle->getName(),
-            'entity'            => $this->entity,
-            'fields'            => $this->metadata->fieldMappings,
-            'actions'           => $this->actions,
-            'route_prefix'      => $this->routePrefix,
+            'bundle' => $this->bundle->getName(),
+            'entity' => $this->entity,
+            'fields' => $this->metadata->fieldMappings,
+            'actions' => $this->actions,
+            'route_prefix' => $this->routePrefix,
             'route_name_prefix' => $this->routeNamePrefix,
-            'layout'            => $this->layout,
-            'bodyBlock'         => $this->bodyBlock,
+            'layout' => $this->layout,
+            'bodyBlock' => $this->bodyBlock,
         ));
     }
 
@@ -298,14 +295,14 @@ class DoctrineCrudGenerator extends Generator
     private function generateNewView($dir)
     {
         $this->renderFile('crud/views/new.html.twig.twig', $dir.'/new.html.twig', array(
-            'bundle'            => $this->bundle->getName(),
-            'entity'            => $this->entity,
-            'route_prefix'      => $this->routePrefix,
+            'bundle' => $this->bundle->getName(),
+            'entity' => $this->entity,
+            'route_prefix' => $this->routePrefix,
             'route_name_prefix' => $this->routeNamePrefix,
-            'actions'           => $this->actions,
-            'layout'            => $this->layout,
-            'bodyBlock'         => $this->bodyBlock,
-            'theme'             => $this->theme,
+            'actions' => $this->actions,
+            'layout' => $this->layout,
+            'bodyBlock' => $this->bodyBlock,
+            'theme' => $this->theme,
         ));
     }
 
@@ -317,14 +314,14 @@ class DoctrineCrudGenerator extends Generator
     protected function generateEditView($dir)
     {
         $this->renderFile('crud/views/edit.html.twig.twig', $dir.'/edit.html.twig', array(
-            'route_prefix'      => $this->routePrefix,
+            'route_prefix' => $this->routePrefix,
             'route_name_prefix' => $this->routeNamePrefix,
-            'entity'            => $this->entity,
-            'bundle'            => $this->bundle->getName(),
-            'actions'           => $this->actions,
-            'layout'            => $this->layout,
-            'bodyBlock'         => $this->bodyBlock,
-            'theme'             => $this->theme,
+            'entity' => $this->entity,
+            'bundle' => $this->bundle->getName(),
+            'actions' => $this->actions,
+            'layout' => $this->layout,
+            'bodyBlock' => $this->bodyBlock,
+            'theme' => $this->theme,
         ));
     }
 
@@ -336,14 +333,14 @@ class DoctrineCrudGenerator extends Generator
     private function generateFilterView($dir)
     {
         $this->renderFile('crud/views/filter.html.twig.twig', $dir.'/filter.html.twig', array(
-            'bundle'            => $this->bundle->getName(),
-            'route_prefix'      => $this->routePrefix,
+            'bundle' => $this->bundle->getName(),
+            'route_prefix' => $this->routePrefix,
             'route_name_prefix' => $this->routeNamePrefix,
-            'entity'            => $this->entity,
-            'actions'           => $this->actions,
-            'layout'            => $this->layout,
-            'bodyBlock'         => $this->bodyBlock,
-            'theme'             => $this->theme,
+            'entity' => $this->entity,
+            'actions' => $this->actions,
+            'layout' => $this->layout,
+            'bodyBlock' => $this->bodyBlock,
+            'theme' => $this->theme,
         ));
     }
 
