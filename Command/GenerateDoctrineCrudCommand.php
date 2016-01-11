@@ -4,15 +4,15 @@ namespace PUGX\GeneratorBundle\Command;
 
 use Doctrine\ORM\ORMException;
 use PUGX\GeneratorBundle\Generator\DoctrineCrudGenerator;
-use PUGX\GeneratorBundle\Generator\DoctrineFormGenerator;
 use PUGX\GeneratorBundle\Generator\DoctrineFixturesGenerator;
+use PUGX\GeneratorBundle\Generator\DoctrineFormGenerator;
 use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCrudCommand as BaseCommand;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Question\Question;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
@@ -45,7 +45,7 @@ class GenerateDoctrineCrudCommand extends BaseCommand
                 new InputOption('with-write', '', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
                 new InputOption('overwrite', '', InputOption::VALUE_NONE, 'Do not stop the generation if crud controller already exist, thus overwriting all generated files'),
                 new InputOption('format', '', InputOption::VALUE_REQUIRED, 'Use the format for configuration files (php, xml, yml, or annotation)', 'annotation'),
-                new InputOption('use-paginator', '', InputOption::VALUE_NONE,'Whether or not to use paginator'),
+                new InputOption('use-paginator', '', InputOption::VALUE_NONE, 'Whether or not to use paginator'),
                 new InputOption('theme', '', InputOption::VALUE_OPTIONAL, 'A possible theme to use in forms'),
                 new InputOption('dest', '', InputOption::VALUE_OPTIONAL, 'Change the default destination of the generated code', null),
                 new InputOption('with-filter', '', InputOption::VALUE_NONE, 'Whether or not to add filter'),
@@ -76,8 +76,7 @@ Using the --dest option allows to generate CRUD in a different bundle:
 EOT
             )
             ->setName('pugx:generate:crud')
-            ->setAliases(array('generate:pugx:crud'))
-        ;
+            ->setAliases(array('generate:pugx:crud'));
     }
 
     /**
@@ -119,12 +118,12 @@ EOT
 
         // see https://github.com/sensiolabs/SensioGeneratorBundle/issues/277
         try {
-            $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($alias) . '\\' . $entity;
+            $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($alias).'\\'.$entity;
         } catch (ORMException $e) {
-            $entityClass = $alias . '\\' . $entity;
+            $entityClass = $alias.'\\'.$entity;
         }
-        $metadata   = $this->getEntityMetadata($entityClass);
-        $bundle     = $this->getContainer()->get('kernel')->getBundle($bundle);
+        $metadata = $this->getEntityMetadata($entityClass);
+        $bundle = $this->getContainer()->get('kernel')->getBundle($bundle);
         $destBundle = $this->getContainer()->get('kernel')->getBundle($dest);
 
         $generator = $this->getGenerator($bundle);
@@ -182,7 +181,8 @@ EOT
     }
 
     /**
-     * @param  string                    $bundle
+     * @param string $bundle
+     *
      * @return DoctrineFixturesGenerator
      */
     protected function getFixturesGenerator($bundle = null)
@@ -214,13 +214,13 @@ EOT
     }
 
     /**
-     * Generate fixtures
+     * Generate fixtures.
      *
-     * @param string  $bundle
-     * @param string  $destBundle
-     * @param string  $entity
-     * @param array   $metadata   array of \Doctrine\ORM\Mapping\ClassMetadata objects
-     * @param integer $num
+     * @param string $bundle
+     * @param string $destBundle
+     * @param string $entity
+     * @param array  $metadata   array of \Doctrine\ORM\Mapping\ClassMetadata objects
+     * @param int    $num
      */
     protected function doGenerateFixtures($bundle, $destBundle, $entity, $metadata, $num = 1)
     {
@@ -228,7 +228,7 @@ EOT
     }
 
     /**
-     * add this bundle skeleton dirs to the beginning of the parent skeletonDirs array
+     * add this bundle skeleton dirs to the beginning of the parent skeletonDirs array.
      *
      * @param BundleInterface $bundle
      *
@@ -257,7 +257,7 @@ EOT
     }
 
     /**
-     * Override "interact" method to ask for adding parameters
+     * Override "interact" method to ask for adding parameters.
      */
     protected function interact(InputInterface $input, OutputInterface $output)
     {
@@ -286,9 +286,9 @@ EOT
         // see https://github.com/sensiolabs/SensioGeneratorBundle/issues/277
         // Entity exists?
         try {
-            $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($alias) . '\\' . $entity;
+            $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($alias).'\\'.$entity;
         } catch (ORMException $e) {
-            $entityClass = $alias . '\\' . $entity;
+            $entityClass = $alias.'\\'.$entity;
         }
         $this->getEntityMetadata($entityClass);
 
@@ -380,14 +380,14 @@ EOT
             '',
             $this->getHelper('formatter')->formatBlock('Summary before generation', 'bg=blue;fg=white', true),
             '',
-            sprintf("You are going to generate a CRUD controller for \"<info>%s:%s</info>\"", $bundle, $entity),
-            sprintf("using the \"<info>%s</info>\" format.", $format),
+            sprintf('You are going to generate a CRUD controller for "<info>%s:%s</info>"', $bundle, $entity),
+            sprintf('using the "<info>%s</info>" format.', $format),
             '',
         ));
     }
 
     /**
-     * Original method is not working with aliases set by configuration
+     * Original method is not working with aliases set by configuration.
      *
      * See https://github.com/sensiolabs/SensioGeneratorBundle/issues/277
      */

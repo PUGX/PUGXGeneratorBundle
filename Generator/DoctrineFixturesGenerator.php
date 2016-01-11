@@ -2,10 +2,10 @@
 
 namespace PUGX\GeneratorBundle\Generator;
 
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 /**
  * Generates a fixtures class for Doctrine ORM.
@@ -39,19 +39,19 @@ class DoctrineFixturesGenerator extends Generator
      */
     public function generate(BundleInterface $bundle, BundleInterface $destBundle, $entity, ClassMetadataInfo $metadata, $num = 1)
     {
-        $parts       = explode('\\', $entity);
+        $parts = explode('\\', $entity);
         $entityClass = array_pop($parts);
 
-        $dir = $destBundle->getPath() . '/DataFixtures/ORM/';
+        $dir = $destBundle->getPath().'/DataFixtures/ORM/';
         $this->filesystem->mkdir($dir);
 
-        $this->renderFile('fixtures/DataFixtures.php.twig', $dir . $entityClass .  'Data.php', array(
-            'namespace'    => $destBundle->getNamespace(),
-            'bundle'       => $bundle->getName(),
-            'entity'       => $entity,
+        $this->renderFile('fixtures/DataFixtures.php.twig', $dir.$entityClass.'Data.php', array(
+            'namespace' => $destBundle->getNamespace(),
+            'bundle' => $bundle->getName(),
+            'entity' => $entity,
             'entity_class' => $entityClass,
-            'fields'       => $this->getFieldsFromMetadata($metadata),
-            'num'          => $num,
+            'fields' => $this->getFieldsFromMetadata($metadata),
+            'num' => $num,
         ));
     }
 
@@ -59,8 +59,9 @@ class DoctrineFixturesGenerator extends Generator
      * Returns an array of fields. Fields can be both column fields and
      * association fields.
      *
-     * @param  ClassMetadataInfo $metadata
-     * @return array             $fields
+     * @param ClassMetadataInfo $metadata
+     *
+     * @return array $fields
      */
     private function getFieldsFromMetadata(ClassMetadataInfo $metadata)
     {
