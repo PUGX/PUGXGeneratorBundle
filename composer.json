@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "sensio/generator-bundle": "~2.5"
+        "sensio/generator-bundle": "~2.5|~3.0"
     },
     "suggest": {
         "knplabs/knp-paginator-bundle": "Needed for optional pagination",
