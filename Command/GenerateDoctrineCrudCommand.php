@@ -53,7 +53,7 @@ class GenerateDoctrineCrudCommand extends BaseCommand
                 new InputOption('fixtures', '', InputOption::VALUE_OPTIONAL, 'Possibile number of fixtures to generate', 0),
             ))
             ->setDescription('Generates a CRUD based on a Doctrine entity')
-            ->setHelp(<<<EOT
+            ->setHelp(<<<'EOT'
 The <info>%command.name%</info> command generates a CRUD based on a Doctrine entity.
 
 The default command only generates the <comment>list</comment> and <comment>show</comment> actions.
@@ -399,6 +399,11 @@ EOT
             throw new \InvalidArgumentException(sprintf('The entity name must contain a : ("%s" given, expecting something like AcmeBlogBundle:Blog/Post)', $entity));
         }
         $bundle = substr($entity, 0, $pos);
+
+        $bundles = $this->getContainer()->get('kernel')->getBundles();
+        if (array_key_exists($bundle, $bundles)) {
+            return array($bundle, $bundle, substr($entity, $pos + 1));
+        }
 
         try {
             $alias = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle);
