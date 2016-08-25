@@ -10,23 +10,23 @@
      */
     public function editAction({{ entity }} ${{ entity|lower }})
     {
-        $editForm = $this->createForm(new {{ entity_class }}Type(), ${{ entity|lower }}, array(
-            'action' => $this->generateUrl('{{ route_name_prefix }}_update', array('id' => ${{ entity|lower }}->getId())),
+        $editForm = $this->createForm(new {{ entity_class }}Type(), ${{ entity|lower }}, [
+            'action' => $this->generateUrl('{{ route_name_prefix }}_update', ['id' => ${{ entity|lower }}->getId()]),
             'method' => 'PUT',
-        ));
+        ]);
         $deleteForm = $this->createDeleteForm(${{ entity|lower }}->getId(), '{{ route_name_prefix }}_delete');
 
 {% if 'annotation' == format %}
-        return array(
+        return [
             '{{ entity|lower }}' => ${{ entity|lower }},
-            'edit_form'   => $editForm->createView(),
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-        );
+        ];
 {% else %}
-        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:edit.html.twig', array(
+        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:edit.html.twig', [
             '{{ entity|lower }}' => ${{ entity|lower }},
-            'edit_form'   => $editForm->createView(),
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-        ));
+        ]);
 {% endif %}
     }

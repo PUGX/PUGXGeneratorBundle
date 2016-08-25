@@ -14,14 +14,14 @@
         $form = $this->createForm(new {{ entity_class }}Type(), ${{ entity|lower }});
 
 {% if 'annotation' == format %}
-        return array(
+        return [
             '{{ entity|lower }}' => ${{ entity|lower }},
             'form'   => $form->createView(),
-        );
+        ];
 {% else %}
-        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:new.html.twig', array(
+        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:new.html.twig', [
             '{{ entity|lower }}' => ${{ entity|lower }},
             'form'   => $form->createView(),
-        ));
+        ]);
 {% endif %}
     }

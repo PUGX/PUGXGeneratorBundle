@@ -33,19 +33,18 @@ class DoctrineFormGenerator extends Generator
      * Generates the entity form class if it does not exist.
      *
      * @param BundleInterface   $bundle     The origin bundle
-     * @param BundleInterface   $destBundle The destination bundle
      * @param string            $entity     The entity relative class name
      * @param ClassMetadataInfo $metadata   The entity metadata class
      *
      * @throws \RuntimeException
      */
-    public function generate(BundleInterface $bundle, BundleInterface $destBundle, $entity, ClassMetadataInfo $metadata)
+    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata)
     {
         $parts = explode('\\', $entity);
         $entityClass = array_pop($parts);
 
         $this->className = $entityClass.'Type';
-        $dirPath = $destBundle->getPath().'/Form/Type';
+        $dirPath = $bundle->getPath().'/Form/Type';
         $this->classPath = $dirPath.'/'.str_replace('\\', '/', $entity).'Type.php';
 
         if (file_exists($this->classPath)) {
@@ -59,35 +58,34 @@ class DoctrineFormGenerator extends Generator
         $parts = explode('\\', $entity);
         array_pop($parts);
 
-        $this->renderFile('form/FormType.php.twig', $this->classPath, array(
+        $this->renderFile('form/FormType.php.twig', $this->classPath, [
             'fields' => $this->getFieldsFromMetadata($metadata),
-            'namespace' => $destBundle->getNamespace(),
+            'namespace' => $bundle->getNamespace(),
             'bundle_namespace' => $bundle->getNamespace(),
             'entity_namespace' => implode('\\', $parts),
             'entity_class' => $entityClass,
             'bundle' => $bundle->getName(),
             'form_class' => $this->className,
             'form_type_name' => strtolower(str_replace('\\', '_', $bundle->getNamespace()).($parts ? '_' : '').implode('_', $parts).'_'.$this->className),
-        ));
+        ]);
     }
 
     /**
      * Generates the entity form class if it does not exist.
      *
      * @param BundleInterface   $bundle     The origin bundle
-     * @param BundleInterface   $destBundle The bundle in which to create the class
      * @param string            $entity     The entity relative class name
      * @param ClassMetadataInfo $metadata   The entity metadata class
      *
      * @throws \RuntimeException
      */
-    public function generateFilter(BundleInterface $bundle, BundleInterface $destBundle, $entity, ClassMetadataInfo $metadata)
+    public function generateFilter(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata)
     {
         $parts = explode('\\', $entity);
         $entityClass = array_pop($parts);
 
         $this->className = $entityClass.'FilterType';
-        $dirPath = $destBundle->getPath().'/Form/Type';
+        $dirPath = $bundle->getPath().'/Form/Type';
         $this->classPath = $dirPath.'/'.str_replace('\\', '/', $entity).'FilterType.php';
 
         if (file_exists($this->classPath)) {
@@ -101,16 +99,16 @@ class DoctrineFormGenerator extends Generator
         $parts = explode('\\', $entity);
         array_pop($parts);
 
-        $this->renderFile('filter/FormFilterType.php.twig', $this->classPath, array(
+        $this->renderFile('filter/FormFilterType.php.twig', $this->classPath, [
             'bundle' => $bundle->getName(),
             'fields' => $this->getFieldsFromMetadata($metadata),
-            'namespace' => $destBundle->getNamespace(),
+            'namespace' => $bundle->getNamespace(),
             'bundle_namespace' => $bundle->getNamespace(),
             'entity_namespace' => implode('\\', $parts),
             'entity_class' => $entityClass,
             'form_class' => $this->className,
             'form_type_name' => strtolower(str_replace('\\', '_', $bundle->getNamespace()).($parts ? '_' : '').implode('_', $parts).'_'.$this->className),
-        ));
+        ]);
     }
 
     /**
@@ -128,9 +126,9 @@ class DoctrineFormGenerator extends Generator
         foreach ($metadata->associationMappings as $fieldName => $relation) {
             if ($relation['type'] !== ClassMetadataInfo::ONE_TO_MANY) {
                 if ($relation['type'] === ClassMetadataInfo::MANY_TO_MANY) {
-                    $fields[$fieldName] = array('type' => 'relation_many', 'entity' => $relation['targetEntity']);
+                    $fields[$fieldName] = ['type' => 'relation_many', 'entity' => $relation['targetEntity']];
                 } else {
-                    $fields[$fieldName] = array('type' => 'relation', 'entity' => $relation['targetEntity']);
+                    $fields[$fieldName] = ['type' => 'relation', 'entity' => $relation['targetEntity']];
                 }
             }
         }

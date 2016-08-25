@@ -37,11 +37,11 @@ class {{ entity_class }}ControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/{{ route_prefix }}/');
         $this->assertCount(0, $crawler->filter('table.records_list tbody tr'));
         $crawler = $client->click($crawler->filter('.new_entry a')->link());
-        $form = $crawler->filter('form button[type="submit"]')->form(array(
+        $form = $crawler->filter('form button[type="submit"]')->form([
             {% for field, metadata in fields if field != 'id' %}
 '{{ form_type_name|lower }}[{{ field }}]' => {{ fieldValue(metadata) }},
             {% endfor %}
-        ));
+        ]);
         $client->submit($form);
         $crawler = $client->followRedirect();
         $crawler = $client->click($crawler->filter('.record_actions a')->link());
@@ -68,12 +68,12 @@ class {{ entity_class }}ControllerTest extends WebTestCase
         $this->assertCount(1, $crawler->filter('table.records_list tbody tr:contains("First value")'));
         $this->assertCount(0, $crawler->filter('table.records_list tbody tr:contains("Changed")'));
         $crawler = $client->click($crawler->filter('table.records_list tbody tr td .btn-group a')->eq(1)->link());
-        $form = $crawler->filter('form button[type="submit"]')->form(array(
+        $form = $crawler->filter('form button[type="submit"]')->form([
             {% for field, metadata in fields if field != 'id' %}
 '{{ form_type_name|lower }}[{{ field }}]' => {{ fieldValue(metadata, 'Changed') }},
             {% endfor %}
 // ... adapt fields value here ...
-        ));
+        ]);
         $client->submit($form);
         $crawler = $client->followRedirect();
         $crawler = $client->click($crawler->filter('.record_actions a')->link());
@@ -89,10 +89,10 @@ class {{ entity_class }}ControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/{{ route_prefix }}/');
         $crawler = $client->click($crawler->filter('table.records_list tbody tr td .btn-group a')->eq(1)->link());
-        $form = $crawler->filter('form button[type="submit"]')->form(array(
+        $form = $crawler->filter('form button[type="submit"]')->form([
             '{{ form_type_name|lower }}[field_name]' => '',
             // ... use a required field here ...
-        ));
+        ]);
         $crawler = $client->submit($form);
         $this->assertGreaterThan(0, $crawler->filter('form div.has-error')->count());
     }
@@ -121,12 +121,12 @@ class {{ entity_class }}ControllerTest extends WebTestCase
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/{{ route_prefix }}/');
-        $form = $crawler->filter('div#filter form button[type="submit"]')->form(array(
+        $form = $crawler->filter('div#filter form button[type="submit"]')->form([
             {% for field, metadata in fields if field != 'id' %}
 '{{ form_type_name|lower }}_filter[{{ field }}]' => {{ fieldValue(metadata, 'First%') }},
             {% endfor %}
 // ... maybe use just one field here ...
-        ));
+        ]);
         $client->submit($form);
         $crawler = $client->followRedirect();
         $this->assertTrue($client->getResponse()->isSuccessful());

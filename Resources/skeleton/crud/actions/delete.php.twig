@@ -28,8 +28,8 @@
      */
     protected function createDeleteForm($id, $route)
     {
-        return $this->createFormBuilder(null, array('attr' => array('id' => 'delete')))
-            ->setAction($this->generateUrl($route, array('id' => $id)))
+        return $this->createFormBuilder(null, ['attr' => ['id' => 'delete']])
+            ->setAction($this->generateUrl($route, ['id' => $id]))
             ->setMethod('DELETE')
             ->getForm()
         ;

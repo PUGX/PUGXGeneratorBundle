@@ -5,33 +5,24 @@
 {% if 'annotation' == format %}
      * @Route("/{id}/update", name="{{ route_name_prefix }}_update", requirements={"id"="\d+"})
      * @Method("PUT")
-     * @Template("{{ dest_bundle }}:{{ entity }}:edit.html.twig")
 {% endif %}
      */
     public function updateAction({{ entity }} ${{ entity|lower }}, Request $request)
     {
-        $editForm = $this->createForm(new {{ entity_class }}Type(), ${{ entity|lower }}, array(
+        $editForm = $this->createForm(new {{ entity_class }}Type(), ${{ entity|lower }}, [
             'action' => $this->generateUrl('{{ route_name_prefix }}_update', array('id' => ${{ entity|lower }}->getId())),
             'method' => 'PUT',
-        ));
+        ]);
         if ($editForm->handleRequest($request)->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirect($this->generateUrl('{{ route_name_prefix }}_edit', array('id' => ${{ entity|lower }}->getId())));
+            return $this->redirect($this->generateUrl('{{ route_name_prefix }}_edit', ['id' => ${{ entity|lower }}->getId()]));
         }
         $deleteForm = $this->createDeleteForm(${{ entity|lower }}->getId(), '{{ route_name_prefix }}_delete');
 
-{% if 'annotation' == format %}
-        return array(
+        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:edit.html.twig', [
             '{{ entity|lower }}' => ${{ entity|lower }},
-            'edit_form'   => $editForm->createView(),
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-        );
-{% else %}
-        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:edit.html.twig', array(
-            '{{ entity|lower }}' => ${{ entity|lower }},
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
-{% endif %}
+        ]);
     }

@@ -21,7 +21,7 @@
      */
     protected function setOrder($name, $field, $type = 'ASC')
     {
-        $this->getRequest()->getSession()->set('sort.' . $name, array('field' => $field, 'type' => $type));
+        $this->get(i'session')->set('sort.' . $name, ['field' => $field, 'type' => $type]);
     }
 
     /**
@@ -30,7 +30,7 @@
      */
     protected function getOrder($name)
     {
-        $session = $this->getRequest()->getSession();
+        $session = $this->get('session');
 
         return $session->has('sort.' . $name) ? $session->get('sort.' . $name) : null;
     }

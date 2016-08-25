@@ -15,18 +15,18 @@
 {% endif %}
 
 {% if 'annotation' == format %}
-        return array(
+        return [
             '{{ entity|lower }}' => ${{ entity|lower }},
 {% if 'delete' in actions %}
             'delete_form' => $deleteForm->createView(),
 {% endif %}
-        );
+        ];
 {% else %}
-        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:show.html.twig', array(
+        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:show.html.twig', [
             '{{ entity|lower }}' => ${{ entity|lower }},
 {% if 'delete' in actions %}
             'delete_form' => $deleteForm->createView(),
 {%- endif %}
-        ));
+        ]);
 {% endif %}
     }

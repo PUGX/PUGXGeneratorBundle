@@ -2,6 +2,7 @@
 
 namespace {{ namespace }}\Form\Type{{ entity_namespace ? '\\' ~ entity_namespace : '' }};
 
+use Lexik\Bundle\FormFilterBundle\Filter\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,19 +18,19 @@ class {{ form_class }} extends AbstractType
         {% for field, metadata in fields -%}
         {%- if metadata.type == 'relation' or metadata.type == 'relation_many' %}
 
-            ->add('{{ field }}', 'filter_entity', array('class' => '{{ metadata.entity }}'))
+            ->add('{{ field }}', Type\EntityFilterType::class, ['class' => '{{ metadata.entity }}'])
         {%- elseif metadata.type == 'boolean' %}
 
-            ->add('{{ field }}', 'filter_boolean')
+            ->add('{{ field }}', Type\BooleanFilterType::class)
         {%- elseif metadata.type == 'integer' and field != 'id' %}
 
-            ->add('{{ field }}', 'filter_number')
+            ->add('{{ field }}', Type\NumberFilterType::class)
         {%- elseif metadata.type == 'date' or metadata.type == 'datetime' %}
 
-            ->add('{{ field }}', 'filter_date')
+            ->add('{{ field }}', Type\DateFilterType::class)
         {%- elseif field != 'id' %}
 
-            ->add('{{ field }}', 'filter_text')
+            ->add('{{ field }}', Type\TextFilterType::class)
         {%- endif %}
         {%- endfor %}
 
@@ -41,18 +42,18 @@ class {{ form_class }} extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class'        => '{{ bundle_namespace }}\Entity{{ entity_namespace ? '\\' ~ entity_namespace : '' }}\{{ entity_class }}',
-            'csrf_protection'   => false,
-            'validation_groups' => array('filter'),
-            'method'            => 'GET',
-        ));
+        $resolver->setDefaults([
+            'data_class' => '{{ bundle_namespace }}\Entity{{ entity_namespace ? '\\' ~ entity_namespace : '' }}\{{ entity_class }}',
+            'csrf_protection' => false,
+            'validation_groups' => ['filter'],
+            'method' => 'GET',
+        ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return '{{ entity_class|lower }}_filter';
     }

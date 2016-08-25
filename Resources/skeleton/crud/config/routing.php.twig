@@ -11,53 +11,53 @@ $collection = new RouteCollection();
 
 {% block body %}
 {% if 'index' in actions %}
-$collection->add('{{ route_name_prefix }}', new Route('/', array(
+$collection->add('{{ route_name_prefix }}', new Route('/', [
     '_controller' => '{{ bundle }}:{{ entity }}:index',
-    )));
+    ]));
 {% endif %}
 
 {% if 'sort' in actions %}
 $collection->add('{{ route_name_prefix }}_sort', new Route('/{field}/{type}/sort',
-    array('_controller' => '{{ bundle }}:{{ entity }}:sort'),
-    array('type' => 'DESC|ASC')
+    ['_controller' => '{{ bundle }}:{{ entity }}:sort'],
+    ['type' => 'DESC|ASC']
     ));
 {% endif %}
 
 {% if 'show' in actions %}
-$collection->add('{{ route_name_prefix }}_show', new Route('/{id}/show', array(
+$collection->add('{{ route_name_prefix }}_show', new Route('/{id}/show', [
     '_controller' => '{{ bundle }}:{{ entity }}:show',
-)));
+]));
 {% endif %}
 
 {% if 'new' in actions %}
-$collection->add('{{ route_name_prefix }}_new', new Route('/new', array(
+$collection->add('{{ route_name_prefix }}_new', new Route('/new', [
     '_controller' => '{{ bundle }}:{{ entity }}:new',
-)));
+]));
 
 $collection->add('{{ route_name_prefix }}_create', new Route(
     '/create',
-    array('_controller' => '{{ bundle }}:{{ entity }}:create'),
-    array('_method' => 'post')
+    ['_controller' => '{{ bundle }}:{{ entity }}:create'],
+    ['_method' => 'post']
 ));
 {% endif %}
 
 {% if 'edit' in actions %}
-$collection->add('{{ route_name_prefix }}_edit', new Route('/{id}/edit', array(
+$collection->add('{{ route_name_prefix }}_edit', new Route('/{id}/edit', [
     '_controller' => '{{ bundle }}:{{ entity }}:edit',
-)));
+]));
 
 $collection->add('{{ route_name_prefix }}_update', new Route(
     '/{id}/update',
-    array('_controller' => '{{ bundle }}:{{ entity }}:update'),
-    array('_method' => 'post|put')
+    ['_controller' => '{{ bundle }}:{{ entity }}:update'],
+    ['_method' => 'post|put']
 ));
 {% endif %}
 
 {% if 'delete' in actions %}
 $collection->add('{{ route_name_prefix }}_delete', new Route(
     '/{id}/delete',
-    array('_controller' => '{{ bundle }}:{{ entity }}:delete'),
-    array('_method' => 'post|delete')
+    ['_controller' => '{{ bundle }}:{{ entity }}:delete'],
+    ['_method' => 'post|delete']
 ));
 {% endif %}
 {% endblock body %}

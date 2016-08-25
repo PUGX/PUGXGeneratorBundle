@@ -30,29 +30,28 @@ class DoctrineFixturesGenerator extends Generator
      * Generate the fixtures class.
      *
      * @param BundleInterface   $bundle     A bundle object
-     * @param BundleInterface   $destBundle The destination bundle object
      * @param string            $entity     The entity relative class name
      * @param ClassMetadataInfo $metadata   The entity class metadata
      * @parma integer           $num        The number of fixtures to generate
      *
      * @throws \RuntimeException
      */
-    public function generate(BundleInterface $bundle, BundleInterface $destBundle, $entity, ClassMetadataInfo $metadata, $num = 1)
+    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $num = 1)
     {
         $parts = explode('\\', $entity);
         $entityClass = array_pop($parts);
 
-        $dir = $destBundle->getPath().'/DataFixtures/ORM/';
+        $dir = $bundle->getPath().'/DataFixtures/ORM/';
         $this->filesystem->mkdir($dir);
 
-        $this->renderFile('fixtures/DataFixtures.php.twig', $dir.$entityClass.'Data.php', array(
-            'namespace' => $destBundle->getNamespace(),
+        $this->renderFile('fixtures/DataFixtures.php.twig', $dir.$entityClass.'Data.php', [
+            'namespace' => $bundle->getNamespace(),
             'bundle' => $bundle->getName(),
             'entity' => $entity,
             'entity_class' => $entityClass,
             'fields' => $this->getFieldsFromMetadata($metadata),
             'num' => $num,
-        ));
+        ]);
     }
 
     /**
@@ -70,9 +69,9 @@ class DoctrineFixturesGenerator extends Generator
         foreach ($metadata->associationMappings as $fieldName => $relation) {
             if ($relation['type'] !== ClassMetadataInfo::ONE_TO_MANY) {
                 if ($relation['type'] === ClassMetadataInfo::MANY_TO_MANY) {
-                    $fields[$fieldName] = array('type' => 'relation_many', 'entity' => $relation['targetEntity']);
+                    $fields[$fieldName] = ['type' => 'relation_many', 'entity' => $relation['targetEntity']];
                 } else {
-                    $fields[$fieldName] = array('type' => 'relation', 'entity' => $relation['targetEntity']);
+                    $fields[$fieldName] = ['type' => 'relation', 'entity' => $relation['targetEntity']];
                 }
             }
         }

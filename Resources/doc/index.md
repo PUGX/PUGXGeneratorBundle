@@ -1,14 +1,6 @@
 PUGXGeneratorBundle Documentation
 =================================
 
-This version of the bundle requires Symfony 2.5 or newer.
-For Symfony 2.3 and 2.4, please use tag 2.4.5.
-
-A small note on branches and tags: version numbers are not necessarily consistent
-with Symfony ones. We know we should have started versioning by something like ``0.1`` or
-``1.1``, but we cannot change that decision now, for compatibility issues.
-
-
 ## Table of contents
 
 1. [Download PUGXGeneratorBundle](#1-download-pugxgeneratorbundle)
@@ -20,8 +12,7 @@ with Symfony ones. We know we should have started versioning by something like `
 7. [Filters](#7-filters)
 8. [Sorting](#8-sorting)
 9. [Fixtures](#9-fixtures)
-10. [Target bundle](#11-target-bundle)
-11. [Cleanup](#11-cleanup)
+10. [Cleanup](#11-cleanup)
 
 ### 1. Download PUGXGeneratorBundle
 
@@ -30,13 +21,11 @@ with Symfony ones. We know we should have started versioning by something like `
 Run composer to download the bundle:
 
 ``` bash
-$ php composer.phar require pugx/generator-bundle:2.4.* --dev
+$ composer require pugx/generator-bundle --dev
 ```
 
-Notice that if your composer.json requires "sensio/generator-bundle", you can delete it (since
+Notice that if your composer.json requires "sensio/generator-bundle", you can remove it (since
 it is already required by "pugx/generator-bundle").
-If you are using Symfony 2.3 or Symfony 2.4, you must require 2.4.5 version. This is caused by a change
-in SensioGeneratorBundle.
 
 ### 2. Enable the bundle
 
@@ -49,7 +38,7 @@ Enable the bundle in the kernel:
 public function registerBundles()
 {
     // ...
-    if (in_array($this->getEnvironment(), array('dev', 'test'))) {
+    if (in_array($this->getEnvironment(), ['dev', 'test'])) {
         // ...
         $bundles[] = new PUGX\GeneratorBundle\PUGXGeneratorBundle();
     }
@@ -62,7 +51,7 @@ This bundle brings a new command, ``pugx:generate:crud``, that is similar to ``d
 You can get help, like any other Symfony command, just typing
 
 ``` bash
-$ php app/console pugx:generate:crud --help
+$ php bin/console pugx:generate:crud --help
 ```
 
 ### 4. Layout
@@ -129,12 +118,12 @@ If you want more consistent boostrap forms, you can use a theme, like the one pr
 in [Symfony 2.6](https://github.com/symfony/symfony/blob/master/src/Symfony/Bridge/Twig/Resources/views/Form/bootstrap_3_layout.html.twig)
 
 If you're using a previous Symfony version, you can copy the theme file in a location
-like ``src/AppBundle/Resources/views/Form/theme.html.twig``, then
+like ``app/Resources/views/form/theme.html.twig``, then
 you can use the ``--theme`` option of ``pugx:generate:crud`` command, like in this example:
 
 ``` bash
-$ php app/console pugx:generate:crud --entity=AppBundle:Entity \
-    --layout=AppBundle::layout.html.twig --theme=AppBundle:Form:theme.html.twig \
+$ php bin/console pugx:generate:crud --entity=AppBundle:Entity \
+    --layout=layout.html.twig --theme=form/theme.html.twig \
     --with-write
 ```
 
@@ -145,7 +134,7 @@ configuration:
 # app/config.yml
 twig:
     form:
-        resources: ['src/AppBundle/Resources/views/Form/theme.html.twig']
+        resources: ['app/Resources/views/form/theme.html.twig']
 ```
 
 ### 5. Pagination
@@ -163,7 +152,7 @@ translation in your configuration:
 # app/config.yml
 framework:
     # ...
-    translator:      { fallback: "%locale%" }
+    translator: { fallbacks: ["%locale%"] }
 ```
 
 Then you should create a translation file, in your preferred format.
@@ -240,16 +229,7 @@ number of objects that will be generated in fixtures class (can be any number gr
 If your entity has some relations, references need to be adapted.
 For now, there is no support for ``DependentFixtureInterface``.
 
-### 10. Target bundle
-
-If you want to generate your CRUD inside a bundle that is not the same bundle as your
-entity, you can use the ``--dest`` option:
-
-``` bash
-$ php app/console pugx:generate:crud --entity=AppBundle:Foo --dest=AcmeAnotherBundle
-```
-
-### 11. Cleanup
+### 10. Cleanup
 
 As already mentioned in [filters section](#7-filters), if you run more than one generation, it
 could be a good idea to refactor procteted methods in controllers to an abstract class, to avoid
