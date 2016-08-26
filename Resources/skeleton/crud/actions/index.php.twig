@@ -9,7 +9,6 @@
      */
     public function indexAction({% if usePaginator and not withFilter %}Request $request{% endif %})
     {
-        $em = $this->getDoctrine()->getManager();
 {% if withFilter %}
         $form = $this->createForm(new {{ entity_class }}FilterType());
         if (!is_null($response = $this->saveFilter($form, '{{ entity|lower }}', '{{ route_name_prefix }}'))) {
@@ -19,37 +18,37 @@
 {% if usePaginator %}
     {%- if withSort %}
         {%- if withFilter %}
-        $qb = $em->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('{{ entity|lower|slice(0, 1) }}');
+        $qb = $this->getDoctrine()->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('{{ entity|lower|slice(0, 1) }}');
         $paginator = $this->filter($form, $qb, '{{ entity|lower }}');
         {% else %}
-        $qb = $em->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('{{ entity|lower|slice(0, 1) }}');
+        $qb = $this->getDoctrine()->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('{{ entity|lower|slice(0, 1) }}');
         $this->addQueryBuilderSort($qb, '{{ entity|lower }}');
-        $paginator = $this->get('knp_paginator')->paginate($qb, $request->query->get('page', 1), 20);
+        $paginator = $this->get('knp_paginator')->paginate($qb, $request->query->getInt('page', 1), 20);
         {% endif %}
     {%- else %}
         {%- if withFilter %}
-        $qb = $em->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('{{ entity|lower|slice(0, 1) }}');
+        $qb = $this->getDoctrine()->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('{{ entity|lower|slice(0, 1) }}');
         $paginator = $this->filter($form, $qb, '{{ entity|lower }}');
         {% else -%}
 
-        $qb = $em->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('{{ entity|lower|slice(0, 1) }}');
-        $paginator = $this->get('knp_paginator')->paginate($qb, $request->query->get('page', 1), 20);
+        $qb = $this->getDoctrine()->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('{{ entity|lower|slice(0, 1) }}');
+        $paginator = $this->get('knp_paginator')->paginate($qb, $request->query->getInt('page', 1), 20);
         {%- endif %}
     {%- endif %}
 {% else -%}
 
         {% if withSort %}
         if (is_array($order = $this->getOrder('{{ entity|lower }}'))) {
-            $entities = $em->getRepository('{{ bundle }}:{{ entity }}')->findBy([], [$order['field'] => $order['type']]);
+            $entities = $this->getDoctrine()->getRepository('{{ bundle }}:{{ entity }}')->findBy([], [$order['field'] => $order['type']]);
         } else {
-            $entities = $em->getRepository('{{ bundle }}:{{ entity }}')->findAll();
+            $entities = $this->getDoctrine()->getRepository('{{ bundle }}:{{ entity }}')->findAll();
         }
         {% else %}
-        $entities = $em->getRepository('{{ bundle }}:{{ entity }}')->findAll();
+        $entities = $this->getDoctrine()->getRepository('{{ bundle }}:{{ entity }}')->findAll();
         {% endif %}
 {% endif -%}
 
-        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:index.html.twig', [
+        return $this->render('{{ entity_class|lower }}/index.html.twig', [
 {% if withFilter %}
             'form' => $form->createView(),
 {% endif %}

@@ -11,9 +11,8 @@
     {
         $form = $this->createDeleteForm(${{ entity|lower }}->getId(), '{{ route_name_prefix }}_delete');
         if ($form->handleRequest($request)->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove(${{ entity|lower }});
-            $em->flush();
+            $this->getDoctrine()->getManager()->remove(${{ entity|lower }});
+            $this->getDoctrine()->getManager()->flush();
         }
 
         return $this->redirect($this->generateUrl('{{ route_name_prefix }}'));

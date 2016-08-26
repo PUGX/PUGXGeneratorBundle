@@ -1,19 +1,31 @@
 
     /**
-     * Displays a form to create a new {{ entity }} entity.
+     * Creates a new {{ entity }} entity.
      *
 {% if 'annotation' == format %}
      * @Route("/new", name="{{ route_name_prefix }}_new")
-     * @Method("GET")
+     * @Method({"GET", "PUT"})
 {% endif %}
      */
-    public function newAction()
+    public function newAction(Request $request)
     {
         ${{ entity|lower }} = new {{ entity_class }}();
-        $form = $this->createForm({{ entity_class }}Type::class, ${{ entity|lower }});
+        $form = $this->createForm({{ entity_class }}Type::class, ${{ entity|lower }}, ['method' => 'PUT']);
+        if ($form->handleRequest($request)->isValid()) {
+            $this->getDoctrine()->getManager()->persist(${{ entity|lower }});
+            $this->getDoctrine()->getManager()->flush();
 
-        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:new.html.twig', [
+            {% if 'show' in actions -%}
+                return $this->redirect($this->generateUrl('{{ route_name_prefix }}_show', ['id' => ${{ entity|lower }}->getId()]));
+            {%- else -%}
+                return $this->redirect($this->generateUrl('{{ route_name_prefix }}'));
+            {%- endif %}
+
+        }
+
+        return $this->render('{{ entity_class|lower }}/new.html.twig', [
             '{{ entity|lower }}' => ${{ entity|lower }},
             'form' => $form->createView(),
         ]);
     }
+
