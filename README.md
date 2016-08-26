@@ -11,8 +11,7 @@ This bundle is an extension of [SensioGeneratorBundle](https://github.com/sensio
 It adds many functionality on top of it, and corrects some minor issues:
 
 * main block name customizable in layout
-* forms in correct namespace (under Type, not under Form)
-* @ParamConverter in actions
+* `@ParamConverter` in actions
 * different format for dates/times/datetimes
 * include relation fields in show and index templates
 * shorter form names
@@ -24,7 +23,6 @@ It adds many functionality on top of it, and corrects some minor issues:
 * support for pagination (requires [KnpPaginatorBundle](https://github.com/KnpLabs/KnpPaginatorBundle))
 * support for filters (requires [LexikFormFilterBundle](https://github.com/lexik/LexikFormFilterBundle))
 * support for sorting
-* optional target bundle
 * better generated tests
 * fixtures generation
 

@@ -5,7 +5,6 @@
 {% if 'annotation' == format %}
      * @Route("/", name="{{ route_name_prefix }}")
      * @Method("GET")
-     * @Template()
 {% endif %}
      */
     public function indexAction({% if usePaginator and not withFilter %}Request $request{% endif %})
@@ -50,19 +49,6 @@
         {% endif %}
 {% endif -%}
 
-{% if 'annotation' == format %}
-
-        return [
-{% if withFilter %}
-            'form'=> $form->createView(),
-{% endif %}
-{% if usePaginator %}
-            'paginator' => $paginator,
-{% else %}
-            'entities' => $entities,
-{% endif %}
-        ];
-{% else %}
         return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:index.html.twig', [
 {% if withFilter %}
             'form' => $form->createView(),
@@ -73,5 +59,4 @@
             'entities' => $entities,
 {% endif %}
         ]);
-{% endif %}
     }

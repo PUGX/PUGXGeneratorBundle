@@ -5,7 +5,6 @@
 {% if 'annotation' == format %}
      * @Route("/{id}/show", name="{{ route_name_prefix }}_show", requirements={"id"="\d+"})
      * @Method("GET")
-     * @Template()
 {% endif %}
      */
     public function showAction({{ entity }} ${{ entity|lower }})
@@ -14,19 +13,10 @@
         $deleteForm = $this->createDeleteForm(${{ entity|lower }}->getId(), '{{ route_name_prefix }}_delete');
 {% endif %}
 
-{% if 'annotation' == format %}
-        return [
-            '{{ entity|lower }}' => ${{ entity|lower }},
-{% if 'delete' in actions %}
-            'delete_form' => $deleteForm->createView(),
-{% endif %}
-        ];
-{% else %}
         return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:show.html.twig', [
             '{{ entity|lower }}' => ${{ entity|lower }},
 {% if 'delete' in actions %}
             'delete_form' => $deleteForm->createView(),
 {%- endif %}
         ]);
-{% endif %}
     }

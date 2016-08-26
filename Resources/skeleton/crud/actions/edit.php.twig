@@ -5,28 +5,19 @@
 {% if 'annotation' == format %}
      * @Route("/{id}/edit", name="{{ route_name_prefix }}_edit", requirements={"id"="\d+"})
      * @Method("GET")
-     * @Template()
 {% endif %}
      */
     public function editAction({{ entity }} ${{ entity|lower }})
     {
-        $editForm = $this->createForm(new {{ entity_class }}Type(), ${{ entity|lower }}, [
+        $editForm = $this->createForm({{ entity_class }}Type::class, ${{ entity|lower }}, [
             'action' => $this->generateUrl('{{ route_name_prefix }}_update', ['id' => ${{ entity|lower }}->getId()]),
             'method' => 'PUT',
         ]);
         $deleteForm = $this->createDeleteForm(${{ entity|lower }}->getId(), '{{ route_name_prefix }}_delete');
 
-{% if 'annotation' == format %}
-        return [
-            '{{ entity|lower }}' => ${{ entity|lower }},
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ];
-{% else %}
         return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:edit.html.twig', [
             '{{ entity|lower }}' => ${{ entity|lower }},
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ]);
-{% endif %}
     }

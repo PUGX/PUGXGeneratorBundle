@@ -3,6 +3,7 @@
 namespace {{ namespace }}\Form\Type{{ entity_namespace ? '\\' ~ entity_namespace : '' }};
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -39,7 +40,7 @@ class {{ form_class }} extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return '{{ entity_class|lower }}';
     }

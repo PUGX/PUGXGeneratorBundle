@@ -18,7 +18,7 @@
 {% from _self import fieldValue -%}
 <?php
 
-namespace {{ namespace }}\Tests\Controller{{ entity_namespace ? '\\' ~ entity_namespace : '' }};
+namespace Tests\{{ namespace }}\Controller{{ entity_namespace ? '\\' ~ entity_namespace : '' }};
 
 {% block use_statements %}
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

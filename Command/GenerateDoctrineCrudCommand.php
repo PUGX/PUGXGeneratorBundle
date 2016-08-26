@@ -33,7 +33,7 @@ class GenerateDoctrineCrudCommand extends BaseCommand
     {
         return new DoctrineCrudGenerator(
             $this->getContainer()->get('filesystem'),
-            $this->getContainer()->getParamter('kernel.root_dir')
+            $this->getContainer()->getParameter('kernel.root_dir')
         );
     }
 

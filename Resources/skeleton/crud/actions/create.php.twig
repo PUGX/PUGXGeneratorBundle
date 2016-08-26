@@ -10,11 +10,10 @@
     public function createAction(Request $request)
     {
         ${{ entity|lower }} = new {{ entity_class }}();
-        $form = $this->createForm(new {{ entity_class }}Type(), ${{ entity|lower }});
+        $form = $this->createForm({{ entity_class }}Type::class, ${{ entity|lower }});
         if ($form->handleRequest($request)->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist(${{ entity|lower }});
-            $em->flush();
+            $this->getDoctrine()->getManager()->persist(${{ entity|lower }});
+            $this->getDoctrine()->getManager()->flush();
 
             {% if 'show' in actions -%}
                 return $this->redirect($this->generateUrl('{{ route_name_prefix }}_show', ['id' => ${{ entity|lower }}->getId()]));
