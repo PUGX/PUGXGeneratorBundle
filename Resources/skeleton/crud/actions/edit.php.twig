@@ -4,12 +4,12 @@
      *
 {% if 'annotation' == format %}
      * @Route("/{id}/edit", name="{{ route_name_prefix }}_edit", requirements={"id"="\d+"})
-     * @Method({"GET", "POST"})
+     * @Method({"GET", "PUT"})
 {% endif %}
      */
     public function editAction({{ entity }} ${{ entity|lower }}, Request $request)
     {
-        $editForm = $this->createForm({{ entity_class }}Type::class, ${{ entity|lower }});
+        $editForm = $this->createForm({{ entity_class }}Type::class, ${{ entity|lower }}, ['method' => 'PUT']);
         if ($editForm->handleRequest($request)->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 

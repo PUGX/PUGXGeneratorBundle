@@ -23,14 +23,14 @@
 {{ route_name_prefix }}_new:
     path:  /new
     defaults: { _controller: "{{ bundle }}:{{ entity }}:new" }
-    methods: [GET, PUT]
+    methods: [GET, POST]
 {% endif %}
 
 {% if 'edit' in actions %}
 {{ route_name_prefix }}_edit:
     path:  /{id}/edit
     defaults: { _controller: "{{ bundle }}:{{ entity }}:edit" }
-    methods: [GET, POST]
+    methods: [GET, PUT]
 {% endif %}
 
 {% if 'delete' in actions %}
