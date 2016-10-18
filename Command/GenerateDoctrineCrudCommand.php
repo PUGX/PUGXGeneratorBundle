@@ -214,7 +214,7 @@ EOT
      *
      * @param string $bundle
      * @param string $entity
-     * @param array  $metadata   array of \Doctrine\ORM\Mapping\ClassMetadata objects
+     * @param array  $metadata array of \Doctrine\ORM\Mapping\ClassMetadata objects
      * @param int    $num
      */
     protected function doGenerateFixtures($bundle, $entity, $metadata, $num = 1)
