@@ -29,9 +29,9 @@ class DoctrineFixturesGenerator extends Generator
     /**
      * Generate the fixtures class.
      *
-     * @param BundleInterface   $bundle     A bundle object
-     * @param string            $entity     The entity relative class name
-     * @param ClassMetadataInfo $metadata   The entity class metadata
+     * @param BundleInterface   $bundle   A bundle object
+     * @param string            $entity   The entity relative class name
+     * @param ClassMetadataInfo $metadata The entity class metadata
      * @parma integer           $num        The number of fixtures to generate
      *
      * @throws \RuntimeException
