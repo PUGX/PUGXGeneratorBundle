@@ -9,7 +9,7 @@
 {{ '{% block ' ~ bodyBlock ~ ' %}' }}
     <h1>{{ "{{ '%entity% creation'|trans({'%entity%': '"~ entity ~"'}, 'admin') }}" }}</h1>
 
-    {{ "{{ form_start(form, {action: path('"~ route_name_prefix ~"_create')}) }}" }}
+    {{ "{{ form_start(form) }}" }}
         {{ "{{ form_widget(form) }}" }}
         <p>
             <button class="btn btn-primary" type="submit">{{ "{{ 'Create'|trans({}, 'admin') }}" }}</button>

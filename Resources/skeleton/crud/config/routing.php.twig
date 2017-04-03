@@ -33,12 +33,6 @@ $collection->add('{{ route_name_prefix }}_show', new Route('/{id}/show', [
 $collection->add('{{ route_name_prefix }}_new', new Route('/new', [
     '_controller' => '{{ bundle }}:{{ entity }}:new',
 ]));
-
-$collection->add('{{ route_name_prefix }}_create', new Route(
-    '/create',
-    ['_controller' => '{{ bundle }}:{{ entity }}:create'],
-    ['_method' => 'post']
-));
 {% endif %}
 
 {% if 'edit' in actions %}
