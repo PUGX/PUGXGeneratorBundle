@@ -9,7 +9,7 @@
         {
             "name": "Massimiliano Arione",
             "email": "garakkio@gmail.com",
-            "homepage": "http://massimilianoarione.it"
+            "homepage": "https://massimilianoarione.it"
         },
         {
             "name": "Leonardo Proietti",
@@ -17,8 +17,8 @@
         }
     ],
     "require": {
-        "php": ">=5.5",
-        "sensio/generator-bundle": "~3.0"
+        "php": ">=5.6",
+        "sensio/generator-bundle": "^3.0"
     },
     "suggest": {
         "knplabs/knp-paginator-bundle": "Needed for optional pagination",
