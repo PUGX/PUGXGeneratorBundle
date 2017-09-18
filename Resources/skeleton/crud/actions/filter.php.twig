@@ -6,13 +6,13 @@
      * @param  string        $name   route/entity name
      * @param  string        $route  route name, if different from entity name
      * @param  array         $params possible route parameters
-     * @return Response
+     * @return RedirectResponse
      */
     protected function saveFilter(FormInterface $form, $name, $route = null, array $params = [])
     {
         $request = $this->get('request_stack')->getCurrentRequest();
         $url = $this->generateUrl($route ?: $name, $params);
-        if ($request->query->has('submit-filter') && $form->handleRequest($request)->isValid()) {
+        if ($request->query->has('submit-filter') && $form->handleRequest($request)->isSubmitted() && $form->isValid()) {
             $request->getSession()->set('filter.' . $name, $request->query->get($form->getName()));
 
             return $this->redirect($url);

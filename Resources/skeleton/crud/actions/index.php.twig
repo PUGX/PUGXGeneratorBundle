@@ -10,7 +10,7 @@
     public function indexAction({% if usePaginator and not withFilter %}Request $request{% endif %})
     {
 {% if withFilter %}
-        $form = $this->createForm(new {{ entity_class }}FilterType());
+        $form = $this->createForm({{ entity_class }}FilterType::class);
         if (!is_null($response = $this->saveFilter($form, '{{ entity|lower }}', '{{ route_name_prefix }}'))) {
             return $response;
         }

@@ -10,7 +10,7 @@
     public function editAction({{ entity }} ${{ entity|lower }}, Request $request)
     {
         $editForm = $this->createForm({{ entity_class }}Type::class, ${{ entity|lower }}, ['method' => 'PUT']);
-        if ($editForm->handleRequest($request)->isValid()) {
+        if ($editForm->handleRequest($request)->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirect($this->generateUrl('{{ route_name_prefix }}_edit', ['id' => ${{ entity|lower }}->getId()]));

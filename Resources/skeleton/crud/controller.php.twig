@@ -14,10 +14,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use {{ bundle_namespace }}\Entity\{{ entity }};
 {% if 'new' in actions or 'edit' in actions %}
-use {{ namespace }}\Form\Type\{{ entity }}Type;
+use {{ namespace }}\Form\{{ entity }}Type;
 {% endif %}
 {% if 'filter' in actions %}
-use {{ namespace }}\Form\Type\{{ entity }}FilterType;
+use {{ namespace }}\Form\{{ entity }}FilterType;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\ORM\QueryBuilder;
 {% endif %}

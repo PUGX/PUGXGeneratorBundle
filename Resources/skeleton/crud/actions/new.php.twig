@@ -11,7 +11,7 @@
     {
         ${{ entity|lower }} = new {{ entity_class }}();
         $form = $this->createForm({{ entity_class }}Type::class, ${{ entity|lower }});
-        if ($form->handleRequest($request)->isValid()) {
+        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->persist(${{ entity|lower }});
             $this->getDoctrine()->getManager()->flush();
 

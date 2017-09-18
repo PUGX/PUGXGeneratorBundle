@@ -29,7 +29,7 @@
     {%- if withFilter %}
 
 
-    {{ "{% include '/"~ entity ~"/filter.html.twig' with {form: form} %}" }}
+    {{ "{% include '/"~ entity|lower ~"/filter.html.twig' with {form: form} %}" }}
     {% endif %}
 
     <table class="table table-striped table-hover table-bordered records_list">

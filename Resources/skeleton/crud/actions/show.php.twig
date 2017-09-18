@@ -13,7 +13,7 @@
         $deleteForm = $this->createDeleteForm(${{ entity|lower }}->getId(), '{{ route_name_prefix }}_delete');
 {% endif %}
 
-        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:show.html.twig', [
+        return $this->render('{{ entity_class|lower }}/show.html.twig', [
             '{{ entity|lower }}' => ${{ entity|lower }},
 {% if 'delete' in actions %}
             'delete_form' => $deleteForm->createView(),

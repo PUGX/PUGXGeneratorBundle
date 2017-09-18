@@ -10,7 +10,7 @@
     public function deleteAction({{ entity }} ${{ entity|lower }}, Request $request)
     {
         $form = $this->createDeleteForm(${{ entity|lower }}->getId(), '{{ route_name_prefix }}_delete');
-        if ($form->handleRequest($request)->isValid()) {
+        if($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->remove(${{ entity|lower }});
             $this->getDoctrine()->getManager()->flush();
         }
