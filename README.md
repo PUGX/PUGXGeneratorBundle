@@ -8,6 +8,8 @@ PUGXGeneratorBundle
 
 This bundle is an extension of [SensioGeneratorBundle](https://github.com/sensio/SensioGeneratorBundle).
 
+> ⚠  This bundle is abandoned and no longer maintained. Use [MakerBundle](https://github.com/symfony/maker-bundle) instead.
+
 It adds many functionality on top of it, and corrects some minor issues:
 
 * main block name customizable in layout
